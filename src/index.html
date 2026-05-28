@@ -48,6 +48,9 @@
     <script src="js/boost.js"></script>
     <script src="js/ueda-quotes.js"></script>
     <script src="js/skincheck.js"></script>
+    <script src="js/doctormemo.js"></script>
+    <script src="js/reminder.js"></script>
+    <script src="js/photolog.js"></script>
     <script>
         // Today画面を構築
         (function() {
@@ -138,8 +141,17 @@
                     <!-- 上田先生の今日の検証 -->
                     <div id="today-ueda"></div>
 
+                    <!-- 次回ブースト予定リマインダー -->
+                    <div id="today-reminder"></div>
+
                     <!-- 肌セルフチェック -->
                     <div id="today-skin"></div>
+
+                    <!-- 院長への質問メモ -->
+                    <div id="today-memo"></div>
+
+                    <!-- ビフォーアフター写真記録 -->
+                    <div id="today-photo"></div>
 
                     <!-- キャラからのひとこと -->
                     <div class="today-char-card">
@@ -338,8 +350,17 @@
                 });
             })();
 
+            // 次回ブースト予定リマインダー
+            renderNextReminder('today-reminder');
+
             // 肌セルフチェック
             renderSkinCheck('today-skin');
+
+            // 院長への質問メモ
+            renderDoctorMemo('today-memo');
+
+            // ビフォーアフター写真記録（非同期）
+            renderPhotoLog('today-photo');
 
             // 初回起動時にオンボーディングを表示
             autoShowOnboardingIfNeeded(0);
