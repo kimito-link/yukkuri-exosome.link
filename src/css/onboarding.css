@@ -171,40 +171,71 @@
 
 /* 体内マップミニ用（オンボーディング2枚目） */
 .onboarding__visual--bodymap {
-    min-height: 260px;
+    min-height: 240px;
     align-items: center;
+    justify-content: center;
+    overflow: visible;
+    display: block;
+    text-align: center;
 }
 
 .charmap--mini {
-    width: 260px;
+    width: 220px !important;
+    height: 220px !important;
+    max-width: 220px;
     aspect-ratio: 1 / 1;
     margin: 0 auto;
     position: relative;
+    flex-shrink: 0;
+    display: block;
 }
 
 .charmap--mini .charmap__face {
-    width: 56%;
-    height: 56%;
+    width: 50%;
+    height: 50%;
+    /* 絶対配置でビジュアル枠の中央に固定 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.charmap--mini .charmap__halo,
+.charmap--mini .charmap__ring {
+    /* 枠から飛び出さないように */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.charmap--mini .charmap__point {
+    /* 各ポイントを枠の中央から相対配置にし直す */
+    transform: translate(-50%, -50%);
 }
 
 .charmap--mini .charmap__point-bubble {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
 }
 
 .charmap--mini .charmap__point-label {
     display: none;
 }
 
+/* アニメーション抑制：ミニマップは派手にならないように */
+.charmap--mini .charmap__face {
+    animation: none;
+}
+
 @media (max-width: 380px) {
     .charmap--mini {
-        width: 220px;
+        width: 190px;
+        height: 190px;
     }
     .charmap--mini .charmap__point-bubble {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
     }
 }
 
