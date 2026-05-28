@@ -46,6 +46,8 @@
     <script src="js/onboarding.js"></script>
     <script src="js/bodymap.js"></script>
     <script src="js/boost.js"></script>
+    <script src="js/ueda-quotes.js"></script>
+    <script src="js/skincheck.js"></script>
     <script>
         // Today画面を構築
         (function() {
@@ -132,6 +134,12 @@
 
                     <!-- 体内マップ -->
                     <div id="today-bodymap"></div>
+
+                    <!-- 上田先生の今日の検証 -->
+                    <div id="today-ueda"></div>
+
+                    <!-- 肌セルフチェック -->
+                    <div id="today-skin"></div>
 
                     <!-- キャラからのひとこと -->
                     <div class="today-char-card">
@@ -296,6 +304,40 @@
                     svg.appendChild(group);
                 }, 200);
             }
+
+            // 上田先生の今日の検証カードを描画
+            (function renderUedaCard() {
+                const q = getUedaQuoteOfDay();
+                const char = CHARACTERS[q.char];
+                const charImg = getImagePath(q.char, 'smileOpen', 0);
+                document.getElementById('today-ueda').innerHTML = `
+                    <div class="ueda-card">
+                        <div class="ueda-card__chip">Today's Wisdom<span class="ueda-card__topic">${q.topic}</span></div>
+                        <div class="ueda-card__body">
+                            <div class="ueda-card__avatar"><img src="${charImg}" alt="${char.name}"></div>
+                            <div class="ueda-card__content">
+                                <div class="ueda-card__quote">${q.text}</div>
+                                <div class="ueda-card__source">— 上田 実『改訂版 驚異の再生医療 〜培養上清が世界を救う〜』扶桑社新書 (2022) より</div>
+                            </div>
+                        </div>
+                        <div class="ueda-card__actions">
+                            <div class="ueda-card__day">${q.index + 1} / ${q.total}</div>
+                            <button class="ueda-card__share" id="ueda-share-btn">📤 シェア</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('ueda-share-btn').addEventListener('click', () => {
+                    const txt = `【今日の上田先生の検証】\n\n${q.text}\n\n— 上田実『驚異の再生医療』より\n\nhttps://yukkuri-exosome.link/`;
+                    if (navigator.share) {
+                        navigator.share({ text: txt }).catch(() => {});
+                    } else if (navigator.clipboard) {
+                        navigator.clipboard.writeText(txt).then(() => alert('コピーしました'));
+                    }
+                });
+            })();
+
+            // 肌セルフチェック
+            renderSkinCheck('today-skin');
 
             // 初回起動時にオンボーディングを表示
             autoShowOnboardingIfNeeded(0);
