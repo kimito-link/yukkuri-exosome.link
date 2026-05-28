@@ -5,6 +5,16 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "www.yukkuri-exosome.link" }
+      ],
+      "destination": "https://yukkuri-exosome.link/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/icons/(.*)",
