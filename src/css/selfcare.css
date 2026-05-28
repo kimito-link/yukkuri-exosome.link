@@ -1,0 +1,228 @@
+/* ============================================
+   セルフケアチェッカー専用スタイル
+   ============================================ */
+
+.selfcare {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.selfcare__date {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.selfcare__streak {
+    display: inline-block;
+    padding: 4px 16px;
+    background: linear-gradient(90deg, #ff8fa3, #ffb347);
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+}
+
+.selfcare__gauge-wrapper {
+    text-align: center;
+    margin: var(--space-lg) 0;
+}
+
+.selfcare__gauge {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto var(--space-sm);
+    position: relative;
+}
+
+.selfcare__gauge-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.selfcare__gauge-bg {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 16;
+}
+
+.selfcare__gauge-fill {
+    fill: none;
+    stroke: url(#gaugeGradient);
+    stroke-width: 16;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.8s ease;
+}
+
+.selfcare__gauge-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.selfcare__gauge-value {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.selfcare__gauge-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+}
+
+.selfcare__items {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+}
+
+.selfcare__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.selfcare__item:hover {
+    border-color: var(--color-primary);
+}
+
+.selfcare__item--checked {
+    background: var(--rink-bg);
+    border-color: var(--rink-border);
+}
+
+.selfcare__item-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.selfcare__item-content {
+    flex: 1;
+}
+
+.selfcare__item-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+}
+
+.selfcare__item-subtitle {
+    font-size: 0.72rem;
+    color: var(--color-primary);
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+
+.selfcare__item-desc {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+    line-height: 1.55;
+    letter-spacing: 0.02em;
+}
+
+.selfcare__item-check {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.selfcare__item--checked .selfcare__item-check {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.selfcare__item--checked .selfcare__item-check::before {
+    content: "✓";
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.selfcare__feedback {
+    padding: var(--space-md);
+    background: var(--color-bg-section);
+    border-radius: var(--radius-md);
+    margin: var(--space-md) 0;
+    text-align: center;
+    line-height: 1.7;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selfcare__feedback-char {
+    width: 80px;
+    flex-shrink: 0;
+    margin-right: var(--space-sm);
+}
+
+.selfcare__feedback-text {
+    flex: 1;
+    text-align: left;
+}
+
+.selfcare__history {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    background: var(--color-bg-section);
+    border-radius: var(--radius-md);
+}
+
+.selfcare__history-title {
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+}
+
+.selfcare__history-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.selfcare__history-cell {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    background: var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.selfcare__history-cell--filled {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: #fff;
+    font-weight: 700;
+}

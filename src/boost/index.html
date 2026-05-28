@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- ye:favicon:start -->
+    <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/favicon-48.png">
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#c9899a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
+    <meta property="og:image" content="../icons/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="../icons/og-image.jpg">
+    <!-- ye:favicon:end -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Boost | ゆっくりエクソソーム</title>
+    <meta name="description" content="点滴・サプリの記録機能。NMNやエクソソーム点滴を記録して、体内マップに反映。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/bodymap.css">
+    <link rel="stylesheet" href="../css/boost.css">
+</head>
+<body>
+    <main id="boost-screen" class="app-screen"></main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/bodymap.js"></script>
+    <script src="../js/boost.js"></script>
+    <script>
+        (function() {
+            let currentCat = 'all';
+
+            function getCareData() {
+                const today = getTodayKey();
+                return new Set(Storage.get(`selfcare_${today}`, []));
+            }
+
+            function render() {
+                const boostData = getBoostActiveData();
+                const careActive = getCareData();
+                // 体内マップに反映：セルフケア達成 + Boost記録の両方
+                const combinedActive = new Set([...careActive, ...boostData.activeRegions]);
+
+                const filteredItems = currentCat === 'all'
+                    ? BOOST_ITEMS
+                    : BOOST_ITEMS.filter(i => i.category === currentCat);
+
+                const todayBoostList = boostData.items
+                    .map(id => BOOST_ITEMS.find(b => b.id === id))
+                    .filter(Boolean);
+
+                document.getElementById('boost-screen').innerHTML = `
+                    <header class="today-greeting">
+                        <div class="today-greeting__date">Daily Boost</div>
+                        <div class="today-greeting__hello" style="font-size: 1.2rem;">点滴・サプリの記録</div>
+                    </header>
+
+                    <!-- Hero -->
+                    <div class="boost-hero">
+                        <div class="boost-hero__chip">Treatments &amp; Supplements</div>
+                        <div class="boost-hero__title">今日のブースト</div>
+                        <div class="boost-hero__sub">クリニックで受けた点滴やサプリを記録して、<br>体内マップを活性化させましょう</div>
+                    </div>
+
+                    <!-- 体内マップ（Boost反映） -->
+                    <div id="boost-bodymap"></div>
+
+                    <!-- 今日の記録サマリ -->
+                    <div class="boost-today">
+                        <div class="boost-today__header">
+                            <span class="boost-today__label">本日のブースト</span>
+                            <span class="boost-today__count">
+                                +${boostData.totalBonus.toLocaleString()}<span class="boost-today__count-unit">粒</span>
+                            </span>
+                        </div>
+                        <div class="boost-today__list">
+                            ${todayBoostList.length === 0
+                                ? '<div class="boost-today__empty">まだ今日の記録はありません</div>'
+                                : todayBoostList.map(item => `
+                                    <div class="boost-today__chip">
+                                        <span class="boost-today__chip-emoji">${item.emoji}</span>
+                                        ${item.name}
+                                    </div>
+                                `).join('')
+                            }
+                        </div>
+                    </div>
+
+                    <!-- カテゴリ -->
+                    <h2 class="app-section-title">
+                        <span class="app-section-title__emoji">💊</span>
+                        記録する
+                    </h2>
+                    <div class="boost-cats">
+                        ${BOOST_CATEGORIES.map(c => `
+                            <button class="boost-cat ${c.id === currentCat ? 'is-active' : ''}" data-cat="${c.id}">
+                                ${c.name}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- アイテムグリッド -->
+                    <div class="boost-grid">
+                        ${filteredItems.map(item => {
+                            const isDone = boostData.items.includes(item.id);
+                            return `
+                                <div class="boost-item ${isDone ? 'is-done' : ''}" data-id="${item.id}">
+                                    <div class="boost-item__emoji">${item.emoji}</div>
+                                    <div class="boost-item__name">${item.name}</div>
+                                    <span class="boost-item__tag">${item.tag}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="article__note" style="margin-top: 24px; font-size: 0.75rem; line-height: 1.7;">
+                        <strong>📌 ご注意</strong><br>
+                        この記録はあなた個人のメモであり、医療記録や効能の証明ではありません。
+                        体内エクソソームの「+◯粒」表記は分かりやすさのためのイメージで、実測値ではありません。
+                        実際の施術内容や効果については、必ずクリニックの医師の指示・説明に従ってください。
+                    </div>
+                `;
+
+                // 体内マップ
+                renderBodyMap('boost-bodymap', combinedActive, 1);
+
+                // ミトコンドリア演出（NMN系を取った日）
+                if (boostData.hasMito) {
+                    injectMitochondria();
+                }
+
+                // カテゴリ切り替え
+                document.querySelectorAll('.boost-cat').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentCat = btn.dataset.cat;
+                        render();
+                    });
+                });
+
+                // アイテムタップ
+                document.querySelectorAll('.boost-item').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = el.dataset.id;
+                        const item = BOOST_ITEMS.find(b => b.id === id);
+                        const wasDone = boostData.items.includes(id);
+                        const nowDone = toggleBoost(id);
+
+                        // 初めて記録したときだけEP獲得+大きいトースト
+                        if (nowDone && !wasDone) {
+                            showBoostToast(item);
+                            if (typeof App !== 'undefined') {
+                                const epAmount = Math.floor(item.exoBonus / 50); // EPに変換
+                                const result = App.addEP(epAmount, 'boost_' + id);
+                                if (result && result.leveledUp) {
+                                    setTimeout(() => App.notifyLevelUp(result), 1500);
+                                }
+                            }
+                        }
+                        render();
+                    });
+                });
+            }
+
+            // NMN取った日のミトコンドリア星演出
+            function injectMitochondria() {
+                const svg = document.querySelector('#boost-bodymap .bodymap');
+                if (!svg) return;
+                // 既にあれば消してから入れ直す
+                const old = svg.querySelector('.bodymap__mitochondria-group');
+                if (old) old.remove();
+
+                // 星パターンを20個ランダムに配置
+                const ns = 'http://www.w3.org/2000/svg';
+                const group = document.createElementNS(ns, 'g');
+                group.setAttribute('class', 'bodymap__mitochondria-group');
+
+                const positions = [
+                    [60, 60], [140, 60], [80, 120], [120, 120],
+                    [70, 140], [130, 140], [90, 170], [110, 170],
+                    [60, 200], [140, 200], [80, 230], [120, 230],
+                    [76, 260], [124, 260], [80, 290], [120, 290],
+                    [100, 110], [100, 145], [50, 180], [150, 180]
+                ];
+
+                positions.forEach((pos, i) => {
+                    const star = document.createElementNS(ns, 'circle');
+                    star.setAttribute('cx', pos[0]);
+                    star.setAttribute('cy', pos[1]);
+                    star.setAttribute('r', 1.6);
+                    star.setAttribute('class', 'bodymap__star is-active');
+                    star.style.animationDelay = (i * 0.18) + 's';
+                    group.appendChild(star);
+                });
+                svg.appendChild(group);
+            }
+
+            render();
+            injectAppShell('boost', 1);
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- ye:favicon:start -->
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#c9899a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
+    <meta property="og:image" content="icons/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="icons/og-image.jpg">
+    <!-- ye:favicon:end -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Kimito-Linkのゆっくりエクソソーム — 3人組と毎日セルフケア</title>
+    <meta name="description" content="Kimito-Linkのゆっくりエクソソーム。ゆっくり3人組「りんく・こん太・たぬ姉」と毎日のセルフケアを積み上げるアプリ。レベル・ストリーク・育成で、習慣化が楽しくなる。">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Kimito-Linkのゆっくりエクソソーム">
+    <meta property="og:description" content="ゆっくり3人組と毎日ちょっとずつ、セルフケア。エクソソームを楽しく学べるアプリ。">
+    <meta property="og:url" content="https://yukkuri-exosome.link/">
+    <meta property="og:site_name" content="ゆっくりエクソソーム">
+    <meta name="twitter:title" content="Kimito-Linkのゆっくりエクソソーム">
+    <meta name="twitter:description" content="ゆっくり3人組と毎日ちょっとずつ、セルフケア">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/onboarding.css">
+    <link rel="stylesheet" href="css/bodymap.css">
+    <link rel="stylesheet" href="css/boost.css">
+</head>
+<body>
+    <main id="today-screen"></main>
+
+    <script src="js/common.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/onboarding.js"></script>
+    <script src="js/bodymap.js"></script>
+    <script src="js/boost.js"></script>
+    <script>
+        // Today画面を構築
+        (function() {
+            const lv = App.getLevel();
+            const streak = App.getStreak();
+            const quests = App.getTodayQuests();
+            const mood = App.getMoodCharacter();
+            const moodChar = CHARACTERS[mood.charKey];
+            const moodImg = getImagePath(mood.charKey, mood.expression, 0);
+
+            const totalDays = Storage.get('app_total_days', 0);
+            const lastDate = Storage.get('app_last_active', null);
+            const today = getTodayKey();
+            if (lastDate === today) {
+                // total daysカウント
+                const counted = Storage.get('app_total_days_counted', null);
+                if (counted !== today) {
+                    Storage.set('app_total_days', totalDays + 1);
+                    Storage.set('app_total_days_counted', today);
+                }
+            }
+
+            const adviceCount = Storage.get('advice_count', 0);
+            const quizBest = Storage.get('quiz_best', 0);
+
+            const allQuestsDone = quests.care.done && quests.quiz.done && quests.advice.done;
+
+            const greeting = (() => {
+                const h = new Date().getHours();
+                if (h < 5) return '🌙 こんばんは';
+                if (h < 11) return '☀️ おはよう';
+                if (h < 17) return '🌤 こんにちは';
+                return '🌙 こんばんは';
+            })();
+
+            const html = `
+                <div class="app-screen">
+                    <!-- ブランドヒーロー（エディトリアル） -->
+                    <div class="brand-hero">
+                        <!-- 背景にキャラ控えめ -->
+                        <img src="images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--rink">
+                        <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--konta">
+                        <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--tanunee">
+
+                        <div class="brand-hero__top">
+                            <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="brand-hero__logo-link">
+                                <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="brand-hero__logo">
+                            </a>
+                            <div class="brand-hero__divider"></div>
+                            <div class="brand-hero__sub">
+                                Presents
+                                <span class="brand-hero__sub-jp">A Daily Ritual</span>
+                            </div>
+                        </div>
+                        <h1 class="brand-hero__title">ゆっくり<em>エクソソーム</em></h1>
+                        <div class="brand-hero__divider-line"></div>
+                        <p class="brand-hero__tagline">毎日、ちいさなセルフケアを、ていねいに</p>
+                    </div>
+
+                    <!-- あいさつ -->
+                    <header class="today-greeting">
+                        <div class="today-greeting__date">${formatDateJp()}</div>
+                        <div class="today-greeting__hello">${greeting}<br><small>今日もゆっくり始めよう</small></div>
+                    </header>
+
+                    <!-- 3人組ヒーロー -->
+                    <div class="top-trio">
+                        <a href="characters/" class="top-trio__member top-trio__member--rink">
+                            <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                            <span class="top-trio__name">りんく</span>
+                        </a>
+                        <a href="characters/" class="top-trio__member top-trio__member--konta">
+                            <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                            <span class="top-trio__name">こん太</span>
+                        </a>
+                        <a href="characters/" class="top-trio__member top-trio__member--tanunee">
+                            <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                            <span class="top-trio__name">たぬ姉</span>
+                        </a>
+                    </div>
+
+                    <!-- 体内マップ -->
+                    <div id="today-bodymap"></div>
+
+                    <!-- キャラからのひとこと -->
+                    <div class="today-char-card">
+                        <div class="today-char-card__img">
+                            <img src="${moodImg}" alt="${moodChar.name}">
+                        </div>
+                        <div class="today-char-card__content">
+                            <div class="today-char-card__name" style="color:${moodChar.color}">${moodChar.name.toUpperCase ? moodChar.name : moodChar.name}</div>
+                            <div class="today-char-card__message">${mood.message}</div>
+                        </div>
+                        <div class="today-char-card__friends">
+                            ${['rink', 'konta', 'tanunee'].filter(k => k !== mood.charKey).map(k => `
+                                <div class="today-char-card__friend">
+                                    <img src="${getImagePath(k, 'normal', 0)}" alt="${CHARACTERS[k].name}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- 統計 -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card__emoji">🔥</div>
+                            <div class="stat-card__value">${streak}</div>
+                            <div class="stat-card__label">連続日数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card__emoji">⭐</div>
+                            <div class="stat-card__value">${lv.lv}</div>
+                            <div class="stat-card__label">レベル</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card__emoji">✨</div>
+                            <div class="stat-card__value">${lv.ep}</div>
+                            <div class="stat-card__label">EP</div>
+                        </div>
+                    </div>
+
+                    <!-- 今日のクエスト -->
+                    <h2 class="app-section-title">
+                        <span class="app-section-title__emoji">🎯</span>
+                        今日のクエスト
+                        ${allQuestsDone ? '<span style="margin-left:auto; color:#4caf50; font-size:0.75rem;">✓ コンプリート</span>' : ''}
+                    </h2>
+
+                    <div class="quest-list">
+                        <a href="selfcare/" class="quest-card ${quests.care.done ? 'quest-card--done' : ''}">
+                            <div class="quest-card__icon">
+                                <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                            </div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">本日のシグナル送信</div>
+                                <div class="quest-card__desc">${quests.care.done ? `体内エクソ活性 完了` : `あと${Math.max(0, 3 - quests.care.progress)}項目で活性化 (${quests.care.progress} / 6)`}</div>
+                                <span class="quest-card__reward">+ 30 EP</span>
+                            </div>
+                            <div class="quest-card__arrow">${quests.care.done ? '✓' : '→'}</div>
+                        </a>
+
+                        <a href="quiz/" class="quest-card ${quests.quiz.done ? 'quest-card--done' : ''}">
+                            <div class="quest-card__icon">
+                                <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                            </div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">本日のミニ知識</div>
+                                <div class="quest-card__desc">${quests.quiz.done ? `${quests.quiz.correct} / 3 正解` : `3問チャレンジ (${quests.quiz.progress} / 3)`}</div>
+                                <span class="quest-card__reward">+ 20 EP × 3</span>
+                            </div>
+                            <div class="quest-card__arrow">${quests.quiz.done ? '✓' : '→'}</div>
+                        </a>
+
+                        <a href="boost/" class="quest-card">
+                            <div class="quest-card__icon">
+                                <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                            </div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">本日のブースト</div>
+                                <div class="quest-card__desc">${boostData.items.length > 0 ? `${boostData.items.length}件の記録 (+${boostData.totalBonus.toLocaleString()}粒)` : '点滴・サプリの記録'}</div>
+                                <span class="quest-card__reward">+ ボーナス粒子</span>
+                            </div>
+                            <div class="quest-card__arrow">${boostData.items.length > 0 ? '✓' : '→'}</div>
+                        </a>
+
+                        <a href="advice/" class="quest-card ${quests.advice.done ? 'quest-card--done' : ''}">
+                            <div class="quest-card__icon">
+                                <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                            </div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">今日のひとこと</div>
+                                <div class="quest-card__desc">${quests.advice.done ? 'メッセージ受け取り済み' : '3人組から今日のひとこと'}</div>
+                                <span class="quest-card__reward">+ 10 EP</span>
+                            </div>
+                            <div class="quest-card__arrow">${quests.advice.done ? '✓' : '→'}</div>
+                        </a>
+                    </div>
+
+                    <!-- もっと知る（記事） -->
+                    <h2 class="app-section-title">
+                        <span class="app-section-title__emoji">📚</span>
+                        ちょっと寄り道
+                    </h2>
+
+                    <div class="quest-list">
+                        <a href="glossary/" class="quest-card">
+                            <div class="quest-card__icon" style="background: linear-gradient(135deg, #d8f3ff, #ffe4ec);">📖</div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">用語集</div>
+                                <div class="quest-card__desc">専門用語をキャラがやさしく解説</div>
+                            </div>
+                            <div class="quest-card__arrow">→</div>
+                        </a>
+                        <a href="basics/what-is-exosome/" class="quest-card">
+                            <div class="quest-card__icon" style="background: linear-gradient(135deg, #fff0d6, #f4e8d8);">🧬</div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">エクソソームって何？</div>
+                                <div class="quest-card__desc">入門の入門。3分で読めるよ</div>
+                            </div>
+                            <div class="quest-card__arrow">→</div>
+                        </a>
+                    </div>
+
+                    <!-- ロゴ控えめ表示 -->
+                    <div style="text-align: center; margin: 32px 0 16px; opacity: 0.6;">
+                        <a href="https://kimito-link.com/" target="_blank" rel="noopener" style="display: inline-block;">
+                            <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" style="height: 32px; width: auto;">
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('today-screen').innerHTML = html;
+            injectAppShell('today', 0);
+
+            // 体内マップを描画（セルフケア + Boost両方）
+            const todayCareData = Storage.get(`selfcare_${today}`, []);
+            const boostData = getBoostActiveData();
+            const combined = new Set([...todayCareData, ...boostData.activeRegions]);
+            renderBodyMap('today-bodymap', combined, 0);
+
+            // NMNを取った日はミトコンドリア演出
+            if (boostData.hasMito) {
+                setTimeout(() => {
+                    const svg = document.querySelector('#today-bodymap .bodymap');
+                    if (!svg) return;
+                    const ns = 'http://www.w3.org/2000/svg';
+                    const group = document.createElementNS(ns, 'g');
+                    group.setAttribute('class', 'bodymap__mitochondria-group');
+                    const positions = [
+                        [60, 60], [140, 60], [80, 120], [120, 120],
+                        [70, 140], [130, 140], [90, 170], [110, 170],
+                        [60, 200], [140, 200], [80, 230], [120, 230],
+                        [76, 260], [124, 260], [80, 290], [120, 290],
+                        [100, 110], [100, 145], [50, 180], [150, 180]
+                    ];
+                    positions.forEach((pos, i) => {
+                        const star = document.createElementNS(ns, 'circle');
+                        star.setAttribute('cx', pos[0]);
+                        star.setAttribute('cy', pos[1]);
+                        star.setAttribute('r', 1.6);
+                        star.setAttribute('class', 'bodymap__star is-active');
+                        star.style.animationDelay = (i * 0.18) + 's';
+                        group.appendChild(star);
+                    });
+                    svg.appendChild(group);
+                }, 200);
+            }
+
+            // 初回起動時にオンボーディングを表示
+            autoShowOnboardingIfNeeded(0);
+        })();
+    </script>
+</body>
+</html>

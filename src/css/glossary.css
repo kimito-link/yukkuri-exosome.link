@@ -1,0 +1,209 @@
+/* ============================================
+   用語集専用スタイル
+   ============================================ */
+
+.glossary {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.glossary__search {
+    margin-bottom: var(--space-md);
+    position: relative;
+}
+
+.glossary__search-input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+    transition: border-color 0.2s;
+}
+
+.glossary__search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.glossary__search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.glossary__filters {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-md);
+    justify-content: center;
+}
+
+.glossary__filter {
+    padding: 6px 16px;
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--color-text-muted);
+}
+
+.glossary__filter--active,
+.glossary__filter:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.glossary__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.glossary__item {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.glossary__item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.glossary__item-header {
+    padding: var(--space-sm) var(--space-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    user-select: none;
+}
+
+.glossary__item-term {
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.glossary__item-reading {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.glossary__item-category {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--color-accent);
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.glossary__item-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+}
+
+.glossary__item--open .glossary__item-toggle {
+    transform: rotate(180deg);
+}
+
+.glossary__item-body {
+    padding: 0 var(--space-md);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.glossary__item--open .glossary__item-body {
+    padding: 0 var(--space-md) var(--space-md);
+    max-height: 1000px;
+}
+
+.glossary__item-content {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-sm);
+}
+
+.glossary__item-dialog {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    margin-bottom: var(--space-sm);
+}
+
+.glossary__item-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.glossary__item-text {
+    flex: 1;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--tanunee-bg);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--tanunee-border);
+    line-height: 1.7;
+}
+
+.glossary__item-related {
+    margin-top: var(--space-sm);
+    font-size: 0.85rem;
+}
+
+.glossary__item-related-label {
+    color: var(--color-text-muted);
+    margin-right: var(--space-xs);
+}
+
+.glossary__item-related-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--color-bg-section);
+    border-radius: var(--radius-pill);
+    margin: 0 4px 4px 0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--color-text);
+}
+
+.glossary__item-related-tag:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.glossary__empty {
+    text-align: center;
+    padding: var(--space-lg);
+    color: var(--color-text-muted);
+}
+
+.glossary__count {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+}

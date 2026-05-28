@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- ye:favicon:start -->
+    <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/favicon-48.png">
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#c9899a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
+    <meta property="og:image" content="../icons/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="../icons/og-image.jpg">
+    <!-- ye:favicon:end -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャラクター紹介 | ゆっくりエクソソーム</title>
+    <meta name="description" content="ゆっくりエクソソームに登場する3人組「りんく・こん太・たぬ姉」のプロフィール。それぞれの担当と性格を紹介。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .char-profile {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 32px;
+            background: var(--color-bg-card);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 32px;
+            align-items: start;
+        }
+        @media (max-width: 640px) {
+            .char-profile {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 20px;
+            }
+            .char-profile__images {
+                justify-content: center;
+            }
+        }
+        .char-profile__main-img {
+            width: 100%;
+            max-width: 180px;
+            margin: 0 auto;
+        }
+        .char-profile__name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .char-profile__role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .char-profile__role--rink { background: #ff8fa3; }
+        .char-profile__role--konta { background: #ffb347; }
+        .char-profile__role--tanunee { background: #c19a6b; }
+        .char-profile__table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.95rem;
+        }
+        .char-profile__table th,
+        .char-profile__table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .char-profile__table th {
+            width: 30%;
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+        .char-profile__images {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .char-profile__images img {
+            width: 64px;
+            height: 64px;
+            background: var(--color-bg-section);
+            border-radius: 50%;
+            padding: 4px;
+        }
+        .char-profile__quote {
+            font-style: italic;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-top: 16px;
+        }
+        .char-profile__quote--rink { background: var(--rink-bg); }
+        .char-profile__quote--konta { background: var(--konta-bg); }
+        .char-profile__quote--tanunee { background: var(--tanunee-bg); }
+
+        /* Kimito-Link紹介カード */
+        .kimito-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fff5e6 100%);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg) var(--space-md);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            margin: 40px auto 0;
+            max-width: 640px;
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .kimito-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(31, 64, 117, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(217, 124, 53, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .kimito-card__label {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            position: relative;
+            z-index: 1;
+        }
+        .kimito-card__logo-link {
+            display: inline-block;
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        .kimito-card__logo-link:hover {
+            transform: translateY(-4px);
+            opacity: 1;
+        }
+        .kimito-card__logo {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+        }
+        .kimito-card__text {
+            margin: var(--space-sm) auto var(--space-md);
+            max-width: 480px;
+            line-height: 1.8;
+            color: var(--color-text);
+            position: relative;
+            z-index: 1;
+        }
+        .kimito-card__cta {
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 640px) {
+            .kimito-card {
+                padding: var(--space-md) var(--space-sm);
+            }
+            .kimito-card__logo {
+                max-width: 220px;
+            }
+        }
+    </style>
+</head>
+<body data-depth="1">
+    <div data-header></div>
+
+    <nav class="breadcrumb">
+        <a href="../">ホーム</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>キャラクター紹介</span>
+    </nav>
+
+    <main>
+        <section class="hero" style="padding: 40px 16px;">
+            <div class="container">
+                <h1 class="hero__title">キャラクター紹介</h1>
+                <p class="hero__subtitle">ゆっくりエクソソームを盛り上げる3人組</p>
+            </div>
+        </section>
+
+        <section class="section" style="padding: 24px 0;">
+            <div class="container">
+
+                <!-- りんく -->
+                <article class="char-profile">
+                    <div>
+                        <img class="char-profile__main-img" src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                    </div>
+                    <div>
+                        <h2 class="char-profile__name" style="color:#ff8fa3;">りんく</h2>
+                        <span class="char-profile__role char-profile__role--rink">食事・生活担当</span>
+                        <p>明るく元気がモットーのムードメーカー。難しい話が出ると「むずかしいのだ！」と素直に反応してくれる読者の代表役。夜食大好きで、カップヌードルのカレー味とシーフード味が特に好物。</p>
+
+                        <table class="char-profile__table">
+                            <tr><th>一人称</th><td>ボク</td></tr>
+                            <tr><th>語尾</th><td>〜なのだ</td></tr>
+                            <tr><th>性格</th><td>明るい・素直・好奇心旺盛</td></tr>
+                            <tr><th>サイトでの役割</th><td>読者の質問代表「ボクにもわかるように説明してほしいのだ！」</td></tr>
+                            <tr><th>好きなもの</th><td>カップヌードル、夜食</td></tr>
+                        </table>
+
+                        <div class="char-profile__quote char-profile__quote--rink">
+                            「エクソソームって何なのだ？お弁当箱みたいなものなのだ？」
+                        </div>
+
+                        <div class="char-profile__images">
+                            <img src="../images/characters/link/link-yukkuri-normal-mouth-closed.png" alt="ノーマル">
+                            <img src="../images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="スマイル">
+                            <img src="../images/characters/link/link-yukkuri-blink-mouth-closed.png" alt="ぱちん">
+                            <img src="../images/characters/link/link-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- こん太 -->
+                <article class="char-profile">
+                    <div>
+                        <img class="char-profile__main-img" src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                    </div>
+                    <div>
+                        <h2 class="char-profile__name" style="color:#ffb347;">こん太</h2>
+                        <span class="char-profile__role char-profile__role--konta">運動・健康担当</span>
+                        <p>たぬ姉の弟。元気いっぱいの体育会系で、サッカーが大好き。走った後の水分補給は欠かさない。エクソソームと運動の関係について、自分の体験を交えながら教えてくれる。どん兵衛のきつねうどん派。</p>
+
+                        <table class="char-profile__table">
+                            <tr><th>一人称</th><td>ボク</td></tr>
+                            <tr><th>語尾</th><td>〜だよ</td></tr>
+                            <tr><th>性格</th><td>元気・素直・行動派</td></tr>
+                            <tr><th>サイトでの役割</th><td>実践派「やってみるのが一番だよ！」</td></tr>
+                            <tr><th>好きなもの</th><td>サッカー、どん兵衛きつねうどん</td></tr>
+                        </table>
+
+                        <div class="char-profile__quote char-profile__quote--konta">
+                            「運動するとエクソソームも増えるんだって！じゃあ走らなきゃ！」
+                        </div>
+
+                        <div class="char-profile__images">
+                            <img src="../images/characters/konta/kitsune-yukkuri-normal.png" alt="ノーマル">
+                            <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="スマイル">
+                            <img src="../images/characters/konta/kitsune-yukkuri-blink-mouth-closed.png" alt="ぱちん">
+                            <img src="../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                        </div>
+                    </div>
+                </article>
+
+                <!-- たぬ姉 -->
+                <article class="char-profile">
+                    <div>
+                        <img class="char-profile__main-img" src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                    </div>
+                    <div>
+                        <h2 class="char-profile__name" style="color:#c19a6b;">たぬ姉</h2>
+                        <span class="char-profile__role char-profile__role--tanunee">先生役・解説担当</span>
+                        <p>こん太の姉。世話焼きでしっかり者。難しい話も噛み砕いて教えてくれる頼れる先生役。論文や文献に当たって調べてくれるので、サイトの情報の正確さを支えている。どん兵衛たぬき天そば派。</p>
+
+                        <table class="char-profile__table">
+                            <tr><th>一人称</th><td>わたし</td></tr>
+                            <tr><th>語尾</th><td>〜よ・〜ちょうだい</td></tr>
+                            <tr><th>性格</th><td>世話焼き・冷静・知的</td></tr>
+                            <tr><th>サイトでの役割</th><td>解説の中心「ちゃんと調べると、こうなのよ」</td></tr>
+                            <tr><th>好きなもの</th><td>どん兵衛たぬき天そば、勉強</td></tr>
+                        </table>
+
+                        <div class="char-profile__quote char-profile__quote--tanunee">
+                            「エクソソームっていうのはね、細胞から分泌される小さなカプセルのことよ」
+                        </div>
+
+                        <div class="char-profile__images">
+                            <img src="../images/characters/tanunee/tanuki-yukkuri-normal-mouth-closed.png" alt="ノーマル">
+                            <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="スマイル">
+                            <img src="../images/characters/tanunee/tanuki-yukkuri-blink-mouth-closed.png" alt="ぱちん">
+                            <img src="../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                        </div>
+                    </div>
+                </article>
+
+                <div class="kimito-card">
+                    <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="kimito-card__logo-link">
+                        <img src="../images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="kimito-card__logo">
+                    </a>
+                    <p class="kimito-card__text">
+                        ゆっくり3人組「<strong>りんく・こん太・たぬ姉</strong>」は、<strong>Kimito-Link</strong> で活躍するオリジナルキャラクターです。<br>
+                        「クリエイターとファンをつなぐ確かな絆」をコンセプトに、創る人と支える人が自然につながれる空間を目指しています。
+                    </p>
+                    <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="btn btn--secondary kimito-card__cta">
+                        Kimito-Link を見にいく →
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div data-footer></div>
+
+    <script src="../js/common.js"></script>
+</body>
+</html>
