@@ -51,6 +51,7 @@
     <script src="js/doctormemo.js"></script>
     <script src="js/reminder.js"></script>
     <script src="js/photolog.js"></script>
+    <script src="js/fatigue.js"></script>
     <script>
         // Today画面を構築
         (function() {
@@ -146,6 +147,9 @@
 
                     <!-- 肌セルフチェック -->
                     <div id="today-skin"></div>
+
+                    <!-- 疲労回復度チェック（院長リクエスト） -->
+                    <div id="today-fatigue"></div>
 
                     <!-- 院長への質問メモ -->
                     <div id="today-memo"></div>
@@ -355,6 +359,9 @@
 
             // 肌セルフチェック
             renderSkinCheck('today-skin');
+
+            // 疲労回復度チェック（院長リクエスト）
+            renderFatigueCheck('today-fatigue');
 
             // 院長への質問メモ
             renderDoctorMemo('today-memo');
