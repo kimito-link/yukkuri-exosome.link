@@ -43,7 +43,7 @@
 
             function getCareData() {
                 const today = getTodayKey();
-                return new Set(Storage.get(`selfcare_${today}`, []));
+                return new Set(YEStorage.get(`selfcare_${today}`, []));
             }
 
             function render() {

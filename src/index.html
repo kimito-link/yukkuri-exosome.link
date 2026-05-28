@@ -56,20 +56,20 @@
             const moodChar = CHARACTERS[mood.charKey];
             const moodImg = getImagePath(mood.charKey, mood.expression, 0);
 
-            const totalDays = Storage.get('app_total_days', 0);
-            const lastDate = Storage.get('app_last_active', null);
+            const totalDays = YEStorage.get('app_total_days', 0);
+            const lastDate = YEStorage.get('app_last_active', null);
             const today = getTodayKey();
             if (lastDate === today) {
                 // total daysカウント
-                const counted = Storage.get('app_total_days_counted', null);
+                const counted = YEStorage.get('app_total_days_counted', null);
                 if (counted !== today) {
-                    Storage.set('app_total_days', totalDays + 1);
-                    Storage.set('app_total_days_counted', today);
+                    YEStorage.set('app_total_days', totalDays + 1);
+                    YEStorage.set('app_total_days_counted', today);
                 }
             }
 
-            const adviceCount = Storage.get('advice_count', 0);
-            const quizBest = Storage.get('quiz_best', 0);
+            const adviceCount = YEStorage.get('advice_count', 0);
+            const quizBest = YEStorage.get('quiz_best', 0);
 
             const allQuestsDone = quests.care.done && quests.quiz.done && quests.advice.done;
 
@@ -262,7 +262,7 @@
             injectAppShell('today', 0);
 
             // 体内マップを描画（セルフケア + Boost両方）
-            const todayCareData = Storage.get(`selfcare_${today}`, []);
+            const todayCareData = YEStorage.get(`selfcare_${today}`, []);
             const boostData = getBoostActiveData();
             const combined = new Set([...todayCareData, ...boostData.activeRegions]);
             renderBodyMap('today-bodymap', combined, 0);
