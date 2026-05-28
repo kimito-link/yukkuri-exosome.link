@@ -28,13 +28,13 @@ function getOnboardingSlides(depth = 0) {
                 <h2 class="onboarding__title">ようこそ、<br><em>ゆっくりエクソソーム</em>へ</h2>
                 <p class="onboarding__desc">
                     <strong>りんく・こん太・たぬ姉</strong>と一緒に、<br>
-                    あなたの体内エクソソームを<br>
-                    やさしく見える化していくアプリです。
+                    エクソソームと向き合う毎日を、<br>
+                    やさしく記録していくアプリです。
                 </p>
             `
         },
         // ───────────────────────────────────────
-        // Slide 2: Body Signal Map（コア体験）★NEW
+        // Slide 2: Body Signal Map（コア体験）
         // ───────────────────────────────────────
         {
             id: 'bodymap',
@@ -55,30 +55,29 @@ function getOnboardingSlides(depth = 0) {
             `
         },
         // ───────────────────────────────────────
-        // Slide 3: Daily Care
+        // Slide 3: Daily Check（肌・疲労）★NEW
         // ───────────────────────────────────────
         {
-            id: 'care',
-            chip: 'Daily Care',
+            id: 'daily-check',
+            chip: 'Daily Check',
             visual: 'hero',
-            char: 'konta',
-            haloClass: 'onboarding__halo--gold',
+            char: 'rink',
+            haloClass: '',
             content: `
-                <h2 class="onboarding__title">毎日の<em>シグナル送信</em>を、<br>ていねいに</h2>
+                <h2 class="onboarding__title">毎日の<em>肌</em>と<em>疲労</em>を、<br>10段階で記録</h2>
                 <p class="onboarding__desc">
-                    睡眠・スキンケア・水分・運動など、<br>
-                    今日できたことをタップするだけ。<br>
-                    こん太と一緒に、習慣を育てましょう。
+                    点滴やサプリの効果を「体感」で見える化。<br>
+                    業界標準のスケールで、ブレずに記録できます。
                 </p>
                 <ul class="onboarding__features">
-                    <li>6項目から、今日できたものをチェック</li>
-                    <li>達成すると体内マップで部位が光ります</li>
-                    <li>連続日数で「シグナル送信日数」が伸びる</li>
+                    <li>肌セルフチェック（ハリ・透明感・うるおいなど5項目）</li>
+                    <li>疲労回復度（睡眠・エネルギー・集中力など5項目）</li>
+                    <li>1〜10の各スコアに具体例ガイド付きで迷わない</li>
                 </ul>
             `
         },
         // ───────────────────────────────────────
-        // Slide 4: Boost（点滴・サプリ）★NEW
+        // Slide 4: Boost（点滴・サプリ）
         // ───────────────────────────────────────
         {
             id: 'boost',
@@ -96,12 +95,35 @@ function getOnboardingSlides(depth = 0) {
                 <ul class="onboarding__features">
                     <li>エクソソーム点滴・上清液・NMN点滴など16種</li>
                     <li>NMN系には、特別なミトコンドリア演出</li>
-                    <li>その日の体内エクソ量が、まるごと見える</li>
+                    <li>取った日と肌・疲労の変化が並べて見える</li>
                 </ul>
             `
         },
         // ───────────────────────────────────────
-        // Slide 5: Start
+        // Slide 5: Memo + Photo Log（院長メモ・写真）★NEW
+        // ───────────────────────────────────────
+        {
+            id: 'memo-photo',
+            chip: 'Memo & Photo',
+            visual: 'hero',
+            char: 'konta',
+            haloClass: 'onboarding__halo--gold',
+            content: `
+                <h2 class="onboarding__title">通院前後の<em>記録</em>も、<br>このアプリで</h2>
+                <p class="onboarding__desc">
+                    次回先生に聞きたいことを忘れない。<br>
+                    自分の変化を写真で残せる。<br>
+                    全部、端末内だけで完結します。
+                </p>
+                <ul class="onboarding__features">
+                    <li>📅 次回の点滴・サプリ予定をカウントダウン</li>
+                    <li>💬 院長への質問メモ（画面ごとお見せできます）</li>
+                    <li>📸 ビフォーアフター写真記録（端末内のみ）</li>
+                </ul>
+            `
+        },
+        // ───────────────────────────────────────
+        // Slide 6: Start
         // ───────────────────────────────────────
         {
             id: 'start',
@@ -111,7 +133,7 @@ function getOnboardingSlides(depth = 0) {
                 <h2 class="onboarding__title">さあ、<br><em>はじめましょう</em></h2>
                 <p class="onboarding__desc">
                     最初の一歩は、<br>
-                    今日のセルフケアを1つだけ。<br>
+                    今日の体内マップを開くだけ。<br>
                     3人組が、いつでも見守っています。
                 </p>
                 <ul class="onboarding__features">
