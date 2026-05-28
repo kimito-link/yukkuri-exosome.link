@@ -1,11 +1,11 @@
 /* ============================================
-   Body Map - エクソソーム体内マップ
+   Body Map - エクソソーム体内マップ（キャラ顔バージョン）
    ============================================ */
 
 .bodymap-card {
     background: #fff;
     border-radius: 22px;
-    padding: 20px 16px 16px;
+    padding: 20px 16px 18px;
     box-shadow: var(--app-card-shadow);
     margin-bottom: 20px;
     position: relative;
@@ -17,14 +17,14 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse at top, rgba(201, 137, 154, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at bottom, rgba(142, 180, 199, 0.05) 0%, transparent 60%);
+        radial-gradient(ellipse at top, rgba(201, 137, 154, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba(142, 180, 199, 0.06) 0%, transparent 60%);
     pointer-events: none;
 }
 
 .bodymap-card__header {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     position: relative;
     z-index: 1;
 }
@@ -63,122 +63,221 @@
     margin-left: 4px;
 }
 
-/* SVG 全体 */
-.bodymap {
+/* ============================================
+   キャラ顔型マップ
+   ============================================ */
+
+.charmap {
+    position: relative;
     width: 100%;
     max-width: 320px;
+    aspect-ratio: 1 / 1;
     margin: 0 auto;
-    display: block;
-    position: relative;
     z-index: 1;
 }
 
-/* 体のシルエット */
-.bodymap__silhouette {
-    fill: var(--color-bg-section);
-    opacity: 0.55;
-    transition: opacity 0.4s ease;
+/* 中央のキャラ顔 */
+.charmap__face {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    z-index: 3;
+    animation: charmapFloat 5s ease-in-out infinite;
 }
 
-.bodymap__silhouette-outline {
-    fill: none;
-    stroke: var(--color-border);
-    stroke-width: 1.2;
-    opacity: 0.7;
+@keyframes charmapFloat {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-6px); }
 }
 
-/* 各部位の状態 */
-.bodymap__region {
-    transition: all 0.6s ease;
+.charmap__face img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(201, 137, 154, 0.2));
+}
+
+/* キャラ後ろの光輪 */
+.charmap__halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(245, 230, 234, 0.6) 0%,
+        rgba(245, 230, 234, 0.15) 60%,
+        transparent 80%);
+    z-index: 1;
+    animation: charmapHalo 4s ease-in-out infinite;
+}
+
+@keyframes charmapHalo {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50%      { transform: translate(-50%, -50%) scale(1.08); opacity: 0.9; }
+}
+
+/* キラキラリング（外周） */
+.charmap__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 92%;
+    height: 92%;
+    border-radius: 50%;
+    border: 1px dashed rgba(201, 137, 154, 0.3);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    animation: charmapSpin 40s linear infinite;
+}
+
+@keyframes charmapSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ============================================
+   部位ポイント（キャラの周りにふわっと配置）
+   ============================================ */
+
+.charmap__point {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transform: translate(-50%, -50%);
     cursor: pointer;
+    transition: transform 0.3s;
 }
 
-.bodymap__region-circle {
-    transition: r 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
-    opacity: 0.35;
+.charmap__point:hover {
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* アクティブ（達成済み）状態 */
-.bodymap__region--active .bodymap__region-circle {
-    opacity: 1;
-    filter: drop-shadow(0 0 8px currentColor);
+.charmap__point-bubble {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(46, 38, 34, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    position: relative;
 }
 
-.bodymap__region--active .bodymap__region-pulse {
-    animation: bodymapPulse 2.5s ease-in-out infinite;
-}
-
-/* 部位ごとの色 */
-.bodymap__region--hair { color: #c9a96e; }   /* ゴールド = 髪 */
-.bodymap__region--face { color: #c9899a; }   /* ローズ = 顔(メイン) */
-.bodymap__region--eyes { color: #b39a8b; }   /* モカ = 目 */
-.bodymap__region--circulation { color: #c9899a; }  /* ローズ = 循環 */
-.bodymap__region--body { color: #a78a6b; }   /* ブラウン = 体幹 */
-.bodymap__region--limbs { color: #8eb4c7; }  /* ブルー = 手脚 */
-
-/* 各部位の光るパルス */
-.bodymap__region-pulse {
-    fill: currentColor;
-    opacity: 0;
-}
-
-@keyframes bodymapPulse {
-    0% {
-        opacity: 0.5;
-        r: 6;
-    }
-    50% {
-        opacity: 0;
-        r: 18;
-    }
-    100% {
-        opacity: 0;
-        r: 22;
-    }
-}
-
-/* 部位ラベル */
-.bodymap__label {
+.charmap__point-label {
     font-family: var(--font-serif);
     font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    fill: var(--color-text-muted);
-    text-anchor: middle;
-    transition: fill 0.4s ease, font-weight 0.4s ease;
-}
-
-.bodymap__region--active .bodymap__label {
-    fill: currentColor;
     font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(4px);
+    transition: color 0.3s;
+    white-space: nowrap;
 }
 
-/* エクソソーム粒子（流れる演出） */
-.bodymap__particle {
-    fill: currentColor;
+/* 配置（円周状） */
+.charmap__point--hair        { top: 8%;  left: 50%; }
+.charmap__point--face        { top: 22%; left: 18%; }
+.charmap__point--eyes        { top: 22%; left: 82%; }
+.charmap__point--circulation { top: 70%; left: 12%; }
+.charmap__point--body        { top: 92%; left: 50%; }
+.charmap__point--limbs       { top: 70%; left: 88%; }
+
+/* アクティブ状態 */
+.charmap__point.is-active .charmap__point-bubble {
+    box-shadow: 0 4px 14px currentColor, 0 0 20px currentColor;
+    animation: pointPulse 2.2s ease-in-out infinite;
+    border-color: currentColor;
+    background: #fff;
+}
+
+.charmap__point.is-active .charmap__point-label {
+    color: currentColor;
+    font-weight: 700;
+}
+
+@keyframes pointPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.12); }
+}
+
+/* キラキラ粒子（アクティブ時に上方向へ） */
+.charmap__point-spark {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    font-size: 0.9rem;
     opacity: 0;
+    pointer-events: none;
 }
 
-.bodymap__region--active .bodymap__particle {
-    animation: bodymapParticle 3s ease-in-out infinite;
+.charmap__point.is-active .charmap__point-spark {
+    animation: pointSpark 2.4s ease-in-out infinite;
 }
 
-.bodymap__particle:nth-of-type(2) {
-    animation-delay: 1s !important;
+@keyframes pointSpark {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+    30%  { opacity: 1; transform: translate(-50%, -8px) scale(1); }
+    70%  { opacity: 0.5; transform: translate(-50%, -18px) scale(0.9); }
+    100% { opacity: 0; transform: translate(-50%, -28px) scale(0.5); }
 }
 
-.bodymap__particle:nth-of-type(3) {
-    animation-delay: 2s !important;
+/* 部位別カラー */
+.charmap__point--hair        { color: #c9a96e; }
+.charmap__point--face        { color: #c9899a; }
+.charmap__point--eyes        { color: #b39a8b; }
+.charmap__point--circulation { color: #c9899a; }
+.charmap__point--body        { color: #a78a6b; }
+.charmap__point--limbs       { color: #8eb4c7; }
+
+/* 接続線（キャラ顔から各ポイントへ） */
+.charmap__lines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
-@keyframes bodymapParticle {
-    0%   { opacity: 0; transform: translateY(0) scale(0.5); }
-    25%  { opacity: 0.8; transform: translateY(-6px) scale(1); }
-    50%  { opacity: 0.6; transform: translateY(-14px) scale(1.1); }
-    75%  { opacity: 0.3; transform: translateY(-22px) scale(0.8); }
-    100% { opacity: 0;   transform: translateY(-30px) scale(0.4); }
+.charmap__line {
+    fill: none;
+    stroke: rgba(201, 137, 154, 0.15);
+    stroke-width: 1.2;
+    stroke-dasharray: 3 4;
+    transition: stroke 0.4s, opacity 0.4s;
+    opacity: 0.5;
 }
 
-/* 凡例 */
+.charmap__line.is-active {
+    stroke: currentColor;
+    opacity: 0.6;
+    animation: lineFlow 2s linear infinite;
+}
+
+@keyframes lineFlow {
+    from { stroke-dashoffset: 14; }
+    to   { stroke-dashoffset: 0; }
+}
+
+/* ============================================
+   凡例
+   ============================================ */
+
 .bodymap-legend {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -227,9 +326,34 @@
     flex: 1;
 }
 
-.bodymap-legend__item--hair { color: #c9a96e; }
-.bodymap-legend__item--face { color: #c9899a; }
-.bodymap-legend__item--eyes { color: #b39a8b; }
+.bodymap-legend__item--hair        { color: #c9a96e; }
+.bodymap-legend__item--face        { color: #c9899a; }
+.bodymap-legend__item--eyes        { color: #b39a8b; }
 .bodymap-legend__item--circulation { color: #c9899a; }
-.bodymap-legend__item--body { color: #a78a6b; }
-.bodymap-legend__item--limbs { color: #8eb4c7; }
+.bodymap-legend__item--body        { color: #a78a6b; }
+.bodymap-legend__item--limbs       { color: #8eb4c7; }
+
+/* ============================================
+   ミトコンドリア星（NMN用ボーナス演出）
+   ============================================ */
+
+.charmap__mito {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.charmap__mito-star {
+    position: absolute;
+    color: #c9a96e;
+    font-size: 0.7rem;
+    opacity: 0;
+    animation: mitoTwinkle 4s ease-in-out infinite;
+    text-shadow: 0 0 6px #c9a96e;
+}
+
+@keyframes mitoTwinkle {
+    0%, 100% { opacity: 0; transform: scale(0.6); }
+    50%      { opacity: 0.95; transform: scale(1.1); }
+}
