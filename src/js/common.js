@@ -97,7 +97,7 @@ function formatDateJp(date = new Date()) {
 /**
  * LocalStorage ヘルパー
  */
-const Storage = {
+const YEStorage = {
     get(key, defaultValue = null) {
         try {
             const raw = localStorage.getItem(`ye_${key}`);

@@ -5,12 +5,12 @@
 (function() {
     const lv = App.getLevel();
     const streak = App.getStreak();
-    const totalDays = Storage.get('app_total_days', 0);
+    const totalDays = YEStorage.get('app_total_days', 0);
     const ep = lv.ep;
-    const adviceCount = Storage.get('advice_count', 0);
-    const quizBest = Storage.get('quiz_best', 0);
-    const notifEnabled = Storage.get('notif_enabled', false);
-    const notifTime = Storage.get('notif_time', '09:00');
+    const adviceCount = YEStorage.get('advice_count', 0);
+    const quizBest = YEStorage.get('quiz_best', 0);
+    const notifEnabled = YEStorage.get('notif_enabled', false);
+    const notifTime = YEStorage.get('notif_time', '09:00');
 
     const titleByLevel = (() => {
         if (lv.lv >= 26) return '銀河マスター';
@@ -175,13 +175,13 @@
 
     // 通知トグル
     document.getElementById('notif-toggle').addEventListener('click', async () => {
-        const current = Storage.get('notif_enabled', false);
+        const current = YEStorage.get('notif_enabled', false);
         if (!current) {
             // ON にする → 権限要求
             if ('Notification' in window) {
                 const result = await Notification.requestPermission();
                 if (result === 'granted') {
-                    Storage.set('notif_enabled', true);
+                    YEStorage.set('notif_enabled', true);
                     App.showToast('通知をオンにしました', '🔔');
                     scheduleNotification();
                 } else {
@@ -193,7 +193,7 @@
                 return;
             }
         } else {
-            Storage.set('notif_enabled', false);
+            YEStorage.set('notif_enabled', false);
             App.showToast('通知をオフにしました', '🔕');
             clearScheduledNotification();
         }
@@ -205,7 +205,7 @@
     const timeInput = document.getElementById('notif-time-input');
     if (timeInput) {
         timeInput.addEventListener('change', (e) => {
-            Storage.set('notif_time', e.target.value);
+            YEStorage.set('notif_time', e.target.value);
             App.showToast(`通知時刻を ${e.target.value} に変更`, '⏰');
             scheduleNotification();
         });
@@ -235,7 +235,7 @@
 /** ブラウザ通知のスケジュール */
 function scheduleNotification() {
     if (!('Notification' in window) || Notification.permission !== 'granted') return;
-    const time = Storage.get('notif_time', '09:00');
+    const time = YEStorage.get('notif_time', '09:00');
     const [hh, mm] = time.split(':').map(Number);
     const now = new Date();
     const target = new Date();
@@ -263,6 +263,6 @@ function clearScheduledNotification() {
 }
 
 // ページ読み込み時、通知がONなら次回スケジュール
-if (Storage.get('notif_enabled', false)) {
+if (YEStorage.get('notif_enabled', false)) {
     scheduleNotification();
 }

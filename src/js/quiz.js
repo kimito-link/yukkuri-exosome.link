@@ -231,18 +231,18 @@ function handleAnswer(e) {
         // デイリークイズカウンタ更新
         if (typeof App !== 'undefined') {
             const today = getTodayKey();
-            const daily = Storage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
+            const daily = YEStorage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
             daily.answered++;
             daily.correct++;
-            Storage.set(`daily_quiz_${today}`, daily);
+            YEStorage.set(`daily_quiz_${today}`, daily);
         }
     } else {
         btn.classList.add('quiz__option--wrong');
         if (typeof App !== 'undefined') {
             const today = getTodayKey();
-            const daily = Storage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
+            const daily = YEStorage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
             daily.answered++;
-            Storage.set(`daily_quiz_${today}`, daily);
+            YEStorage.set(`daily_quiz_${today}`, daily);
         }
     }
 
@@ -280,9 +280,9 @@ function renderResult() {
     const charImg = getImagePath(result.char, result.expression, 1);
 
     // ベストスコア保存
-    const best = Storage.get('quiz_best', 0);
+    const best = YEStorage.get('quiz_best', 0);
     if (score > best) {
-        Storage.set('quiz_best', score);
+        YEStorage.set('quiz_best', score);
     }
     const newBest = score > best;
 
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('quiz-container')) {
         // スタート画面
         const container = document.getElementById('quiz-container');
-        const bestScore = Storage.get('quiz_best', 0);
+        const bestScore = YEStorage.get('quiz_best', 0);
         container.innerHTML = `
             <div class="quiz-result">
                 <div class="quiz-result__chars">

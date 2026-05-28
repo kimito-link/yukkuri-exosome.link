@@ -172,7 +172,7 @@ function getBoostTodayKey() {
 
 /** 今日の記録を取得 */
 function getTodayBoosts() {
-    return Storage.get(getBoostTodayKey(), []);
+    return YEStorage.get(getBoostTodayKey(), []);
 }
 
 /** トグル（タップで記録/解除） */
@@ -184,7 +184,7 @@ function toggleBoost(itemId) {
     } else {
         today.push(itemId);
     }
-    Storage.set(getBoostTodayKey(), today);
+    YEStorage.set(getBoostTodayKey(), today);
     return today.includes(itemId);
 }
 

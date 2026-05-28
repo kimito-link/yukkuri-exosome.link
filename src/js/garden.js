@@ -3,18 +3,18 @@
  */
 
 const BADGES = [
-    { id: 'first_login',  emoji: '🎉', name: 'はじめの一歩', desc: '初めてのログイン', check: () => Storage.get('app_ep', 0) > 0 },
-    { id: 'streak_3',     emoji: '🔥', name: '3日達成',       desc: '3日連続',          check: () => Storage.get('app_streak', 0) >= 3 || Storage.get('badge_streak_3', false) },
-    { id: 'streak_7',     emoji: '🌟', name: '一週間',         desc: '7日連続',          check: () => Storage.get('app_streak', 0) >= 7 || Storage.get('badge_streak_7', false) },
-    { id: 'streak_30',    emoji: '💎', name: 'ひと月',         desc: '30日連続',         check: () => Storage.get('app_streak', 0) >= 30 || Storage.get('badge_streak_30', false) },
+    { id: 'first_login',  emoji: '🎉', name: 'はじめの一歩', desc: '初めてのログイン', check: () => YEStorage.get('app_ep', 0) > 0 },
+    { id: 'streak_3',     emoji: '🔥', name: '3日達成',       desc: '3日連続',          check: () => YEStorage.get('app_streak', 0) >= 3 || YEStorage.get('badge_streak_3', false) },
+    { id: 'streak_7',     emoji: '🌟', name: '一週間',         desc: '7日連続',          check: () => YEStorage.get('app_streak', 0) >= 7 || YEStorage.get('badge_streak_7', false) },
+    { id: 'streak_30',    emoji: '💎', name: 'ひと月',         desc: '30日連続',         check: () => YEStorage.get('app_streak', 0) >= 30 || YEStorage.get('badge_streak_30', false) },
     { id: 'level_5',      emoji: '⭐', name: 'Lv.5到達',      desc: 'レベル5',          check: () => App.getLevel().lv >= 5 },
     { id: 'level_10',     emoji: '✨', name: 'Lv.10到達',     desc: 'レベル10',         check: () => App.getLevel().lv >= 10 },
     { id: 'level_20',     emoji: '🌸', name: 'Lv.20到達',     desc: 'レベル20',         check: () => App.getLevel().lv >= 20 },
     { id: 'level_30',     emoji: '🌌', name: 'マスター',       desc: 'レベル30',         check: () => App.getLevel().lv >= 30 },
-    { id: 'quiz_perfect', emoji: '🧠', name: 'クイズ満点',     desc: '10問全問正解',     check: () => Storage.get('quiz_best', 0) >= 10 },
-    { id: 'care_50',      emoji: '🌿', name: 'ケア50日',       desc: '累計50日',         check: () => Storage.get('app_total_days', 0) >= 50 },
-    { id: 'care_100',     emoji: '🏆', name: 'ケア100日',      desc: '累計100日',        check: () => Storage.get('app_total_days', 0) >= 100 },
-    { id: 'advice_10',    emoji: '💬', name: 'アドバイス10回', desc: 'アドバイス10回',   check: () => Storage.get('advice_count', 0) >= 10 }
+    { id: 'quiz_perfect', emoji: '🧠', name: 'クイズ満点',     desc: '10問全問正解',     check: () => YEStorage.get('quiz_best', 0) >= 10 },
+    { id: 'care_50',      emoji: '🌿', name: 'ケア50日',       desc: '累計50日',         check: () => YEStorage.get('app_total_days', 0) >= 50 },
+    { id: 'care_100',     emoji: '🏆', name: 'ケア100日',      desc: '累計100日',        check: () => YEStorage.get('app_total_days', 0) >= 100 },
+    { id: 'advice_10',    emoji: '💬', name: 'アドバイス10回', desc: 'アドバイス10回',   check: () => YEStorage.get('advice_count', 0) >= 10 }
 ];
 
 const STAGE_NAMES = {
@@ -43,9 +43,9 @@ const STAGE_EMOJI = {
         const earned = b.check();
         if (earned) {
             // 連続日数バッジは取れたら永続保存（リセットされても残す）
-            if (b.id === 'streak_3') Storage.set('badge_streak_3', true);
-            if (b.id === 'streak_7') Storage.set('badge_streak_7', true);
-            if (b.id === 'streak_30') Storage.set('badge_streak_30', true);
+            if (b.id === 'streak_3') YEStorage.set('badge_streak_3', true);
+            if (b.id === 'streak_7') YEStorage.set('badge_streak_7', true);
+            if (b.id === 'streak_30') YEStorage.set('badge_streak_30', true);
             earnedBadges.push(b.id);
         }
     });

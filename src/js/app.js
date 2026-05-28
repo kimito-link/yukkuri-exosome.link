@@ -51,7 +51,7 @@ const EP_REWARDS = {
 const App = {
     /** 現在のEPを取得 */
     getEP() {
-        return Storage.get('app_ep', 0);
+        return YEStorage.get('app_ep', 0);
     },
 
     /** EPを追加（レベルアップ検知あり） */
@@ -59,16 +59,16 @@ const App = {
         if (amount <= 0) return null;
         const before = this.getEP();
         const after = before + amount;
-        Storage.set('app_ep', after);
+        YEStorage.set('app_ep', after);
 
         const beforeLv = this.calcLevel(before);
         const afterLv = this.calcLevel(after);
 
         // ログ保存
-        const log = Storage.get('app_ep_log', []);
+        const log = YEStorage.get('app_ep_log', []);
         log.push({ date: getTodayKey(), source, amount, ts: Date.now() });
         if (log.length > 200) log.splice(0, log.length - 200);
-        Storage.set('app_ep_log', log);
+        YEStorage.set('app_ep_log', log);
 
         const leveledUp = afterLv.lv > beforeLv.lv;
         return { before, after, beforeLv, afterLv, leveledUp, gained: amount };
@@ -106,7 +106,7 @@ const App = {
 
     /** 連続日数 */
     getStreak() {
-        const lastDate = Storage.get('app_last_active', null);
+        const lastDate = YEStorage.get('app_last_active', null);
         const today = getTodayKey();
         if (!lastDate) return 0;
 
@@ -116,13 +116,13 @@ const App = {
 
         // 2日以上空いたらリセット表示
         if (diffDays > 1) return 0;
-        return Storage.get('app_streak', 0);
+        return YEStorage.get('app_streak', 0);
     },
 
     /** チェックイン処理（1日1回） */
     checkIn() {
         const today = getTodayKey();
-        const last = Storage.get('app_last_active', null);
+        const last = YEStorage.get('app_last_active', null);
         if (last === today) return { newDay: false };
 
         const yesterday = new Date();
@@ -132,13 +132,13 @@ const App = {
         let newStreak;
         if (last === yKey) {
             // 昨日来てた = 連続
-            newStreak = Storage.get('app_streak', 0) + 1;
+            newStreak = YEStorage.get('app_streak', 0) + 1;
         } else {
             // 久しぶり = リセット
             newStreak = 1;
         }
-        Storage.set('app_streak', newStreak);
-        Storage.set('app_last_active', today);
+        YEStorage.set('app_streak', newStreak);
+        YEStorage.set('app_last_active', today);
 
         // ログインボーナス
         const result = this.addEP(EP_REWARDS.daily_login, 'daily_login');
@@ -154,9 +154,9 @@ const App = {
     /** 今日のクエスト達成状況 */
     getTodayQuests() {
         const today = getTodayKey();
-        const careData = Storage.get(`selfcare_${today}`, []);
-        const quizData = Storage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
-        const adviceData = Storage.get(`advice_${today}`, false);
+        const careData = YEStorage.get(`selfcare_${today}`, []);
+        const quizData = YEStorage.get(`daily_quiz_${today}`, { answered: 0, correct: 0 });
+        const adviceData = YEStorage.get(`advice_${today}`, false);
 
         return {
             care: {
@@ -180,15 +180,15 @@ const App = {
     markAdviceDone() {
         const today = getTodayKey();
         const key = `advice_${today}`;
-        if (Storage.get(key, false)) return false;
-        Storage.set(key, true);
+        if (YEStorage.get(key, false)) return false;
+        YEStorage.set(key, true);
         return true;
     },
 
     /** 今日のキャラ気分（連続日数で変化） */
     getMoodCharacter() {
         const streak = this.getStreak();
-        const lastDate = Storage.get('app_last_active', null);
+        const lastDate = YEStorage.get('app_last_active', null);
         const today = getTodayKey();
         const isToday = lastDate === today;
 

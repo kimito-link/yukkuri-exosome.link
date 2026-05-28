@@ -93,8 +93,8 @@ function shareAdvice(advice) {
 }
 
 function incrementCounter() {
-    const count = Storage.get('advice_count', 0) + 1;
-    Storage.set('advice_count', count);
+    const count = YEStorage.get('advice_count', 0) + 1;
+    YEStorage.set('advice_count', count);
     const el = document.getElementById('advice-counter');
     if (el) {
         el.textContent = `これまでに${count}回、3人組からアドバイスを受け取りました`;
@@ -104,8 +104,8 @@ function incrementCounter() {
     if (typeof App !== 'undefined') {
         const today = getTodayKey();
         const todayKey = `advice_${today}`;
-        if (!Storage.get(todayKey, false)) {
-            Storage.set(todayKey, true);
+        if (!YEStorage.get(todayKey, false)) {
+            YEStorage.set(todayKey, true);
             const r = App.addEP(10, 'daily_advice');
             App.notifyEP(10, '今日のひとこと');
             if (r && r.leveledUp) setTimeout(() => App.notifyLevelUp(r), 800);
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // 初期カウンター表示
-        const count = Storage.get('advice_count', 0);
+        const count = YEStorage.get('advice_count', 0);
         const el = document.getElementById('advice-counter');
         if (el && count > 0) {
             el.textContent = `これまでに${count}回、3人組からアドバイスを受け取りました`;

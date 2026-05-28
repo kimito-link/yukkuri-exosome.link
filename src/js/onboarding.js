@@ -127,17 +127,17 @@ function getOnboardingSlides(depth = 0) {
 
 /** 完了フラグ確認 */
 function isOnboardingDone() {
-    return Storage.get(ONB_KEY, false) === true;
+    return YEStorage.get(ONB_KEY, false) === true;
 }
 
 /** 完了フラグ保存 */
 function markOnboardingDone() {
-    Storage.set(ONB_KEY, true);
+    YEStorage.set(ONB_KEY, true);
 }
 
 /** 完了フラグリセット（Me画面から呼ぶ用） */
 function resetOnboarding() {
-    Storage.remove(ONB_KEY);
+    YEStorage.remove(ONB_KEY);
 }
 
 /**

@@ -85,12 +85,12 @@ function getTodayCheckKey() {
 }
 
 function loadTodayData() {
-    return Storage.get(getTodayCheckKey(), []);
+    return YEStorage.get(getTodayCheckKey(), []);
 }
 
 function saveTodayData() {
-    const prev = new Set(Storage.get(getTodayCheckKey(), []));
-    Storage.set(getTodayCheckKey(), Array.from(checkedItems));
+    const prev = new Set(YEStorage.get(getTodayCheckKey(), []));
+    YEStorage.set(getTodayCheckKey(), Array.from(checkedItems));
 
     // 新しくチェックされた項目数を計算してEP付与
     if (typeof App !== 'undefined') {
@@ -122,29 +122,29 @@ function saveTodayData() {
 
 function updateStreak() {
     const score = (checkedItems.size / SELFCARE_ITEMS.length) * 100;
-    const lastCheckedDate = Storage.get('selfcare_last_date', null);
+    const lastCheckedDate = YEStorage.get('selfcare_last_date', null);
     const today = getTodayKey();
 
     if (score >= 50) {
         // 50%以上で達成日扱い
-        const streak = Storage.get('selfcare_streak', 0);
+        const streak = YEStorage.get('selfcare_streak', 0);
         if (lastCheckedDate !== today) {
             // 連続判定: 昨日から続いてるかチェック
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yKey = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
             if (lastCheckedDate === yKey) {
-                Storage.set('selfcare_streak', streak + 1);
+                YEStorage.set('selfcare_streak', streak + 1);
             } else if (lastCheckedDate !== today) {
-                Storage.set('selfcare_streak', 1);
+                YEStorage.set('selfcare_streak', 1);
             }
-            Storage.set('selfcare_last_date', today);
+            YEStorage.set('selfcare_last_date', today);
         }
     }
 }
 
 function getStreak() {
-    const lastDate = Storage.get('selfcare_last_date', null);
+    const lastDate = YEStorage.get('selfcare_last_date', null);
     const today = getTodayKey();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -152,7 +152,7 @@ function getStreak() {
     if (lastDate !== today && lastDate !== yKey) {
         return 0;
     }
-    return Storage.get('selfcare_streak', 0);
+    return YEStorage.get('selfcare_streak', 0);
 }
 
 function renderItems() {
@@ -236,7 +236,7 @@ function updateHistory() {
         const d = new Date();
         d.setDate(today.getDate() - i);
         const key = `selfcare_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        const data = Storage.get(key, []);
+        const data = YEStorage.get(key, []);
         const score = (data.length / SELFCARE_ITEMS.length) * 100;
         days.push({
             date: d,
