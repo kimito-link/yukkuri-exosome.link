@@ -11,6 +11,7 @@ const ONB_KEY = 'onboarding_done_v1';
 
 /** スライド定義（depth指定でパス調整が必要なため関数で返す） */
 function getOnboardingSlides(depth = 0) {
+    const base = getBasePath(depth);
     return [
         // ───────────────────────────────────────
         // Slide 1: Welcome
@@ -21,83 +22,81 @@ function getOnboardingSlides(depth = 0) {
             visual: 'trio',
             content: `
                 <div class="onboarding__brand">
-                    <img class="onboarding__brand-logo" src="${getBasePath(depth)}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" onerror="this.style.display='none'">
+                    <img class="onboarding__brand-logo" src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" onerror="this.style.display='none'">
                     <div class="onboarding__brand-sub">Presents</div>
                 </div>
                 <h2 class="onboarding__title">ようこそ、<br><em>ゆっくりエクソソーム</em>へ</h2>
                 <p class="onboarding__desc">
                     <strong>りんく・こん太・たぬ姉</strong>と一緒に、<br>
-                    エクソソームを楽しく学びながら<br>
-                    毎日のセルフケアを積み上げていく場所です。
+                    あなたの体内エクソソームを<br>
+                    やさしく見える化していくアプリです。
                 </p>
             `
         },
         // ───────────────────────────────────────
-        // Slide 2: Today（毎日のリチュアル）
+        // Slide 2: Body Signal Map（コア体験）★NEW
         // ───────────────────────────────────────
         {
-            id: 'today',
-            chip: 'Daily Ritual',
+            id: 'bodymap',
+            chip: 'Body Signal Map',
+            visual: 'bodymap-mini',
+            content: `
+                <h2 class="onboarding__title">あなたの体内エクソソームを、<br><em>見える化</em></h2>
+                <p class="onboarding__desc">
+                    髪・肌・目元・循環・腸・筋肉。<br>
+                    6つの部位それぞれに、<br>
+                    エクソソームが流れています。
+                </p>
+                <ul class="onboarding__features">
+                    <li>毎日のケアで、対応する部位が光ります</li>
+                    <li>今日の自分の状態が、ひと目でわかる</li>
+                    <li>続けるほど、活性度がアップ</li>
+                </ul>
+            `
+        },
+        // ───────────────────────────────────────
+        // Slide 3: Daily Care
+        // ───────────────────────────────────────
+        {
+            id: 'care',
+            chip: 'Daily Care',
             visual: 'hero',
             char: 'konta',
             haloClass: 'onboarding__halo--gold',
             content: `
-                <h2 class="onboarding__title">毎日の<em>セルフケア</em>を、<br>ていねいに</h2>
+                <h2 class="onboarding__title">毎日の<em>シグナル送信</em>を、<br>ていねいに</h2>
                 <p class="onboarding__desc">
-                    睡眠・水分・運動など、<br>
-                    今日の小さな積み重ねをチェック。<br>
+                    睡眠・スキンケア・水分・運動など、<br>
+                    今日できたことをタップするだけ。<br>
                     こん太と一緒に、習慣を育てましょう。
                 </p>
                 <ul class="onboarding__features">
-                    <li>6つの項目から、今日できたことをタップ</li>
-                    <li>達成度がゲージで見える化される</li>
-                    <li>連続日数（ストリーク）が記録されます</li>
+                    <li>6項目から、今日できたものをチェック</li>
+                    <li>達成すると体内マップで部位が光ります</li>
+                    <li>連続日数で「シグナル送信日数」が伸びる</li>
                 </ul>
             `
         },
         // ───────────────────────────────────────
-        // Slide 3: Learn（知識を深める）
+        // Slide 4: Boost（点滴・サプリ）★NEW
         // ───────────────────────────────────────
         {
-            id: 'learn',
-            chip: 'Learn',
+            id: 'boost',
+            chip: 'Boost',
             visual: 'hero',
             char: 'tanunee',
             haloClass: 'onboarding__halo--brown',
             content: `
-                <h2 class="onboarding__title">毎日3問、<br><em>知識</em>を磨く</h2>
+                <h2 class="onboarding__title">点滴・サプリも、<br><em>一緒に記録</em></h2>
                 <p class="onboarding__desc">
-                    エクソソームの基礎から、<br>
-                    施術選びの注意点まで。<br>
-                    たぬ姉が、ていねいに伝えます。
+                    クリニックで受けた施術や、<br>
+                    NMN・コラーゲンなどのサプリも、<br>
+                    タップひとつで記録できます。
                 </p>
                 <ul class="onboarding__features">
-                    <li>1日3問のミニクイズで、すこしずつ詳しく</li>
-                    <li>専門用語は、いつでも用語集で確認</li>
-                    <li>知れば知るほど、施術選びに自信が持てる</li>
-                </ul>
-            `
-        },
-        // ───────────────────────────────────────
-        // Slide 4: Grow（細胞を育てる）
-        // ───────────────────────────────────────
-        {
-            id: 'grow',
-            chip: 'Grow',
-            visual: 'hero',
-            char: 'rink',
-            haloClass: '',
-            content: `
-                <h2 class="onboarding__title">あなたの<em>細胞</em>が、<br>育っていく</h2>
-                <p class="onboarding__desc">
-                    続けるほど、画面の中の細胞が<br>
-                    たまご → めばえ → 満開 → 銀河へ。<br>
-                    りんくと一緒に、見守りましょう。
-                </p>
-                <ul class="onboarding__features">
-                    <li>レベル30まで、4ステージの成長</li>
-                    <li>節目ごとに、特別なバッジを獲得</li>
-                    <li>Gardenタブで、いつでも観察できます</li>
+                    <li>エクソソーム点滴・上清液・NMN点滴など16種</li>
+                    <li>NMN系には、特別なミトコンドリア演出</li>
+                    <li>その日の体内エクソ量が、まるごと見える</li>
                 </ul>
             `
         },
@@ -116,9 +115,9 @@ function getOnboardingSlides(depth = 0) {
                     3人組が、いつでも見守っています。
                 </p>
                 <ul class="onboarding__features">
-                    <li>続ければ続けるほど、3人と仲よくなれます</li>
+                    <li>無料・ログイン不要・端末内で完結</li>
                     <li>通知をオンにすると、毎日呼んでくれます</li>
-                    <li>無料、ログイン不要、すべてこの端末で完結</li>
+                    <li>続けるほど、3人と仲よくなれます</li>
                 </ul>
             `
         }
@@ -207,6 +206,54 @@ function showOnboarding(depth = 0, onDone = null) {
                         <div class="onboarding__hero-char">
                             <img src="${getImagePath(slide.char, 'smileOpen', depth)}" alt="${CHARACTERS[slide.char].name}">
                         </div>
+                    </div>
+                </div>
+            `;
+        } else if (slide.visual === 'bodymap-mini') {
+            // 体内マップのミニプレビュー（実物と同じ構造の縮小版）
+            const regions = [
+                { id: 'hair',        emoji: '💆', label: '髪',   active: true },
+                { id: 'face',        emoji: '✨', label: '美肌', active: true },
+                { id: 'eyes',        emoji: '😴', label: '目元', active: false },
+                { id: 'circulation', emoji: '💧', label: '循環', active: true },
+                { id: 'body',        emoji: '🥗', label: '腸内', active: false },
+                { id: 'limbs',       emoji: '🏃', label: '筋肉', active: false }
+            ];
+            const positions = {
+                hair:        { top: '8%',  left: '50%' },
+                face:        { top: '22%', left: '18%' },
+                eyes:        { top: '22%', left: '82%' },
+                circulation: { top: '70%', left: '12%' },
+                body:        { top: '92%', left: '50%' },
+                limbs:       { top: '70%', left: '88%' }
+            };
+            const svgPos = {
+                hair:        { x: 50, y: 8  },
+                face:        { x: 18, y: 22 },
+                eyes:        { x: 82, y: 22 },
+                circulation: { x: 12, y: 70 },
+                body:        { x: 50, y: 92 },
+                limbs:       { x: 88, y: 70 }
+            };
+            visualHtml = `
+                <div class="onboarding__visual onboarding__visual--bodymap">
+                    <div class="charmap charmap--mini">
+                        <div class="charmap__halo"></div>
+                        <svg class="charmap__lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            ${regions.map(r => `<line class="charmap__line ${r.active ? 'is-active' : ''} charmap__point--${r.id}" x1="50" y1="50" x2="${svgPos[r.id].x}" y2="${svgPos[r.id].y}"/>`).join('')}
+                        </svg>
+                        <div class="charmap__ring"></div>
+                        <div class="charmap__face">
+                            <img src="${getImagePath('rink', 'smileOpen', depth)}" alt="りんく">
+                        </div>
+                        ${regions.map(r => `
+                            <div class="charmap__point charmap__point--${r.id} ${r.active ? 'is-active' : ''}" style="top:${positions[r.id].top}; left:${positions[r.id].left};">
+                                <div class="charmap__point-bubble">
+                                    ${r.emoji}
+                                    <span class="charmap__point-spark">✨</span>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
