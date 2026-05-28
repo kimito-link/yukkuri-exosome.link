@@ -73,6 +73,9 @@
 
             const allQuestsDone = quests.care.done && quests.quiz.done && quests.advice.done;
 
+            // Boost状態を先に取得（htmlテンプレート内で参照するため）
+            const boostData = getBoostActiveData();
+
             const greeting = (() => {
                 const h = new Date().getHours();
                 if (h < 5) return '🌙 こんばんは';
@@ -263,7 +266,6 @@
 
             // 体内マップを描画（セルフケア + Boost両方）
             const todayCareData = YEStorage.get(`selfcare_${today}`, []);
-            const boostData = getBoostActiveData();
             const combined = new Set([...todayCareData, ...boostData.activeRegions]);
             renderBodyMap('today-bodymap', combined, 0);
 
