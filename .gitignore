@@ -35,3 +35,34 @@ build/
 tmp/
 *.bak
 *.tmp
+
+# Capacitor (iOS/Android native shells)
+# fujisan-cleanと同様、ios/ まるごと無視。cap add ios で再生成できる
+www/
+ios/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+
+# Bubblewrap (Android TWA)
+android-twa/app/build/
+android-twa/build/
+android-twa/.gradle/
+android-twa/local.properties
+android-twa/app/release/
+android-twa/app/debug/
+android-twa/*.keystore
+android-twa/*.jks
+android-twa/keystore.properties
+*.aab
+*.apk
+release-assets/
+
+# Bubblewrap secrets (signing key / play credentials)
+.signing/
+play-service-account*.json
+
+# Bubblewrap user-specific paths (JDK/SDK in this PC)
+.bubblewrap-config.json

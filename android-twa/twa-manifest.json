@@ -1,0 +1,52 @@
+{
+  "packageId": "com.kimito.link.yukkuriexosome",
+  "host": "yukkuri-exosome.link",
+  "name": "ゆっくりエクソソーム",
+  "launcherName": "ゆっくりエクソ",
+  "display": "standalone",
+  "themeColor": "#C9899A",
+  "themeColorDark": "#7A5A66",
+  "navigationColor": "#C9899A",
+  "navigationColorDark": "#7A5A66",
+  "navigationDividerColor": "#C9899A",
+  "navigationDividerColorDark": "#7A5A66",
+  "backgroundColor": "#FFFAF3",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://yukkuri-exosome.link/icons/icon-512.png",
+  "maskableIconUrl": "https://yukkuri-exosome.link/icons/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:\\Users\\info\\OneDrive\\デスクトップ\\Resilio\\github\\Exosome\\android-twa\\android-upload-key.jks",
+    "alias": "upload"
+  },
+  "appVersionName": "0.1.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://yukkuri-exosome.link/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://yukkuri-exosome.link/",
+  "minSdkVersion": 23,
+  "orientation": "portrait",
+  "fingerprints": [
+    {
+      "name": "upload",
+      "value": "E0:C1:E1:FE:B7:F0:49:A0:53:32:B5:5B:55:03:CF:67:39:A0:C1:46:38:12:00:20:E9:20:93:55:CC:54:2C:B3"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "0.1.0"
+}

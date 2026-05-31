@@ -1,0 +1,28 @@
+{
+  "name": "yukkuri-exosome",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kimito-Linkのゆっくりエクソソーム — Web + iOS (Capacitor) + Android (Bubblewrap TWA)",
+  "homepage": "https://yukkuri-exosome.link/",
+  "scripts": {
+    "web:dev": "http-server src -p 8765 -c-1",
+    "web:serve": "http-server src -p 8765 -c-1",
+    "cap:copy": "node scripts/copy-web-to-www.mjs",
+    "cap:sync": "npm run cap:copy && cap sync",
+    "ios:add": "cap add ios",
+    "ios:open": "cap open ios",
+    "ios:sync": "npm run cap:copy && cap sync ios",
+    "android:twa:init": "bubblewrap init --manifest=https://yukkuri-exosome.link/manifest.webmanifest --directory=./android-twa",
+    "android:twa:update": "bubblewrap update --directory=./android-twa",
+    "android:twa:build": "bubblewrap build --directory=./android-twa"
+  },
+  "devDependencies": {
+    "@bubblewrap/cli": "^1.24.1",
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0",
+    "@capacitor/ios": "^8.3.0",
+    "@capacitor/splash-screen": "^8.0.0",
+    "http-server": "^14.1.1",
+    "typescript": "^6.0.3"
+  }
+}
