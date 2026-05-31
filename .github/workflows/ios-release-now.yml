@@ -1,0 +1,45 @@
+# iOS release-now: trigger Apple to release an APPROVED iOS version.
+#
+# 通常は appstore-submit.mjs が releaseType=AFTER_APPROVAL で出すので不要。
+# 緊急時（releaseType=MANUAL で出してしまった場合や、Apple側の問題で
+# PENDING_DEVELOPER_RELEASE で止まった場合）に手動で叩く保険ワークフロー。
+#
+# Trigger: workflow_dispatch (手動)
+# Inputs:
+#   version: optional; defaults to package.json#version on main HEAD
+name: ios-release-now
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 0.1.0). Defaults to package.json#version.'
+        required: false
+        default: ''
+
+concurrency:
+  group: ios-release-now-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release-ios-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      APP_BUNDLE_ID: com.kimito.link.yukkuriexosome
+      APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+      APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+      APPSTORE_CONNECT_API_KEY_P8_BASE64: ${{ secrets.APPSTORE_CONNECT_API_KEY_P8_BASE64 }}
+      IOS_RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Release ASC version
+        run: node scripts/appstore-release-now.mjs
