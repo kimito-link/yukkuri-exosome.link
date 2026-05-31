@@ -4,6 +4,88 @@
 
 ---
 
+## 🚀 2026-05-31 〜 06-01 セッションでやったこと（最新サマリー）
+
+このセッションは超大型でした。**8時間以上の作業で「アプリのストア提出まであと一歩」の状態**まで進めました。
+
+### ✅ ストア登録ステータス（両方とも作成完了）
+
+| 項目 | 値 |
+|---|---|
+| Apple Team ID | `8922HQ842P` (BEST TRUST K.K.) |
+| Apple Issuer ID | `2c64e8a7-ab21-4110-afdf-b182c678cc8c` |
+| Apple Key ID | `P8W74LR2GH` |
+| **ASC App ID** | **`6775201794`** |
+| **Play Developer ID** | **`6880871170619890401`** |
+| **Play App ID** | **`4973600981777862364`** |
+| Bundle ID / Package | `com.kimito.link.yukkuriexosome` |
+| iOS Provisioning Profile | ✅ 発行・base64 投入済み |
+| Android Keystore | ✅ 生成・base64 投入済み |
+| Play SA 権限 | ✅ `fujisan-play-publisher@fujisan-compass.iam.gserviceaccount.com` に「ゆっくりエクソソーム」追加済み |
+
+### ✅ GitHub Secrets（12個 → p12除外で11個）
+
+```
+APPLE_TEAM_ID
+APPSTORE_CONNECT_KEY_ID
+APPSTORE_CONNECT_ISSUER_ID
+APPSTORE_CONNECT_API_KEY_P8_BASE64
+IOS_DIST_CERT_PASSWORD          ← ランダム生成（CI で .p12 を cer+key から再構成）
+IOS_DIST_CERT_CER_BASE64        ← distribution.cer
+IOS_DIST_PRIVATE_KEY_PEM_BASE64 ← distribution_private.key（パスワードなしのプレーン）
+IOS_APPSTORE_PROFILE_BASE64
+ANDROID_KEYSTORE_BASE64
+ANDROID_KEYSTORE_PROPERTIES
+GOOGLE_PLAY_SA_JSON_BASE64
+```
+
+⚠️ 既存の `distribution.p12` はパスワード忘失のため Secret から削除済み。
+CI 上で `.cer` と `private_key` から新パスワードで p12 再構成する経路に統一。
+
+### ✅ アプリアイコン完成
+
+**「Geminiで何度も生成揺らぎ → Pillow合成に転換」が大成功** 🎯
+
+- `scripts/icon-gen/make_icons.py` で **3バリアント** + 全プラットフォーム展開
+  - **A**: りんく単体 + パール3粒（アプリアイコン用、採用）
+  - **B**: りんく + 体内シグナルマップ六角形（OGP / 記事ヒーロー用）
+  - **C**: 3人組 + パール3粒（バナー / フィーチャーグラフィック用）
+- `scripts/generate-store-assets.mjs` で `npm run assets:store` ラッパー
+- パール3粒は **Kimito-Link 公式ロゴ**（`02_グッズ・ブランド/kimito-logos/`）の哲学を継承
+
+### ✅ 上田哲学記事を新規追加
+
+`src/basics/ueda-philosophy/index.html` — 8セクション構成の人物記事。
+本『改訂版 驚異の再生医療』からの引用5箇所、出典明示。
+スマートクリニック・大谷院長・U-Factor 社・上田実先生本人が見て「分かってる」と
+感じられる深さ。商標・効果断定・特定クリニック名は一切なし。
+
+### ⏳ 走行中（このセッション末時点）
+
+- 🍎 **iOS Workflow #3** (`26723235549`) — 絵文字エラー修正後の再ビルド
+- 🤖 **Android Workflow #3** (`26723267729`) — Play SA権限付与後の再ビルド
+- 🔬 **Garden/Me 拡充ディープリサーチ** (`wwyik7f80`) — 30〜60エージェント分析中
+
+### ⚠️ 直前の失敗とその対策
+
+| 試行 | 結果 | 原因 | 対策 |
+|---|---|---|---|
+| iOS #1 | ❌ 36秒 | p12 パスワード wrong | p12 Secret 削除 → cer+key 経路に統一 |
+| iOS #2 | ❌ 3分48秒 | description/promotional text の絵文字 (✅, 💊, 👤, 🌱, 🏠, 🐢) | テキストから除去 → push で自動再起動 |
+| Android #1 | ❌ 1分37秒 | Play SA 権限なし | SA を新アプリに招待 |
+| Android #2 | ❌ 1分40秒 | 権限伝播待ち | 数分後に再起動 |
+| iOS #3 / Android #3 | 🟡 走行中 | (修正済み) | 結果待ち |
+
+### 📂 重要な秘密情報の場所
+
+- App Store Connect API Key: `C:\Users\info\OneDrive\Apple\AuthKey_P8W74LR2GH.p8`
+- iOS 配布証明書: `C:\Users\info\OneDrive\Apple\distribution.{cer,csr,pem}` + `distribution_private.key`
+- iOS Provisioning Profile: `C:\Users\info\OneDrive\Apple\YukkuriExosome_App_Store.mobileprovision`
+- Google Play SA JSON: `C:\Users\info\OneDrive\GooglePlay\fujisan-compass-36b96abf72d3.json`
+- ローカル `.env` (gitignore済み): `IOS_DIST_CERT_PASSWORD` (32文字ランダム) など
+
+---
+
 プロジェクト「ゆっくりエクソソーム」の作業を引き継ぎます。
 前セッションが長くなったので、状況をまとめて渡します。
 
@@ -236,17 +318,69 @@ npm run release:appstore:release-pending
     Play Console > ユーザーと権限 で同SAを `com.kimito.link.yukkuriexosome` にも招待する必要あり
 - 環境変数のテンプレ: `.env.example` 参照（`.env` 自体は gitignore済み）
 
-### 未着手（次セッション）
+### 未着手（次セッション以降）
 
-- ⬜ App Store Connect 上で「ゆっくりエクソソーム」を新規作成（GUI、SKU・Bundle ID を `com.kimito.link.yukkuriexosome` で）
-- ⬜ Google Play Console 上で同じく新規作成
-- ⬜ `app.config.json` の `stores.ascAppId` / `stores.playAppId` を作成後の実値で埋める
-- ⬜ Play Console の SA に `com.kimito.link.yukkuriexosome` への権限付与
-- ⬜ ASC の Key ID と Issuer ID を `.env` に書き込む
-- ⬜ 最初の `npm run release:appstore:submit` を叩いて挙動確認
+#### 🟢 ストア提出系（iOS/Android が今走ってる結果次第）
+
+- ⬜ iOS Workflow #3 (`26723235549`) の結果確認、失敗してたら対処
+- ⬜ Android Workflow #3 (`26723267729`) の結果確認、失敗してたら対処
+- ⬜ App Store 審査通過後の自動公開を確認（AFTER_APPROVAL設定済み）
+- ⬜ Play Console 内部テスト → 製品版審査キューへの昇格
+
+#### 🟡 アプリ充実系
+
+- ⬜ **Garden / Me 画面の充実** — ディープリサーチ結果（`wwyik7f80`）が出たら実装
+- ⬜ 残り4記事の哲学考察セクション追加（vs-stem-cell, vs-supernatant, treatment/types, treatment/choose）
+- ⬜ iOS スクリーンショット5枚（6.5"）を本番サイトキャプチャ or Pillow合成で作る
+- ⬜ Play Console のストア掲載情報（説明文・スクショ・データセーフティ）を埋める
+
+#### 🟠 アセット・コンテンツ系
+
+- ⬜ アプリアイコン A/B/C の最終選別（A: 単体採用、B: OGP差し替え検討、C: バナー用に保管）
+- ⬜ メインバナー素材を作る（Gemini版とPillow版を比較してベスト選定）
+- ⬜ プライバシーポリシーページ作成（`/privacy/`）
+- ⬜ クリニック予約導線（院長OKが出たら）
+
+#### 🔵 院長コミュニケーション
+
+- ⬜ 院長へLINEで進捗報告（`_drafts/doctor-otani-report-2026-05-31.md` を更新して送る）
+  - 報告内容案：
+    - iOS / Android のアプリ提出を進めてる
+    - アプリアイコンができた（Pillow合成で3キャラ+パール3粒）
+    - 上田実先生の哲学記事を新規追加（`/basics/ueda-philosophy/`）
+    - ストア公開時に「○○さんの患者さんが作ってるアプリです」と紹介できる準備が整いつつある
 
 ## 📝 まずユーザーに聞くこと
 
 「前回どこまで進めた状態か覚えてますか？」と聞いて、次にやりたいことを確認してから着手してください。
 
 ローカルサーバーは port 8765 で動いている可能性があります。止まってたら `python -m http.server 8765` で再起動してください。
+
+## 🛠️ よく使うコマンド（最新）
+
+```powershell
+# ローカル開発サーバー
+Set-Location "C:\Users\info\OneDrive\デスクトップ\Resilio\github\Exosome\src"
+python -m http.server 8765
+
+# アイコン再生成（A/B/C 全部 + 全プラットフォーム展開）
+Set-Location "C:\Users\info\OneDrive\デスクトップ\Resilio\github\Exosome"
+npm run assets:store
+
+# 個別バリアントだけ
+npm run assets:store:A   # りんく単体
+npm run assets:store:B   # 体内シグナルマップ
+npm run assets:store:C   # 3人組
+
+# ストア提出（手動）
+gh workflow run ios-appstore-release.yml --ref main
+gh workflow run android-play-release.yml --ref main
+
+# ワークフロー状況
+gh run list --limit 5
+
+# git push（main直接、Vercel自動デプロイ）
+git add -A
+git commit -m "..."
+git push
+```
