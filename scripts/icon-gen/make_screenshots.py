@@ -301,35 +301,36 @@ def render_me_screen(canvas: Image.Image, area: tuple):
 
 SCREENS = [
     {
-        "key": "01-today",
+        # asc-screenshot-upload.mjs は "iphone-67-*" prefix で6.7"用ファイルを認識する
+        "key": "iphone-67-1-today",
         "headline": ["毎日の体のシグナルを、", "3人組と一緒に。"],
         "char": "link/link-yukkuri-smile-mouth-open.png",
         "char_position": "left",
         "render": render_today_screen,
     },
     {
-        "key": "02-care",
+        "key": "iphone-67-2-care",
         "headline": ["6つのケアを、", "毎日ひとつずつ。"],
         "char": "tanunee/tanuki-yukkuri-smile-mouth-open.png",
         "char_position": "right",
         "render": render_care_screen,
     },
     {
-        "key": "03-boost",
+        "key": "iphone-67-3-boost",
         "headline": ["16種類のサプリ・点滴を、", "ひと目で管理。"],
         "char": "konta/kitsune-yukkuri-smile-mouth-open.png",
         "char_position": "left",
         "render": render_boost_screen,
     },
     {
-        "key": "04-garden",
+        "key": "iphone-67-4-garden",
         "headline": ["続けるほど、", "3人組と細胞が育つ。"],
         "char": "link/link-yukkuri-blink-mouth-open.png",
         "char_position": "right",
         "render": render_garden_screen,
     },
     {
-        "key": "05-me",
+        "key": "iphone-67-5-me",
         "headline": ["記録は、", "あなたの端末の中だけ。"],
         "char": "tanunee/tanuki-yukkuri-half-eyes-mouth-closed.png",
         "char_position": "left",
