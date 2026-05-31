@@ -175,6 +175,13 @@ async function ensureVersion(api, appId, marketing) {
       editableStates.has(v.appStoreState) &&
       normalizeVersion(v.versionString) === targetNorm,
   );
+  // Release timing: 環境変数 IOS_RELEASE_TYPE で切替可能。
+  //   AFTER_APPROVAL (default) — 審査通過後に自動でストア公開（最速）
+  //   MANUAL                   — 「リリース待ち」で停止し、release-now で手動キック
+  //   SCHEDULED                — earliestReleaseDate を別途指定する場合に使う
+  // 「審査通ったのにストアに反映されない」を防ぐため、デフォルトを AFTER_APPROVAL に変更。
+  const RELEASE_TYPE = (process.env.IOS_RELEASE_TYPE || 'AFTER_APPROVAL').toUpperCase();
+
   if (reusable) {
     if (reusable.versionString !== marketing) {
       console.log(
@@ -196,12 +203,27 @@ async function ensureVersion(api, appId, marketing) {
     } else {
       console.log(`  reusing existing version id=${reusable.id} versionString=${reusable.versionString} state=${reusable.appStoreState}`);
     }
+    // 既存バージョンが MANUAL で作られていても、本実行で AFTER_APPROVAL に上書きする。
+    // これで「以前 MANUAL で作ったバージョンが審査通過後に止まる」事故を防ぐ。
+    try {
+      await api('PATCH', `/v1/appStoreVersions/${reusable.id}`, {
+        data: {
+          type: 'appStoreVersions',
+          id: reusable.id,
+          attributes: { releaseType: RELEASE_TYPE },
+        },
+      });
+      console.log(`  patched releaseType -> ${RELEASE_TYPE}`);
+    } catch (e) {
+      // 編集不可状態ならスキップ（READY_FOR_SALE 等）。fail-soft で続行。
+      console.log(`  (releaseType patch skipped: ${e.message.slice(0, 120)})`);
+    }
     await ensureVersionCopyright(api, reusable);
     return reusable;
   }
 
   const live = all.find((v) => v.platform === PLATFORM && v.appStoreState === 'READY_FOR_SALE');
-  console.log(`  creating new appStoreVersion ${marketing} (copyright copied from ${live?.versionString || 'n/a'})`);
+  console.log(`  creating new appStoreVersion ${marketing} (copyright copied from ${live?.versionString || 'n/a'}, releaseType=${RELEASE_TYPE})`);
   try {
     const created = await api('POST', '/v1/appStoreVersions', {
       data: {
@@ -210,7 +232,7 @@ async function ensureVersion(api, appId, marketing) {
           platform: PLATFORM,
           versionString: marketing,
           copyright: live?.copyright || DEFAULT_COPYRIGHT,
-          releaseType: 'MANUAL',
+          releaseType: RELEASE_TYPE,
         },
         relationships: { app: { data: { type: 'apps', id: appId } } },
       },
