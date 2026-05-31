@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kimito.link.yukkuriexosome",
+      "sha256_cert_fingerprints": [
+        "E0:C1:E1:FE:B7:F0:49:A0:53:32:B5:5B:55:03:CF:67:39:A0:C1:46:38:12:00:20:E9:20:93:55:CC:54:2C:B3"
+      ]
+    }
+  }
+]
