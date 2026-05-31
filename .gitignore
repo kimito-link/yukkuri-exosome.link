@@ -39,6 +39,13 @@ tmp/
 # Drafts (LINE messages to doctors, personal notes, etc — NEVER push to public repo)
 _drafts/
 
+# Release automation secrets
+.env
+.env.local
+ios-signing/
+# 配布用p8 / SAをここに置く運用にする場合
+local-secrets/
+
 # Capacitor (iOS/Android native shells)
 # fujisan-cleanと同様、ios/ まるごと無視。cap add ios で再生成できる
 www/

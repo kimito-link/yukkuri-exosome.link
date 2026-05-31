@@ -179,6 +179,72 @@ git push
 4. `gradlew.bat is not recognized` バグ → `android-twa/` で直接 `.\gradlew.bat bundleRelease` を叩く
 5. `デスクトップ` 非ASCIIで AGP が蹴る → `gradle.properties` に `android.overridePathCheck=true` 追加
 
+## 🚀 リリース自動化（fujisan-clean / リバースハック と統一）
+
+partnership_program_website (リバースハック) の scripts/ と app.config.json を移植済み。
+**1ファイル `release-notes/CURRENT-ja.txt` を書き換えて npm run release:* を叩くだけで、
+ストアの「リリース待ち」までを全自動化**できる。
+
+### 移植したスクリプト（全部 node:* だけで動く、外部npm依存ゼロ）
+
+| スクリプト | 目的 |
+|---|---|
+| `scripts/lib/asc-api.mjs` | App Store Connect API クライアント |
+| `scripts/lib/play-api.mjs` | Google Play Developer API クライアント |
+| `scripts/lib/app-config.mjs` | `app.config.json` ローダ |
+| `scripts/lib/asc-pricing.mjs` | 無料配信を強制するヘルパ |
+| `scripts/lib/asc-screenshot-upload.mjs` | iOSスクショ自動アップロード |
+| `scripts/lib/asc-rejection-classify.mjs` | 審査リジェクト理由の分類 |
+| `scripts/appstore-submit.mjs` | iOSビルドを審査提出 |
+| `scripts/appstore-release-pending.mjs` | **「リリース待ち」を自動公開**（今回のスクショで詰まったとこ） |
+| `scripts/appstore-release-now.mjs` | 「公開可能」状態を即時公開 |
+| `scripts/play-publish.mjs` | AABをPlay Storeにアップ + 審査提出 |
+| `scripts/play-review-check.mjs` | Play審査状況をチェック |
+| `scripts/asc-review-check.mjs` | iOS審査状況をチェック |
+| `scripts/release-bump.mjs` | バージョン番号を一括bump |
+
+### 1コマンドリリースのフロー
+
+```bash
+# 1. リリースノート編集（500字以内、プラットフォーム名は書かない）
+notepad release-notes/CURRENT-ja.txt
+
+# 2. バージョン bump（package.json + app.config.json + twa-manifest.json 全部）
+npm run release:bump:patch
+
+# 3. iOS提出（Mac/Xcode無くてもAPI経由で完結）
+$env:APPSTORE_CONNECT_KEY_ID = "<KeyID>"
+$env:APPSTORE_CONNECT_ISSUER_ID = "<IssuerID>"
+$env:APPSTORE_CONNECT_API_KEY_P8_PATH = "C:\Users\info\OneDrive\Apple\AuthKey_P8W74LR2GH.p8"
+npm run release:appstore:submit
+
+# 4. Android提出
+$env:GOOGLE_PLAY_SA_JSON_PATH = "..."
+npm run release:play
+
+# 5. 審査通過後、リリースボタンを自動で押す（手動クリック不要）
+npm run release:appstore:release-pending
+```
+
+### 認証情報の場所（既存）
+
+- **App Store Connect API Key (.p8)**: `C:\Users\info\OneDrive\Apple\AuthKey_P8W74LR2GH.p8`
+  - その他に `ApiKey_OGODFGILTLDI.p8`, `ApiKey_TQJ2STS1T5L3.p8` も存在
+- **iOS 配布証明書**: `C:\Users\info\OneDrive\Apple\distribution.{cer,p12,pem}`
+- **Google Play SA JSON (fujisan用)**: `C:\Users\info\OneDrive\GooglePlay\fujisan-compass-36b96abf72d3.json`
+  - ⚠️ fujisan-compass パッケージにしか権限が無い。ゆっくりエクソソーム用に
+    Play Console > ユーザーと権限 で同SAを `com.kimito.link.yukkuriexosome` にも招待する必要あり
+- 環境変数のテンプレ: `.env.example` 参照（`.env` 自体は gitignore済み）
+
+### 未着手（次セッション）
+
+- ⬜ App Store Connect 上で「ゆっくりエクソソーム」を新規作成（GUI、SKU・Bundle ID を `com.kimito.link.yukkuriexosome` で）
+- ⬜ Google Play Console 上で同じく新規作成
+- ⬜ `app.config.json` の `stores.ascAppId` / `stores.playAppId` を作成後の実値で埋める
+- ⬜ Play Console の SA に `com.kimito.link.yukkuriexosome` への権限付与
+- ⬜ ASC の Key ID と Issuer ID を `.env` に書き込む
+- ⬜ 最初の `npm run release:appstore:submit` を叩いて挙動確認
+
 ## 📝 まずユーザーに聞くこと
 
 「前回どこまで進めた状態か覚えてますか？」と聞いて、次にやりたいことを確認してから着手してください。

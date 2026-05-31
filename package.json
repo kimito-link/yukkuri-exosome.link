@@ -14,7 +14,18 @@
     "ios:sync": "npm run cap:copy && cap sync ios",
     "android:twa:init": "bubblewrap init --manifest=https://yukkuri-exosome.link/manifest.webmanifest --directory=./android-twa",
     "android:twa:update": "bubblewrap update --directory=./android-twa",
-    "android:twa:build": "bubblewrap build --directory=./android-twa"
+    "android:twa:build": "bubblewrap build --directory=./android-twa",
+    "release:bump": "node scripts/release-bump.mjs",
+    "release:bump:patch": "node scripts/release-bump.mjs --patch",
+    "release:bump:minor": "node scripts/release-bump.mjs --minor",
+    "release:play": "node scripts/play-publish.mjs",
+    "release:play:draft": "node scripts/play-publish.mjs --draft",
+    "release:play:status": "node scripts/play-publish.mjs --status",
+    "release:play:check": "node scripts/play-review-check.mjs",
+    "release:appstore:submit": "node scripts/appstore-submit.mjs",
+    "release:appstore:release-pending": "node scripts/appstore-release-pending.mjs",
+    "release:appstore:release-now": "node scripts/appstore-release-now.mjs",
+    "release:appstore:check": "node scripts/asc-review-check.mjs"
   },
   "devDependencies": {
     "@bubblewrap/cli": "^1.24.1",

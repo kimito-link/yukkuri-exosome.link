@@ -1,0 +1,75 @@
+{
+  "$schema": "./app.config.schema.json",
+
+  "identity": {
+    "displayName": "ゆっくりエクソソーム",
+    "displayNameEn": "Yukkuri Exosome",
+    "shortName": "YukkuriExosome",
+    "bundleId": "com.kimito.link.yukkuriexosome",
+    "iosScheme": "yukkuriexosome",
+    "appleSiwaServiceId": null,
+    "productionDomain": "yukkuri-exosome.link",
+    "stagingDomain": null
+  },
+
+  "stores": {
+    "ascAppId": null,
+    "playAppId": null,
+    "playPackageName": "com.kimito.link.yukkuriexosome",
+    "appleTeamId": null,
+    "playDeveloperId": null,
+    "primaryCategory": "HEALTH_AND_FITNESS",
+    "ageRating": "FOUR_PLUS",
+    "contentRights": "DOES_NOT_USE_THIRD_PARTY_CONTENT",
+    "marketingVersion": "0.1.0",
+    "buildNumberOffset": 0
+  },
+
+  "brand": {
+    "primaryColor": "#c9899a",
+    "accentColor": "#c9a96e",
+    "iconSource": "store-assets/source/icon-source-1024.png",
+    "featureGraphicSource": null,
+    "logoTypeWeb": "/images/kimito-link-logo/logo_kimito-link_RGB_color.png"
+  },
+
+  "contact": {
+    "email": "info@best-trust.biz",
+    "phoneE164": "+81 90 4180 3041",
+    "firstName": "Kimito",
+    "lastName": "Komura",
+    "supportUrl": "https://yukkuri-exosome.link/about/",
+    "privacyUrl": "https://yukkuri-exosome.link/privacy/",
+    "termsUrl": null,
+    "marketingUrl": "https://yukkuri-exosome.link/",
+    "dataDeletionUrl": "https://yukkuri-exosome.link/about/"
+  },
+
+  "auth": {
+    "provider": "custom",
+    "thirdPartyProvidersOnWeb": [],
+    "thirdPartyProvidersOnIos": [],
+    "thirdPartyProvidersOnAndroid": [],
+    "siwaEnabled": false,
+    "demoAccountUsernameSecret": "IOS_REVIEW_DEMO_USERNAME",
+    "demoAccountPasswordSecret": "IOS_REVIEW_DEMO_PASSWORD"
+  },
+
+  "businessModel": {
+    "kind": "free-self-care",
+    "hasInAppPurchase": false,
+    "hasSubscription": false,
+    "hasPaidContent": false,
+    "summaryEn": "A free self-care companion app paired with three 'yukkuri' (slow-life) characters. Records daily skin and fatigue self-checks, supplement intake notes, and clinic-visit memos — entirely on-device with no account, no payments, and no third-party content.",
+    "summaryJa": "ゆっくり3人組と一緒に毎日のセルフケアを記録する無料アプリ。肌・疲労チェック、サプリ記録、クリニック質問メモなどを端末内のみで管理。アカウント登録・課金・第三者コンテンツ一切なし。"
+  },
+
+  "ownership": {
+    "organization": "Kimito-Link",
+    "country": "JP",
+    "githubOrg": "kimito-link",
+    "githubRepo": "yukkuri-exosome.link",
+    "vercelTeamSlug": "kimito-link",
+    "vercelProjectName": "yukkuri-exosome"
+  }
+}
