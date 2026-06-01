@@ -1,11 +1,11 @@
 """
-ゆっくりエクソソーム App Store スクリーンショット生成 v2
+ゆっくりエクソソーム App Store スクリーンショット生成 v3
 
-修正点:
-- Pillow RGB モードで outline に alpha を渡すと無視される → 不透明な色に統一
-- カード背景を背景色と差別化（白 or ローズ薄め）
-- テキスト・アウトラインのコントラストを大幅強化
-- モック内UIを濃い色で描画
+デザイン方針:
+- 上部 60% をローズ系グラデーション背景 → 白飛び解消
+- 下部 40% をクリーム白 → キャラ・フッター用
+- スマホモック内の画面は白 → モックが背景から浮き立つ
+- キャッチコピーは白抜きテキスト（上部ローズ背景上）
 """
 from __future__ import annotations
 from PIL import Image, ImageDraw, ImageFont
@@ -19,21 +19,27 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 SS_W, SS_H = 1290, 2796
 
-# ── ブランドカラー（全て不透明・高コントラスト版）──
-BG_COLOR      = (255, 250, 243)   # クリームベージュ
-CARD_WHITE    = (255, 255, 255)   # カード背景（白）
-CARD_ROSE     = (245, 228, 233)   # カード背景（薄ローズ）
-BG_ROSE       = (201, 137, 154)   # ローズ（メインアクセント）
-BG_ROSE_DARK  = (165, 100, 118)   # ローズ濃い版
+# ── カラーパレット ──
+BG_TOP        = (188, 115, 133)   # ローズ（上部背景のベース）
+BG_TOP_DARK   = (152,  85, 103)   # ローズ暗め（グラデ下端）
+BG_BOTTOM     = (255, 250, 243)   # クリームベージュ（下部）
+CARD_WHITE    = (255, 255, 255)   # カード・モック内背景
+CARD_ROSE     = (252, 238, 242)   # ローズ薄カード
+BG_ROSE       = (201, 137, 154)   # ローズアクセント
+BG_ROSE_DARK  = (152,  85, 103)   # ローズ濃い
 ACCENT_GOLD   = (180, 145,  80)   # ゴールド
-DARK_TEXT     = ( 40,  32,  28)   # 濃い茶黒
-MID_TEXT      = (110,  95,  88)   # 中間テキスト
-PEARL_NAVY    = ( 31,  58, 110)   # 紺
-PEARL_ORANGE  = (199, 107,  31)   # オレンジ
-PEARL_TEAL    = ( 60, 140, 130)   # ティール
-DIVIDER       = (220, 205, 210)   # 区切り線（ローズグレー）
+DARK_TEXT     = ( 40,  32,  28)   # 濃い茶黒（モック内）
+MID_TEXT      = (120, 100,  92)   # 中間テキスト
+HEADLINE_TEXT = (255, 255, 255)   # キャッチコピー（白）
+PEARL_NAVY    = ( 31,  58, 110)
+PEARL_ORANGE  = (199, 107,  31)
+PEARL_TEAL    = ( 60, 140, 130)
+DIVIDER       = (220, 205, 210)
 
-PEARL_COLORS  = [PEARL_NAVY, PEARL_ORANGE, ACCENT_GOLD, PEARL_TEAL, BG_ROSE_DARK, PEARL_NAVY]
+PEARL_COLORS = [PEARL_NAVY, PEARL_ORANGE, ACCENT_GOLD, PEARL_TEAL, BG_ROSE_DARK, PEARL_NAVY]
+
+# 上部ローズが占める割合
+TOP_RATIO = 0.58
 
 
 def find_font(size: int, weight: str = "regular") -> ImageFont.FreeTypeFont:
@@ -57,19 +63,30 @@ def find_font(size: int, weight: str = "regular") -> ImageFont.FreeTypeFont:
 
 
 def make_background() -> Image.Image:
-    """クリームベージュ地に上部ローズグラデーション"""
-    bg = Image.new("RGB", (SS_W, SS_H), BG_COLOR)
-    # ローズを上1/3に重ねる（RGBA合成）
-    overlay = Image.new("RGBA", (SS_W, SS_H), (0, 0, 0, 0))
-    odraw = ImageDraw.Draw(overlay)
-    for y in range(SS_H // 3):
-        t = 1.0 - y / (SS_H / 3)
-        a = int(70 * t * t)
-        odraw.line([(0, y), (SS_W, y)],
-                   fill=(BG_ROSE[0], BG_ROSE[1], BG_ROSE[2], a))
-    bg_rgba = bg.convert("RGBA")
-    bg_rgba.alpha_composite(overlay)
-    return bg_rgba.convert("RGB")
+    """上部ローズ → 下部クリームの2トーン背景"""
+    bg = Image.new("RGB", (SS_W, SS_H), BG_BOTTOM)
+    draw = ImageDraw.Draw(bg)
+
+    split_y = int(SS_H * TOP_RATIO)
+
+    # 上部: BG_TOP_DARK → BG_TOP のグラデーション（上が暗め）
+    for y in range(split_y):
+        t = y / split_y          # 0=上端, 1=下端
+        r = int(BG_TOP_DARK[0] + (BG_TOP[0] - BG_TOP_DARK[0]) * t)
+        g = int(BG_TOP_DARK[1] + (BG_TOP[1] - BG_TOP_DARK[1]) * t)
+        b = int(BG_TOP_DARK[2] + (BG_TOP[2] - BG_TOP_DARK[2]) * t)
+        draw.line([(0, y), (SS_W, y)], fill=(r, g, b))
+
+    # 境界をなめらかにする（split_y付近で BG_TOP→BG_BOTTOM へブレンド）
+    blend_h = 120
+    for dy in range(blend_h):
+        t = dy / blend_h
+        r = int(BG_TOP[0] + (BG_BOTTOM[0] - BG_TOP[0]) * t)
+        g = int(BG_TOP[1] + (BG_BOTTOM[1] - BG_TOP[1]) * t)
+        b = int(BG_TOP[2] + (BG_BOTTOM[2] - BG_TOP[2]) * t)
+        draw.line([(0, split_y + dy), (SS_W, split_y + dy)], fill=(r, g, b))
+
+    return bg
 
 
 def load_character(filename: str) -> Image.Image:
@@ -87,7 +104,6 @@ def fit_height(img: Image.Image, target_h: int) -> Image.Image:
 
 
 def draw_pearl(canvas: Image.Image, cx: int, cy: int, radius: int, base_color: tuple):
-    """グラデーション風パール（同心円で近似）"""
     draw = ImageDraw.Draw(canvas)
     steps = 8
     for i in range(steps, 0, -1):
@@ -100,10 +116,9 @@ def draw_pearl(canvas: Image.Image, cx: int, cy: int, radius: int, base_color: t
                      fill=(r_c, g_c, b_c))
 
 
-def draw_phone_mockup(canvas: Image.Image, cx: int, cy: int, phone_w: int = 860):
-    """スマホフレームを描き、内部領域を返す。
-    アスペクト比を 1:1.78 (≈16:9) に抑えてUIが詰まるようにする。"""
-    phone_h = int(phone_w * 1.78)
+def draw_phone_mockup(canvas: Image.Image, cx: int, cy: int, phone_w: int = 840):
+    """スマホフレームを描く。内部は白。"""
+    phone_h = int(phone_w * 1.9)   # 縦長モック
     left   = cx - phone_w // 2
     top    = cy - phone_h // 2
     right  = cx + phone_w // 2
@@ -111,41 +126,40 @@ def draw_phone_mockup(canvas: Image.Image, cx: int, cy: int, phone_w: int = 860)
     draw = ImageDraw.Draw(canvas)
     # シャドウ
     draw.rounded_rectangle(
-        [(left + 14, top + 14), (right + 14, bottom + 14)],
-        radius=58, fill=(175, 158, 163))
-    # 外枠
+        [(left + 12, top + 12), (right + 12, bottom + 12)],
+        radius=60, fill=(100, 80, 88))
+    # 外枠（濃いチャコール）
     draw.rounded_rectangle([(left, top), (right, bottom)],
-                            radius=56, fill=(38, 36, 40))
-    # 画面
+                            radius=58, fill=(28, 24, 30))
+    # 画面（白）
     border = 14
     il, it, ir, ib = left + border, top + border, right - border, bottom - border
     draw.rounded_rectangle([(il, it), (ir, ib)],
-                            radius=44, fill=BG_COLOR)
+                            radius=46, fill=CARD_WHITE)
     # Dynamic Island
-    di_w, di_h = 170, 30
+    di_w, di_h = 160, 28
     draw.rounded_rectangle(
-        [(cx - di_w // 2, it + 16), (cx + di_w // 2, it + 16 + di_h)],
-        radius=15, fill=(38, 36, 40))
+        [(cx - di_w // 2, it + 14), (cx + di_w // 2, it + 14 + di_h)],
+        radius=14, fill=(28, 24, 30))
     return (il, it, ir, ib)
 
 
-# ── モック画面の描画 ──────────────────────────────────
+# ── モック画面の描画（白背景前提）──────────────────────
 
 def render_today_screen(canvas: Image.Image, area: tuple):
     l, t, r, b = area
     draw = ImageDraw.Draw(canvas)
     cx = (l + r) // 2
-    h = b - t  # 使える高さ
+    h = b - t
 
     draw.text((cx, t + int(h * 0.055)), "今日のシグナル",
-              font=find_font(38, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(36, "bold"), fill=DARK_TEXT, anchor="mm")
     draw.line([(l + 40, t + int(h * 0.085)), (r - 40, t + int(h * 0.085))],
               fill=DIVIDER, width=2)
 
-    # 体内マップ（高さの中央より少し上）
-    map_cy = t + int(h * 0.38)
+    map_cy = t + int(h * 0.36)
     map_cx = cx
-    map_r = int(min((r - l) * 0.30, h * 0.22))
+    map_r = int(min((r - l) * 0.29, h * 0.21))
     draw.ellipse(
         [(map_cx - map_r, map_cy - map_r), (map_cx + map_r, map_cy + map_r)],
         outline=BG_ROSE, width=3, fill=(250, 242, 245))
@@ -154,31 +168,30 @@ def render_today_screen(canvas: Image.Image, area: tuple):
         [(map_cx - inner_r, map_cy - inner_r), (map_cx + inner_r, map_cy + inner_r)],
         fill=CARD_WHITE, outline=DIVIDER, width=2)
     draw.text((map_cx, map_cy), "体内\nマップ",
-              font=find_font(20, "bold"), fill=BG_ROSE_DARK, anchor="mm")
+              font=find_font(18, "bold"), fill=BG_ROSE_DARK, anchor="mm")
 
     parts = ["髪", "美肌", "目元", "循環", "腸", "筋"]
     for i, part in enumerate(parts):
         ang = -math.pi / 2 + math.pi * 2 * i / 6
         px = int(map_cx + map_r * math.cos(ang))
         py = int(map_cy + map_r * math.sin(ang))
-        draw_pearl(canvas, px, py, 24, PEARL_COLORS[i])
-        lx = px + int(40 * math.cos(ang))
-        ly = py + int(40 * math.sin(ang))
-        draw.text((lx, ly), part, font=find_font(22, "bold"), fill=DARK_TEXT, anchor="mm")
+        draw_pearl(canvas, px, py, 22, PEARL_COLORS[i])
+        lx = px + int(38 * math.cos(ang))
+        ly = py + int(38 * math.sin(ang))
+        draw.text((lx, ly), part, font=find_font(20, "bold"), fill=DARK_TEXT, anchor="mm")
 
-    # クエスト欄
-    q_top = t + int(h * 0.62)
+    q_top = t + int(h * 0.60)
     draw.text((cx, q_top), "本日のクエスト",
-              font=find_font(32, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(30, "bold"), fill=DARK_TEXT, anchor="mm")
     row_h = int(h * 0.10)
     for i, q in enumerate(["セルフケアを記録", "クイズに挑戦", "アドバイスを読む"]):
         qy = q_top + int(h * 0.06) + i * row_h
         draw.rounded_rectangle(
-            [(l + 50, qy - 30), (r - 50, qy + 30)],
-            radius=18, fill=CARD_WHITE, outline=DIVIDER, width=2)
-        draw_pearl(canvas, l + 90, qy, 18, PEARL_COLORS[i])
-        draw.text((l + 120, qy), f" {q}",
-                  font=find_font(28, "regular"), fill=DARK_TEXT, anchor="lm")
+            [(l + 44, qy - 28), (r - 44, qy + 28)],
+            radius=16, fill=CARD_WHITE, outline=DIVIDER, width=2)
+        draw_pearl(canvas, l + 84, qy, 16, PEARL_COLORS[i])
+        draw.text((l + 112, qy), f" {q}",
+                  font=find_font(26, "regular"), fill=DARK_TEXT, anchor="lm")
 
 
 def render_care_screen(canvas: Image.Image, area: tuple):
@@ -188,17 +201,17 @@ def render_care_screen(canvas: Image.Image, area: tuple):
     h = b - t
 
     draw.text((cx, t + int(h * 0.055)), "セルフケア",
-              font=find_font(38, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(36, "bold"), fill=DARK_TEXT, anchor="mm")
     draw.text((cx, t + int(h * 0.090)), "6つの部位・毎日ひとつ",
-              font=find_font(26, "regular"), fill=MID_TEXT, anchor="mm")
+              font=find_font(24, "regular"), fill=MID_TEXT, anchor="mm")
     draw.line([(l + 40, t + int(h * 0.115)), (r - 40, t + int(h * 0.115))],
               fill=DIVIDER, width=2)
 
     cards = ["髪エクソ", "美肌エクソ", "目元エクソ", "循環エクソ", "腸内エクソ", "筋肉エクソ"]
     card_w = (r - l - 80) // 2 - 12
-    card_h = int(h * 0.27)
+    card_h = int(h * 0.255)
     sy = t + int(h * 0.13)
-    gap = int(h * 0.015)
+    gap = int(h * 0.012)
     for i, name in enumerate(cards):
         row, col = divmod(i, 2)
         x = l + 40 + col * (card_w + 24)
@@ -206,13 +219,13 @@ def render_care_screen(canvas: Image.Image, area: tuple):
         bg = CARD_WHITE if i % 2 == 0 else CARD_ROSE
         draw.rounded_rectangle(
             [(x, y), (x + card_w, y + card_h)],
-            radius=22, fill=bg, outline=BG_ROSE_DARK, width=2)
+            radius=20, fill=bg, outline=BG_ROSE_DARK, width=2)
         pearl_y = y + int(card_h * 0.38)
-        draw_pearl(canvas, x + card_w // 2, pearl_y, 36, PEARL_COLORS[i])
+        draw_pearl(canvas, x + card_w // 2, pearl_y, 34, PEARL_COLORS[i])
         draw.text((x + card_w // 2, y + int(card_h * 0.72)),
-                  name, font=find_font(28, "bold"), fill=DARK_TEXT, anchor="mm")
-        draw.text((x + card_w // 2, y + int(card_h * 0.91)),
-                  "→", font=find_font(26, "bold"), fill=BG_ROSE_DARK, anchor="mm")
+                  name, font=find_font(26, "bold"), fill=DARK_TEXT, anchor="mm")
+        draw.text((x + card_w // 2, y + int(card_h * 0.90)),
+                  "→", font=find_font(24, "bold"), fill=BG_ROSE_DARK, anchor="mm")
 
 
 def render_boost_screen(canvas: Image.Image, area: tuple):
@@ -222,9 +235,9 @@ def render_boost_screen(canvas: Image.Image, area: tuple):
     h = b - t
 
     draw.text((cx, t + int(h * 0.055)), "Boost",
-              font=find_font(38, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(36, "bold"), fill=DARK_TEXT, anchor="mm")
     draw.text((cx, t + int(h * 0.090)), "サプリ・点滴を記録",
-              font=find_font(26, "regular"), fill=MID_TEXT, anchor="mm")
+              font=find_font(24, "regular"), fill=MID_TEXT, anchor="mm")
     draw.line([(l + 40, t + int(h * 0.115)), (r - 40, t + int(h * 0.115))],
               fill=DIVIDER, width=2)
 
@@ -236,25 +249,25 @@ def render_boost_screen(canvas: Image.Image, area: tuple):
         ("プラセンタ", "再生"),
         ("グルタチオン", "解毒"),
     ]
-    row_h = int(h * 0.128)
+    row_h = int(h * 0.122)
     sy = t + int(h * 0.135)
     for i, (item, tag) in enumerate(items):
         y = sy + i * row_h
         cy_row = y + row_h // 2 - 4
         draw.rounded_rectangle(
-            [(l + 40, y + 6), (r - 40, y + row_h - 6)],
-            radius=18, fill=CARD_WHITE, outline=DIVIDER, width=2)
-        draw_pearl(canvas, l + 88, cy_row, 22, PEARL_COLORS[i % len(PEARL_COLORS)])
-        draw.text((l + 124, cy_row), item,
-                  font=find_font(28, "bold"), fill=DARK_TEXT, anchor="lm")
-        tag_x1, tag_x2 = r - 136, r - 54
+            [(l + 40, y + 5), (r - 40, y + row_h - 5)],
+            radius=16, fill=CARD_WHITE, outline=DIVIDER, width=2)
+        draw_pearl(canvas, l + 84, cy_row, 20, PEARL_COLORS[i % len(PEARL_COLORS)])
+        draw.text((l + 118, cy_row), item,
+                  font=find_font(26, "bold"), fill=DARK_TEXT, anchor="lm")
+        tag_x1, tag_x2 = r - 132, r - 52
         draw.rounded_rectangle(
-            [(tag_x1, cy_row - 22), (tag_x2, cy_row + 22)],
-            radius=12, fill=BG_ROSE)
+            [(tag_x1, cy_row - 20), (tag_x2, cy_row + 20)],
+            radius=11, fill=BG_ROSE_DARK)
         draw.text(((tag_x1 + tag_x2) // 2, cy_row),
-                  tag, font=find_font(20, "bold"), fill=CARD_WHITE, anchor="mm")
-        draw.text((r - 46, cy_row), "+",
-                  font=find_font(38, "bold"), fill=BG_ROSE_DARK, anchor="mm")
+                  tag, font=find_font(19, "bold"), fill=CARD_WHITE, anchor="mm")
+        draw.text((r - 44, cy_row), "+",
+                  font=find_font(36, "bold"), fill=BG_ROSE_DARK, anchor="mm")
 
 
 def render_garden_screen(canvas: Image.Image, area: tuple):
@@ -264,16 +277,15 @@ def render_garden_screen(canvas: Image.Image, area: tuple):
     h = b - t
 
     draw.text((cx, t + int(h * 0.055)), "Garden",
-              font=find_font(38, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(36, "bold"), fill=DARK_TEXT, anchor="mm")
     draw.text((cx, t + int(h * 0.090)), "続けると細胞が育つ",
-              font=find_font(26, "regular"), fill=MID_TEXT, anchor="mm")
+              font=find_font(24, "regular"), fill=MID_TEXT, anchor="mm")
     draw.line([(l + 40, t + int(h * 0.115)), (r - 40, t + int(h * 0.115))],
               fill=DIVIDER, width=2)
 
-    # メイン細胞（画面中央）
     cell_cx = cx
-    cell_cy = t + int(h * 0.46)
-    cell_r = int(min((r - l) * 0.28, h * 0.24))
+    cell_cy = t + int(h * 0.44)
+    cell_r = int(min((r - l) * 0.27, h * 0.23))
     for rs in range(cell_r, 0, -8):
         tf = rs / cell_r
         cr = int(BG_ROSE[0] + (255 - BG_ROSE[0]) * (1 - tf) * 0.65)
@@ -287,44 +299,41 @@ def render_garden_screen(canvas: Image.Image, area: tuple):
         [(cell_cx - nuc_r, cell_cy - nuc_r), (cell_cx + nuc_r, cell_cy + nuc_r)],
         fill=BG_ROSE_DARK)
     draw.text((cell_cx, cell_cy), "Lv.7",
-              font=find_font(28, "bold"), fill=CARD_WHITE, anchor="mm")
+              font=find_font(26, "bold"), fill=CARD_WHITE, anchor="mm")
 
-    # 周囲バッジ（cell_r から相対距離で配置）
-    dist = int(cell_r * 1.45)
+    dist = int(cell_r * 1.42)
     badge_positions = [(-dist, -int(dist * 0.4)),
                        (dist,  -int(dist * 0.5)),
                        (-int(dist * 0.9),  int(dist * 0.5)),
                        (dist,   int(dist * 0.45))]
     badge_labels = ["新芽", "つぼみ", "花", "実"]
     badge_colors = [PEARL_TEAL, PEARL_ORANGE, BG_ROSE_DARK, ACCENT_GOLD]
-    badge_r = int(cell_r * 0.22)
+    badge_r = int(cell_r * 0.21)
     for (bx_off, by_off), label, col in zip(badge_positions, badge_labels, badge_colors):
         bx = cell_cx + bx_off
         by = cell_cy + by_off
         draw.ellipse([(bx - badge_r, by - badge_r), (bx + badge_r, by + badge_r)],
                      fill=CARD_WHITE, outline=col, width=3)
         draw.text((bx, by), label,
-                  font=find_font(24, "bold"), fill=col, anchor="mm")
+                  font=find_font(22, "bold"), fill=col, anchor="mm")
 
-    # EP バー
-    ep_y = t + int(h * 0.80)
+    ep_y = t + int(h * 0.79)
     bar_x1, bar_x2 = l + 80, r - 80
     draw.rounded_rectangle(
-        [(bar_x1, ep_y - 18), (bar_x2, ep_y + 18)],
-        radius=18, fill=DIVIDER)
+        [(bar_x1, ep_y - 16), (bar_x2, ep_y + 16)],
+        radius=16, fill=DIVIDER)
     bar_w = int((bar_x2 - bar_x1) * 0.62)
     draw.rounded_rectangle(
-        [(bar_x1, ep_y - 18), (bar_x1 + bar_w, ep_y + 18)],
-        radius=18, fill=ACCENT_GOLD)
-    draw.text((cx, ep_y + 48), "EP 234 / 400",
-              font=find_font(28, "bold"), fill=DARK_TEXT, anchor="mm")
+        [(bar_x1, ep_y - 16), (bar_x1 + bar_w, ep_y + 16)],
+        radius=16, fill=ACCENT_GOLD)
+    draw.text((cx, ep_y + 44), "EP 234 / 400",
+              font=find_font(26, "bold"), fill=DARK_TEXT, anchor="mm")
 
-    # ステータス行（下部）
-    stat_y = t + int(h * 0.91)
+    stat_y = t + int(h * 0.90)
     for i, (label, val) in enumerate([("記録", "23日"), ("連続", "7日"), ("進化", "4回")]):
         sx = l + 80 + i * int((r - l - 160) / 3) + int((r - l - 160) / 6)
         draw.text((sx, stat_y), f"{label}\n{val}",
-                  font=find_font(22, "bold"), fill=DARK_TEXT, anchor="mm")
+                  font=find_font(20, "bold"), fill=DARK_TEXT, anchor="mm")
 
 
 def render_me_screen(canvas: Image.Image, area: tuple):
@@ -334,9 +343,9 @@ def render_me_screen(canvas: Image.Image, area: tuple):
     h = b - t
 
     draw.text((cx, t + int(h * 0.055)), "Me",
-              font=find_font(38, "bold"), fill=DARK_TEXT, anchor="mm")
+              font=find_font(36, "bold"), fill=DARK_TEXT, anchor="mm")
     draw.text((cx, t + int(h * 0.090)), "あなたの記録",
-              font=find_font(26, "regular"), fill=MID_TEXT, anchor="mm")
+              font=find_font(24, "regular"), fill=MID_TEXT, anchor="mm")
     draw.line([(l + 40, t + int(h * 0.115)), (r - 40, t + int(h * 0.115))],
               fill=DIVIDER, width=2)
 
@@ -346,33 +355,32 @@ def render_me_screen(canvas: Image.Image, area: tuple):
         ("EP", "234", "pt", ACCENT_GOLD),
         ("レベル", "7", "Lv", PEARL_NAVY),
     ]
-    card_h = int(h * 0.155)
+    card_h = int(h * 0.148)
     sy = t + int(h * 0.135)
-    gap = int(h * 0.018)
+    gap = int(h * 0.016)
     for i, (label, value, unit, col) in enumerate(stats):
         y = sy + i * (card_h + gap)
         draw.rounded_rectangle(
             [(l + 40, y), (r - 40, y + card_h)],
-            radius=20, fill=CARD_WHITE, outline=DIVIDER, width=2)
-        band_w = 36
+            radius=18, fill=CARD_WHITE, outline=DIVIDER, width=2)
+        band_w = 32
         draw.rounded_rectangle(
             [(l + 40, y), (l + 40 + band_w, y + card_h)],
-            radius=20, fill=col)
+            radius=18, fill=col)
         mid_y = y + card_h // 2
-        draw.text((l + 96, mid_y), label,
-                  font=find_font(28, "regular"), fill=MID_TEXT, anchor="lm")
-        draw.text((r - 56, mid_y), f"{value} {unit}",
-                  font=find_font(46, "bold"), fill=DARK_TEXT, anchor="rm")
+        draw.text((l + 92, mid_y), label,
+                  font=find_font(26, "regular"), fill=MID_TEXT, anchor="lm")
+        draw.text((r - 52, mid_y), f"{value} {unit}",
+                  font=find_font(42, "bold"), fill=DARK_TEXT, anchor="rm")
 
-    # フッターバナー
-    fy = sy + 4 * (card_h + gap) + int(h * 0.02)
+    fy = sy + 4 * (card_h + gap) + int(h * 0.018)
     draw.rounded_rectangle(
-        [(l + 50, fy), (r - 50, fy + int(h * 0.10))],
-        radius=18, fill=CARD_ROSE, outline=BG_ROSE_DARK, width=2)
-    draw.text((cx, fy + int(h * 0.032)), "記録は端末の中だけ",
-              font=find_font(28, "bold"), fill=BG_ROSE_DARK, anchor="mm")
-    draw.text((cx, fy + int(h * 0.070)), "アカウント不要・課金なし",
-              font=find_font(24, "regular"), fill=MID_TEXT, anchor="mm")
+        [(l + 50, fy), (r - 50, fy + int(h * 0.096))],
+        radius=16, fill=CARD_ROSE, outline=BG_ROSE_DARK, width=2)
+    draw.text((cx, fy + int(h * 0.030)), "記録は端末の中だけ",
+              font=find_font(26, "bold"), fill=BG_ROSE_DARK, anchor="mm")
+    draw.text((cx, fy + int(h * 0.066)), "アカウント不要・課金なし",
+              font=find_font(22, "regular"), fill=MID_TEXT, anchor="mm")
 
 
 # ── スクリーン定義 ──────────────────────────────────
@@ -420,32 +428,35 @@ def compose_screenshot(spec: dict) -> Image.Image:
     canvas = make_background().convert("RGBA")
     draw = ImageDraw.Draw(canvas)
 
-    # キャッチコピー（上部）
-    head_font = find_font(76, "bold")
-    head_y = 190
+    # キャッチコピー（上部ローズ背景の上 → 白文字）
+    head_font = find_font(80, "bold")
+    head_y = 200
     for i, line in enumerate(spec["headline"]):
-        draw.text((SS_W // 2, head_y + i * 108), line,
-                  font=head_font, fill=DARK_TEXT, anchor="mm")
+        # 影（やや暗いローズ）
+        draw.text((SS_W // 2 + 3, head_y + i * 116 + 3), line,
+                  font=head_font, fill=(100, 60, 70), anchor="mm")
+        draw.text((SS_W // 2, head_y + i * 116), line,
+                  font=head_font, fill=HEADLINE_TEXT, anchor="mm")
 
-    # スマホモック — キャラの上に空間を残しつつ画面を広く使う
+    # スマホモック（画面中央やや上）
     phone_cx = SS_W // 2
-    phone_cy = int(SS_H * 0.49)
-    area = draw_phone_mockup(canvas, phone_cx, phone_cy, phone_w=860)
+    phone_cy = int(SS_H * 0.48)
+    area = draw_phone_mockup(canvas, phone_cx, phone_cy, phone_w=840)
     spec["render"](canvas, area)
 
-    # キャラクター（下部）
+    # キャラクター（下部クリーム背景上）
     char = trim_alpha(load_character(spec["char"]))
-    char = fit_height(char, 400)
-    char_y = SS_H - char.height - 60
+    char = fit_height(char, 420)
+    char_y = SS_H - char.height - 48
     if spec["char_position"] == "left":
-        char_x = 60
+        char_x = 50
     else:
-        char_x = SS_W - char.width - 60
+        char_x = SS_W - char.width - 50
     canvas.paste(char, (char_x, char_y), char)
 
     # フッター
-    draw.text((SS_W // 2, SS_H - 44), "Kimito-Link",
-              font=find_font(30, "regular"), fill=MID_TEXT, anchor="mm")
+    draw.text((SS_W // 2, SS_H - 40), "Kimito-Link",
+              font=find_font(28, "regular"), fill=MID_TEXT, anchor="mm")
 
     return canvas.convert("RGB")
 
