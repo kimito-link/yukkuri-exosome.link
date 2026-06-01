@@ -456,20 +456,20 @@ async function ensureAgeRatingDeclaration(api, versionId) {
       type: 'ageRatingDeclarations',
       id: versionId,
       attributes: {
-        // ASC API ageRatingDeclarations — exact field names from Apple docs.
-        // gamblingAndContests does NOT exist (rejected with 409 NOT_AN_ATTRIBUTE).
-        // Use separate `gambling` (boolean) and `contests` (enum) fields.
+        // ASC API ageRatingDeclarations — verified field set (2026-06 Apple API).
+        // Removed: gamblingAndContests (not an attribute), seventeenPlus (deprecated).
+        // Added: lootBox (required as of 2025+).
         alcoholTobaccoOrDrugUseOrReferences: 'NONE',
         contests: 'NONE',
         gambling: false,
         horrorOrFearThemes: 'NONE',
         kidsAgeBand: null,
+        lootBox: false,
         matureOrSuggestiveThemes: 'NONE',
         medicalOrTreatmentInformation: 'INFREQUENT_OR_MILD',
         profanityOrCrudeHumor: 'NONE',
         sexualContentGraphicAndNudity: 'NONE',
         sexualContentOrNudity: 'NONE',
-        seventeenPlus: false,
         violenceCartoonOrFantasy: 'NONE',
         violenceRealisticProlongedGraphicOrSadistic: 'NONE',
         violenceRealistic: 'NONE',
