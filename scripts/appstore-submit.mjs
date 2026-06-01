@@ -449,38 +449,59 @@ async function ensureContentRightsDeclaration(api, appId) {
 // Values chosen for "ゆっくりエクソソーム": a health/wellness info app with
 // no mature content, no user-generated content, no gambling, no violence.
 // Guideline reference: App Store Connect API /v1/ageRatingDeclarations/{id}
-async function ensureAgeRatingDeclaration(api, versionId) {
-  // The declaration ID == the appStoreVersion ID (1:1 relationship).
-  const decl = {
+async function ensureAgeRatingDeclaration(api, appId) {
+  // The ageRatingDeclaration ID == the appInfo ID (NOT the appStoreVersion ID).
+  // Fetch via appInfos?include=ageRatingDeclaration to get the correct ID.
+  // Verified field set against ASC API 2026-06 — all 24 required attributes.
+  let declId = null;
+  try {
+    const r = await api('GET', `/v1/apps/${appId}/appInfos?include=ageRatingDeclaration&limit=5`);
+    const decl = (r.included || []).find((x) => x.type === 'ageRatingDeclarations');
+    declId = decl?.id || null;
+  } catch (e) {
+    console.log(`  WARN: could not fetch ageRatingDeclaration id: ${e.message.slice(0, 200)}`);
+    return;
+  }
+  if (!declId) {
+    console.log('  WARN: no ageRatingDeclaration found for this app.');
+    return;
+  }
+  const body = {
     data: {
       type: 'ageRatingDeclarations',
-      id: versionId,
+      id: declId,
       attributes: {
-        // ASC API ageRatingDeclarations — verified field set (2026-06 Apple API).
-        // Removed: gamblingAndContests (not an attribute), seventeenPlus (deprecated).
-        // Added: lootBox (required as of 2025+).
+        // ゆっくりエクソソーム: health/wellness info app, 4+ rating.
+        advertising: false,
+        ageAssurance: false,
+        ageRatingOverride: 'NONE',
         alcoholTobaccoOrDrugUseOrReferences: 'NONE',
         contests: 'NONE',
         gambling: false,
+        gamblingSimulated: 'NONE',
+        gunsOrOtherWeapons: 'NONE',
+        healthOrWellnessTopics: true,
         horrorOrFearThemes: 'NONE',
         kidsAgeBand: null,
         lootBox: false,
         matureOrSuggestiveThemes: 'NONE',
         medicalOrTreatmentInformation: 'INFREQUENT_OR_MILD',
+        messagingAndChat: false,
+        parentalControls: false,
         profanityOrCrudeHumor: 'NONE',
         sexualContentGraphicAndNudity: 'NONE',
         sexualContentOrNudity: 'NONE',
-        violenceCartoonOrFantasy: 'NONE',
-        violenceRealisticProlongedGraphicOrSadistic: 'NONE',
-        violenceRealistic: 'NONE',
-        ageRatingOverride: 'NONE',
         unrestrictedWebAccess: false,
+        userGeneratedContent: false,
+        violenceCartoonOrFantasy: 'NONE',
+        violenceRealistic: 'NONE',
+        violenceRealisticProlongedGraphicOrSadistic: 'NONE',
       },
     },
   };
   try {
-    await api('PATCH', `/v1/ageRatingDeclarations/${versionId}`, decl);
-    console.log('  age rating declaration: set (4+, NONE on all categories)');
+    await api('PATCH', `/v1/ageRatingDeclarations/${declId}`, body);
+    console.log(`  age rating declaration: set OK (id=${declId}, 4+, healthOrWellnessTopics=true)`);
   } catch (e) {
     console.log(`  WARN: age rating declaration patch failed (continuing): ${e.message.slice(0, 400)}`);
   }
@@ -951,7 +972,7 @@ async function submitForReview(api, appId, versionId) {
   await ensureReviewDetail(api, version.id, liveVersionAfter?.id || null);
 
   console.log('\n[7c] Ensure age rating declaration...');
-  await ensureAgeRatingDeclaration(api, version.id);
+  await ensureAgeRatingDeclaration(api, app.id);
 
   console.log('\n[7d] Ensure content rights declaration...');
   await ensureContentRightsDeclaration(api, app.id);
