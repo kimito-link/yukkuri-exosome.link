@@ -376,13 +376,15 @@ async function ensureAppInfoLocalization(api, appId) {
     readAppstoreMetaFile('subtitle-ja.txt') ||
     process.env.ASC_APP_SUBTITLE_JA ||
     '紹介・報酬管理パートナーアプリ';
-  const attrs = {
-    locale: APP_INFO_LOCALE,
+  // locale must NOT be included in PATCH (Apple returns 409 ATTRIBUTE.NOT_ALLOWED).
+  // It is only valid on POST (create). Build separate attr objects.
+  const attrsForPatch = {
     name: APP_CONFIG.identity.displayName,
     subtitle,
     privacyPolicyUrl: STORE_PRIVACY_URL,
     privacyChoicesUrl: STORE_DATA_DELETION_URL,
   };
+  const attrsForPost = { locale: APP_INFO_LOCALE, ...attrsForPatch };
 
   let loc = null;
   try {
@@ -399,14 +401,14 @@ async function ensureAppInfoLocalization(api, appId) {
   try {
     if (loc) {
       await api('PATCH', `/v1/appInfoLocalizations/${loc.id}`, {
-        data: { type: 'appInfoLocalizations', id: loc.id, attributes: attrs },
+        data: { type: 'appInfoLocalizations', id: loc.id, attributes: attrsForPatch },
       });
       console.log(`  appInfoLocalization patched id=${loc.id} privacy=${STORE_PRIVACY_URL}`);
     } else {
       const r = await api('POST', '/v1/appInfoLocalizations', {
         data: {
           type: 'appInfoLocalizations',
-          attributes: attrs,
+          attributes: attrsForPost,
           relationships: {
             appInfo: { data: { type: 'appInfos', id: appInfo.id } },
           },
