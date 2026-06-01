@@ -426,6 +426,47 @@ async function linkBuild(api, versionId, buildId) {
   });
 }
 
+// Submit age rating declaration — required before Apple lets us add a
+// reviewSubmissionItem. Every attribute must be set explicitly; omitting
+// any one causes 409 ENTITY_ERROR.ATTRIBUTE.REQUIRED.
+// Values chosen for "ゆっくりエクソソーム": a health/wellness info app with
+// no mature content, no user-generated content, no gambling, no violence.
+// Guideline reference: App Store Connect API /v1/ageRatingDeclarations/{id}
+async function ensureAgeRatingDeclaration(api, versionId) {
+  // The declaration ID == the appStoreVersion ID (1:1 relationship).
+  const decl = {
+    data: {
+      type: 'ageRatingDeclarations',
+      id: versionId,
+      attributes: {
+        alcoholTobaccoOrDrugUseOrReferences: 'NONE',
+        contests: 'NONE',
+        gambling: false,
+        gamblingAndContests: false,
+        horrorOrFearThemes: 'NONE',
+        kidsAgeBand: null,
+        matureOrSuggestiveThemes: 'NONE',
+        medicalOrTreatmentInformation: 'INFREQUENT_OR_MILD',
+        profanityOrCrudeHumor: 'NONE',
+        sexualContentGraphicAndNudity: 'NONE',
+        sexualContentOrNudity: 'NONE',
+        seventeenPlus: false,
+        violenceCartoonOrFantasy: 'NONE',
+        violenceRealisticProlongedGraphicOrSadistic: 'NONE',
+        violenceRealistic: 'NONE',
+        ageRatingOverride: 'NONE',
+        unrestrictedWebAccess: false,
+      },
+    },
+  };
+  try {
+    await api('PATCH', `/v1/ageRatingDeclarations/${versionId}`, decl);
+    console.log('  age rating declaration: set (4+, NONE on all categories)');
+  } catch (e) {
+    console.log(`  WARN: age rating declaration patch failed (continuing): ${e.message.slice(0, 400)}`);
+  }
+}
+
 // Fallback reviewer-contact details used when no prior version exists.
 // Apple rejects review submission when appStoreReviewDetail is missing
 // or has invalid relationships, so we ALWAYS create one on initial
@@ -889,6 +930,9 @@ async function submitForReview(api, appId, versionId) {
 
   console.log('\n[7] Ensure review detail...');
   await ensureReviewDetail(api, version.id, liveVersionAfter?.id || null);
+
+  console.log('\n[7c] Ensure age rating declaration...');
+  await ensureAgeRatingDeclaration(api, version.id);
 
   console.log('\n[7b] Ensure free-tier pricing...');
   try {
