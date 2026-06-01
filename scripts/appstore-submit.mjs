@@ -428,6 +428,39 @@ async function linkBuild(api, versionId, buildId) {
 
 // Set contentRightsDeclaration on the app — required before Apple lets us submit.
 // ゆっくりエクソソームは自社コンテンツのみ（第三者の著作権コンテンツを使用しない）。
+// Set primary/secondary category on appInfo — required before review submission.
+// Health & Fitness (primary) / Lifestyle (secondary) for ゆっくりエクソソーム.
+async function ensureAppCategories(api, appId) {
+  let appInfoId = null;
+  try {
+    const r = await api('GET', `/v1/apps/${appId}/appInfos?limit=5`);
+    const info =
+      (r.data || []).find((ai) => ai.attributes?.appStoreState === 'PREPARE_FOR_SUBMISSION') ||
+      (r.data || [])[0] ||
+      null;
+    appInfoId = info?.id || null;
+  } catch (e) {
+    console.log(`  WARN: could not fetch appInfo for category: ${e.message.slice(0, 200)}`);
+    return;
+  }
+  if (!appInfoId) { console.log('  WARN: no appInfo found; skipping category set.'); return; }
+  try {
+    await api('PATCH', `/v1/appInfos/${appInfoId}`, {
+      data: {
+        type: 'appInfos',
+        id: appInfoId,
+        relationships: {
+          primaryCategory: { data: { type: 'appCategories', id: 'HEALTH_AND_FITNESS' } },
+          secondaryCategory: { data: { type: 'appCategories', id: 'LIFESTYLE' } },
+        },
+      },
+    });
+    console.log('  categories: HEALTH_AND_FITNESS (primary) / LIFESTYLE (secondary)');
+  } catch (e) {
+    console.log(`  WARN: categories patch failed (continuing): ${e.message.slice(0, 400)}`);
+  }
+}
+
 async function ensureContentRightsDeclaration(api, appId) {
   try {
     await api('PATCH', `/v1/apps/${appId}`, {
@@ -531,27 +564,40 @@ const REVIEW_CONTACT_DEFAULTS = {
   demoAccountPassword: _DEMO_PASS,
   notes:
     process.env.IOS_REVIEW_NOTES ||
-    'Reviewer notes for リバースハック パートナー — invitation-only B2B partner dashboard.\n' +
+    'Reviewer Notes for Yukkuri Exosome (ゆっくりエクソソーム)\n' +
       '\n' +
-      '2.1(a) "we were unable to access the app because there was no login page": Acknowledged from past reviews. This is a login-gated, invitation-only B2B partner dashboard. Launching the native app while signed out goes DIRECTLY to the sign-in page as the very first screen. Only the sign-in page and the legally required pages (Privacy, Terms, Contact, Account Deletion) are reachable without login. Sign in with the demo credentials in App Review Information; after login: ダッシュボード / 報酬履歴 / クライアント一覧. Accounts are invitation-only; the sign-in UI hides every sign-up affordance and a bilingual notice explains this.\n' +
+      'OVERVIEW\n' +
+      'This is a free self-care logging app paired with three original "yukkuri" (slow-life) cartoon characters: Rinku, Konta, and Tanu-nee. Users record daily skin condition, fatigue level, supplement intake, and clinic visit notes. All data is stored locally on the device (localStorage + IndexedDB) — there is NO server upload, NO third-party data sharing, NO account creation, NO sign-in, NO in-app purchase.\n' +
       '\n' +
-      '4.8: the applicable carve-out is the first one listed in Guideline 4.8 itself: "Your app exclusively uses your company\'s own account setup and sign-in systems." We use Clerk-managed email+password as our own account system (identity infrastructure, like AWS Cognito) — none of the third-party logins 4.8 enumerates (Facebook/Google/Twitter/LinkedIn/Amazon/WeChat) exist on iOS. Sign in with Apple is not required for this configuration.\n' +
+      'REVIEWER ACCESS\n' +
+      '- No login required. The app opens directly to the Today screen on first launch.\n' +
+      '- Demo credentials are NOT needed because there is no account system.\n' +
+      '- All features (Today / Care / Boost / Garden / Me tabs) are accessible immediately upon install.\n' +
       '\n' +
-      '2.1(b) Information Needed — direct answers to all seven business-model questions:\n' +
-      '(1) Who uses the paid services? Nobody — the app has NO paid services. Users are contracted business-partner representatives viewing their own referral activity and commission history.\n' +
-      '(2) Where can users purchase the services? Nowhere in or via the app. It only shows information about client-facing services partners refer OFF-PLATFORM, sold B2B between our company and enterprise clients outside Apple\'s ecosystem.\n' +
-      '(3) Previously purchased services accessible in the app? None. It is a read-only referral dashboard.\n' +
-      '(4) Paid content/subscriptions/features unlocked without IAP? None. No paywalls, subscriptions, premium tiers, or digital content; every feature is free to every authorized partner.\n' +
-      '(5) Are the enterprise services sold to single users, consumers, or for family use? Neither — sold B2B to enterprise/corporate clients under offline contracts. Users are business partners, not consumers or families.\n' +
-      '(6) How do users obtain an account? Do they pay a fee? Invitation-only, provisioned by us after an offline B2B contract. NO fee, no self-service sign-up. Reviewers use the supplied demo credentials.\n' +
-      '(7) Do individual customers pay for the content or services? No. Nothing is paid inside the app; the underlying services are paid by enterprise clients off-platform. The app is a free companion.\n' +
-      'IAP: Guideline 3.1.3(f): "Free apps acting as a stand-alone companion to a paid web based tool ... do not need to use in-app purchase, provided there is no purchasing inside the app, or calls to action for purchase outside of the app." That is exactly this app; per 3.1.3(f), IAP is not required.\n' +
+      'DATA & PRIVACY\n' +
+      '- No user account, no personal information collected.\n' +
+      '- All entries stored in browser localStorage and IndexedDB on the device only.\n' +
+      '- No analytics, no advertising SDK.\n' +
+      '- No third-party authentication (Apple, Google, etc.).\n' +
       '\n' +
-      `App: native wrapper around ${PRODUCTION_URL}. ` +
-      (_DEMO_USER
-        ? 'Use the supplied demo credentials; after login: ダッシュボード / 報酬履歴 / クライアント一覧.\n'
-        : 'Login-gated and invitation-only; use the demo credentials in App Review Information.\n') +
-      'Account deletion (5.1.1(v)): avatar dropdown -> "アカウント削除" -> confirm, or visit /account/delete. Deletion cascades all partner records and revokes the Clerk session.',
+      'NATIVE WRAPPER\n' +
+      `This iOS app is a Capacitor wrapper around the production web app at ${PRODUCTION_URL}.\n` +
+      'The native shell loads the same site that has been live and indexed since 2026-05.\n' +
+      '\n' +
+      'CONTENT NOTES\n' +
+      '- The app references "exosome" and "supernatant" research by Dr. Minoru Ueda (Professor Emeritus, Osaka University, public author of the 2022 book on regenerative medicine). The app is NOT affiliated with any specific clinic or product, and makes NO medical claims, NO diagnosis features, NO treatment recommendations.\n' +
+      '- The "+O-tsubu" notation displayed in the body signal map is an illustrative metaphor only, not a measured value.\n' +
+      '- The app explicitly directs users to consult medical professionals for any actual treatment.\n' +
+      '\n' +
+      'AGE RATING\n' +
+      '4+ is appropriate. No mature themes, no medical or treatment instructions, no gambling, no user-generated content.\n' +
+      '\n' +
+      'CONTACT\n' +
+      `- Support URL: ${PRODUCTION_URL}/about/\n` +
+      '- Email: info@best-trust.biz\n' +
+      '- Phone: +81 90 4180 3041\n' +
+      '\n' +
+      'Thank you for the review.',
 };
 
 async function ensureReviewDetail(api, versionId, sourceVersionId) {
@@ -976,6 +1022,9 @@ async function submitForReview(api, appId, versionId) {
 
   console.log('\n[7d] Ensure content rights declaration...');
   await ensureContentRightsDeclaration(api, app.id);
+
+  console.log('\n[7e] Ensure app categories...');
+  await ensureAppCategories(api, app.id);
 
   console.log('\n[7b] Ensure free-tier pricing...');
   try {
