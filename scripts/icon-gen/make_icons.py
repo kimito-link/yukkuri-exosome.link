@@ -175,31 +175,68 @@ def draw_pearl_arch(canvas: Image.Image, points: list):
 # ─────────────────────────────────────────────────────
 
 def compose_variant_a() -> Image.Image:
-    """アプリアイコン用：りんく単体、シンプル、視認性最大"""
+    """アプリアイコン用：りんく単体ドーン、視認性最大。
+
+    設計方針:
+      - りんくを画面の70%以上占有させ、1cm四方でも認識可能に
+      - パール4粒を四隅に散らす（角丸マスクが当たる位置にも置く）
+      - 中央のシャンパンゴールド光彩で「高級感」を底上げ
+    """
     canvas = make_background().convert("RGBA")
+
+    # 中央にシャンパンゴールドの光彩（薄く、おしゃれな光のリング）
+    glow_overlay = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
+    gdraw = ImageDraw.Draw(glow_overlay)
+    cx, cy = CANVAS_SIZE // 2, CANVAS_SIZE // 2
+    for r in range(380, 280, -10):
+        alpha = int(40 * (1 - (r - 280) / 100))
+        gdraw.ellipse(
+            [(cx - r, cy - r), (cx + r, cy + r)],
+            outline=(ACCENT_GOLD[0], ACCENT_GOLD[1], ACCENT_GOLD[2], alpha),
+            width=3,
+        )
+    glow_overlay = glow_overlay.filter(ImageFilter.GaussianBlur(radius=15))
+    canvas.paste(glow_overlay, (0, 0), glow_overlay)
+
+    # 背景パール（薄く・大きく・四隅に配置、見切れOK）
+    bg_pearl_positions = [
+        # 左上隅（大）
+        (-30, -30, 120, PEARL_NAVY, 0.55),
+        # 右上隅（中）
+        (CANVAS_SIZE - 80, 60, 95, PEARL_ORANGE, 0.5),
+        # 左下隅（中）
+        (90, CANVAS_SIZE - 110, 90, ACCENT_GOLD, 0.5),
+        # 右下隅（大）
+        (CANVAS_SIZE - 70, CANVAS_SIZE - 70, 130, PEARL_WHITE, 0.55),
+    ]
+    for px, py, radius, color, opacity in bg_pearl_positions:
+        # 半透明レイヤーに描いて重ねる
+        pearl_layer = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
+        draw_pearl(pearl_layer, px, py, radius, color)
+        # opacity 調整
+        alpha = pearl_layer.split()[3]
+        alpha = alpha.point(lambda a: int(a * opacity))
+        pearl_layer.putalpha(alpha)
+        canvas.paste(pearl_layer, (0, 0), pearl_layer)
+
+    # りんくを画面いっぱいに（高さ750px、頭が画面の70%）
     rinku = trim_alpha(load_character("link/link-yukkuri-smile-mouth-open.png"))
-    # りんくを大きく中央に
-    rinku = fit_height(rinku, 640)
+    rinku = fit_height(rinku, 780)
     rx = (CANVAS_SIZE - rinku.width) // 2
-    ry = (CANVAS_SIZE - rinku.height) // 2 + 40  # ちょい下寄りでパール上余白
+    ry = (CANVAS_SIZE - rinku.height) // 2 + 30  # ほんの少し下寄り
     canvas.paste(rinku, (rx, ry), rinku)
 
-    # 周囲にパール3粒（左上にネイビー、右下にオレンジ、左下にパールホワイト）
-    head_cx = rx + rinku.width // 2
-    head_cy = ry + 180  # りんくの頭の高さ
-    pearl_r = 56
-    # 円周上の3点
-    radius_around = 380
-    positions = [
-        # 左上
-        (head_cx - int(radius_around * 0.85), head_cy - int(radius_around * 0.55), PEARL_NAVY),
-        # 右上
-        (head_cx + int(radius_around * 0.7), head_cy - int(radius_around * 0.5), PEARL_ORANGE),
-        # 下中央
-        (head_cx - int(radius_around * 0.25), head_cy + int(radius_around * 0.95), PEARL_WHITE),
+    # 前景パール3粒（はっきり、りんくと同レベルの存在感）
+    fg_pearls = [
+        # 左頬の横（小）
+        (rx - 60, ry + 380, 50, PEARL_NAVY),
+        # 右肩の上（中）
+        (rx + rinku.width + 30, ry + 200, 60, PEARL_ORANGE),
+        # 下中央（中）
+        (CANVAS_SIZE // 2, CANVAS_SIZE - 60, 55, PEARL_WHITE),
     ]
-    for px, py, color in positions:
-        draw_pearl(canvas, px, py, pearl_r, color)
+    for px, py, radius, color in fg_pearls:
+        draw_pearl(canvas, px, py, radius, color)
 
     return canvas.convert("RGB")
 
