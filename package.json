@@ -27,6 +27,7 @@
     "release:play:draft": "node scripts/play-publish.mjs --draft",
     "release:play:status": "node scripts/play-publish.mjs --status",
     "release:play:check": "node scripts/play-review-check.mjs",
+    "release:play:diagnose": "node scripts/play-diagnose.mjs",
     "release:appstore:submit": "node scripts/appstore-submit.mjs",
     "release:appstore:release-pending": "node scripts/appstore-release-pending.mjs",
     "release:appstore:release-now": "node scripts/appstore-release-now.mjs",
