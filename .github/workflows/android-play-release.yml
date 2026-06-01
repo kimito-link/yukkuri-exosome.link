@@ -94,6 +94,24 @@ jobs:
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > android-twa/android-upload-key.jks
           printf '%s\n' "$ANDROID_KEYSTORE_PROPERTIES" > android-twa/keystore.properties
 
+      - name: Verify build.gradle has signingConfig
+        run: |
+          set -euo pipefail
+          gradle="android-twa/app/build.gradle"
+          if ! grep -q "signingConfigs" "$gradle"; then
+            echo "ERROR: $gradle is missing 'signingConfigs' block."
+            echo "The AAB will not be signed and Play Console will reject it."
+            echo "Add signingConfigs { release { storeFile / storePassword / keyAlias / keyPassword } }"
+            echo "and set 'signingConfig signingConfigs.release' inside buildTypes.release."
+            exit 1
+          fi
+          if ! grep -A20 "buildTypes" "$gradle" | grep -q "signingConfig signingConfigs.release"; then
+            echo "ERROR: buildTypes.release in $gradle does not reference signingConfig."
+            echo "Add: signingConfig signingConfigs.release"
+            exit 1
+          fi
+          echo "signingConfig check: OK"
+
       - name: Build release AAB
         working-directory: android-twa
         run: |

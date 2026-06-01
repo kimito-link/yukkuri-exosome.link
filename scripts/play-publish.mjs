@@ -48,6 +48,22 @@ function readVersionCode() {
   return m ? Number(m[1]) : null;
 }
 
+function assertSigningConfig() {
+  const p = path.join(REPO, 'android-twa', 'app', 'build.gradle');
+  if (!fs.existsSync(p)) return;
+  const src = fs.readFileSync(p, 'utf8');
+  const hasSigningConfigs = /signingConfigs\s*\{/.test(src);
+  const hasReleaseConfig = /buildTypes\s*\{[^}]*release\s*\{[^}]*signingConfig/s.test(src);
+  if (!hasSigningConfigs || !hasReleaseConfig) {
+    throw new Error(
+      'android-twa/app/build.gradle is missing signingConfig for release builds.\n' +
+      'The AAB will not be signed and Play Console will reject it.\n' +
+      'Add signingConfigs { release { ... } } and signingConfig signingConfigs.release to buildTypes.release.',
+    );
+  }
+  console.log('  signingConfig check: OK');
+}
+
 const ARGS = new Set(process.argv.slice(2));
 const MODE = ARGS.has('--status')
   ? 'status'
@@ -61,6 +77,7 @@ const MODE = ARGS.has('--status')
 
   console.log(`packageName=${PACKAGE} track=${TRACK} mode=${MODE}`);
   console.log(`AAB path: ${AAB_PATH}`);
+  assertSigningConfig();
   const expectedVc = readVersionCode();
   if (expectedVc) console.log(`gradle versionCode = ${expectedVc}`);
 
