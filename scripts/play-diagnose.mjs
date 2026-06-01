@@ -8,7 +8,7 @@ import { loadServiceAccount, makePlayClient } from './lib/play-api.mjs';
 import { loadAppConfig } from './lib/app-config.mjs';
 
 const cfg = loadAppConfig();
-const PACKAGE = process.env.PLAY_PACKAGE_NAME || cfg.identity.packageName || 'com.kimito.link.yukkuriexosome';
+const PACKAGE = process.env.PLAY_PACKAGE_NAME || cfg.stores?.playPackageName || cfg.identity?.bundleId;
 
 const sa = loadServiceAccount();
 console.log(`SA email : ${sa.client_email}`);
@@ -29,7 +29,7 @@ try {
     console.error('Fix in Play Console:');
     console.error('  1. play.google.com/console → 「ユーザーと権限」');
     console.error(`  2. "${sa.client_email}" を選択`);
-    console.error('  3. 「アプリの権限」タブ → 「ゆっくりエクソソーム」にチェック → 保存');
+    console.error(`  3. 「アプリの権限」タブ → 「${cfg.identity.displayName}」にチェック → 保存`);
     console.error('  4. 変更が反映されるまで数分かかることがある');
     console.error('');
     console.error('または: アカウント全体の「リリースマネージャー」権限を付与すれば全アプリにアクセス可能。');
