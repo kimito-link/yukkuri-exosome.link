@@ -103,6 +103,31 @@ async function commitScreenshot(api, screenshotId, bytes) {
   });
 }
 
+// Poll until all screenshots in a set reach COMPLETE (or FAILED).
+// Apple processes uploads asynchronously; submitting before COMPLETE
+// causes STATE_ERROR.SCREENSHOT_UPLOADS_IN_PROGRESS.
+async function waitForScreenshotsComplete(api, setId, timeoutMs = 120_000) {
+  const deadline = Date.now() + timeoutMs;
+  let attempt = 0;
+  while (Date.now() < deadline) {
+    attempt += 1;
+    const shots = await listScreenshots(api, setId);
+    const states = shots.map((s) => s.attributes?.assetDeliveryState?.state ?? 'UNKNOWN');
+    const pending = states.filter((s) => s !== 'COMPLETE' && s !== 'FAILED');
+    if (pending.length === 0) {
+      const failed = states.filter((s) => s === 'FAILED');
+      if (failed.length > 0) {
+        throw new Error(`${failed.length} screenshot(s) failed processing on Apple's side`);
+      }
+      console.log(`  all screenshots COMPLETE (attempt ${attempt})`);
+      return;
+    }
+    console.log(`  waiting for ${pending.length} screenshot(s) to finish processing (attempt ${attempt}, states: ${[...new Set(states)].join(', ')})...`);
+    await new Promise((r) => setTimeout(r, 5_000));
+  }
+  throw new Error(`Timed out waiting for screenshots to reach COMPLETE after ${timeoutMs / 1000}s`);
+}
+
 async function deleteAllScreenshots(api, setId) {
   const existing = await listScreenshots(api, setId);
   let deleted = 0;
@@ -165,6 +190,13 @@ async function uploadOneSet(api, localizationId, dir, displayType, prefix) {
     console.log(`  ${file}: committing checksum...`);
     await commitScreenshot(api, reserved.id, bytes);
     uploaded += 1;
+  }
+  // Wait for Apple to finish async processing before returning.
+  // Submitting for review while any screenshot is still UPLOAD_COMPLETE
+  // (not yet COMPLETE) causes STATE_ERROR.SCREENSHOT_UPLOADS_IN_PROGRESS.
+  if (uploaded > 0) {
+    console.log(`  waiting for Apple to process ${uploaded} screenshot(s)...`);
+    await waitForScreenshotsComplete(api, setId);
   }
   return { uploaded, skipped: 0, deleted };
 }
