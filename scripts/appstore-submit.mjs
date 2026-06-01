@@ -426,6 +426,23 @@ async function linkBuild(api, versionId, buildId) {
   });
 }
 
+// Set contentRightsDeclaration on the app — required before Apple lets us submit.
+// ゆっくりエクソソームは自社コンテンツのみ（第三者の著作権コンテンツを使用しない）。
+async function ensureContentRightsDeclaration(api, appId) {
+  try {
+    await api('PATCH', `/v1/apps/${appId}`, {
+      data: {
+        type: 'apps',
+        id: appId,
+        attributes: { contentRightsDeclaration: 'DOES_NOT_USE_THIRD_PARTY_CONTENT' },
+      },
+    });
+    console.log('  content rights declaration: DOES_NOT_USE_THIRD_PARTY_CONTENT');
+  } catch (e) {
+    console.log(`  WARN: contentRightsDeclaration patch failed (continuing): ${e.message.slice(0, 400)}`);
+  }
+}
+
 // Submit age rating declaration — required before Apple lets us add a
 // reviewSubmissionItem. Every attribute must be set explicitly; omitting
 // any one causes 409 ENTITY_ERROR.ATTRIBUTE.REQUIRED.
@@ -439,10 +456,12 @@ async function ensureAgeRatingDeclaration(api, versionId) {
       type: 'ageRatingDeclarations',
       id: versionId,
       attributes: {
+        // ASC API ageRatingDeclarations — exact field names from Apple docs.
+        // gamblingAndContests does NOT exist (rejected with 409 NOT_AN_ATTRIBUTE).
+        // Use separate `gambling` (boolean) and `contests` (enum) fields.
         alcoholTobaccoOrDrugUseOrReferences: 'NONE',
         contests: 'NONE',
         gambling: false,
-        gamblingAndContests: false,
         horrorOrFearThemes: 'NONE',
         kidsAgeBand: null,
         matureOrSuggestiveThemes: 'NONE',
@@ -933,6 +952,9 @@ async function submitForReview(api, appId, versionId) {
 
   console.log('\n[7c] Ensure age rating declaration...');
   await ensureAgeRatingDeclaration(api, version.id);
+
+  console.log('\n[7d] Ensure content rights declaration...');
+  await ensureContentRightsDeclaration(api, app.id);
 
   console.log('\n[7b] Ensure free-tier pricing...');
   try {
