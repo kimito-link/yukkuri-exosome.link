@@ -12,6 +12,7 @@
 
 const PHOTO_DB_NAME = 'ye_photolog_v1';
 const PHOTO_STORE = 'photos';
+const PHOTO_MAX_BYTES = 25 * 1024 * 1024;
 
 /** IndexedDB 接続 */
 function openPhotoDB() {
@@ -31,6 +32,9 @@ function openPhotoDB() {
 
 /** 写真追加 */
 async function savePhoto(blob, note = '') {
+    if (!(blob instanceof Blob) || blob.size === 0) {
+        throw new Error('写真データを作成できませんでした');
+    }
     const db = await openPhotoDB();
     const id = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
     const photo = {
@@ -81,35 +85,58 @@ function blobToUrl(blob) {
 
 /** 画像をリサイズしてJPEG Blobに変換 */
 async function resizeImage(file, maxSide = 800, quality = 0.85) {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = url;
-    });
-
-    let { width, height } = img;
-    if (width > maxSide || height > maxSide) {
-        if (width > height) {
-            height = Math.round(height * (maxSide / width));
-            width = maxSide;
-        } else {
-            width = Math.round(width * (maxSide / height));
-            height = maxSide;
-        }
+    if (!file || !file.type?.startsWith('image/')) {
+        throw new Error('画像ファイルを選択してください');
+    }
+    if (file.size > PHOTO_MAX_BYTES) {
+        throw new Error('写真のサイズが大きすぎます。別の写真を選択してください');
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, width, height);
-    URL.revokeObjectURL(url);
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    try {
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = () => reject(new Error('写真を読み込めませんでした'));
+            img.src = url;
+        });
 
-    return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', quality);
-    });
+        let { width, height } = img;
+        if (!width || !height) {
+            throw new Error('写真のサイズを取得できませんでした');
+        }
+
+        if (width > maxSide || height > maxSide) {
+            if (width > height) {
+                height = Math.round(height * (maxSide / width));
+                width = maxSide;
+            } else {
+                width = Math.round(width * (maxSide / height));
+                height = maxSide;
+            }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            throw new Error('写真を処理できませんでした');
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
+        return new Promise((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('写真を保存用データに変換できませんでした'));
+                }
+            }, 'image/jpeg', quality);
+        });
+    } finally {
+        URL.revokeObjectURL(url);
+    }
 }
 
 /** 日付フォーマット */
@@ -143,8 +170,16 @@ async function renderPhotoLog(containerId) {
     let compareMode = false;
     let beforeId = null;
     let afterId = null;
+    let activePhotoUrls = [];
+
+    function revokeActivePhotoUrls() {
+        activePhotoUrls.forEach((url) => URL.revokeObjectURL(url));
+        activePhotoUrls = [];
+    }
 
     async function rebuild() {
+        revokeActivePhotoUrls();
+
         let photos = [];
         try {
             photos = await getAllPhotos();
@@ -155,11 +190,22 @@ async function renderPhotoLog(containerId) {
         const photosCount = photos.length;
         const oldest = photos[photos.length - 1];
         const newest = photos[0];
+        const photoIds = new Set(photos.map((p) => p.id));
+        if (photos.length < 2) {
+            compareMode = false;
+            beforeId = null;
+            afterId = null;
+        } else {
+            if (beforeId && !photoIds.has(beforeId)) beforeId = null;
+            if (afterId && !photoIds.has(afterId)) afterId = null;
+        }
 
         // Object URL 生成
         const photoUrls = {};
         photos.forEach(p => {
-            photoUrls[p.id] = blobToUrl(p.blob);
+            const url = blobToUrl(p.blob);
+            photoUrls[p.id] = url;
+            activePhotoUrls.push(url);
         });
 
         // 初期選択
@@ -188,7 +234,7 @@ async function renderPhotoLog(containerId) {
                 <label for="photo-input" style="display:flex; align-items:center; justify-content:center; gap:10px; padding:14px; background:linear-gradient(135deg,#c9899a,#c9a96e); color:#fff; border-radius:12px; cursor:pointer; font-weight:700; letter-spacing:.05em; font-size:.9rem; margin-bottom:14px;">
                     📷 写真を追加（撮影 or 選択）
                 </label>
-                <input type="file" id="photo-input" accept="image/*" capture="user" style="display:none;">
+                <input type="file" id="photo-input" accept="image/*" style="display:none;">
 
                 ${photosCount === 0 ? `
                     <div style="text-align:center; padding:24px 14px; color:#8a7d76; font-size:.85rem; background:#faf6f1; border-radius:12px; line-height:1.6;">
@@ -262,12 +308,13 @@ async function renderPhotoLog(containerId) {
                 if (typeof App !== 'undefined' && App.showToast) {
                     App.showToast('写真を保存しました', '📸');
                 }
-                rebuild();
+                await rebuild();
             } catch (err) {
                 console.error(err);
-                alert('写真の保存に失敗しました：' + err.message);
+                alert('写真の保存に失敗しました：' + (err?.message || '時間をおいて再度お試しください'));
+            } finally {
+                fileInput.value = '';
             }
-            fileInput.value = '';
         });
 
         // 比較モードトグル
@@ -277,17 +324,17 @@ async function renderPhotoLog(containerId) {
                 beforeId = photos[photos.length - 1].id;
                 afterId = photos[0].id;
             }
-            rebuild();
+            rebuild().catch((err) => console.error('Photo Log rebuild failed:', err));
         });
 
         // Before/After 選択変更
         container.querySelector('#photo-before')?.addEventListener('change', (e) => {
             beforeId = e.target.value;
-            rebuild();
+            rebuild().catch((err) => console.error('Photo Log rebuild failed:', err));
         });
         container.querySelector('#photo-after')?.addEventListener('change', (e) => {
             afterId = e.target.value;
-            rebuild();
+            rebuild().catch((err) => console.error('Photo Log rebuild failed:', err));
         });
 
         // 削除
@@ -295,11 +342,16 @@ async function renderPhotoLog(containerId) {
             btn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 if (!confirm('この写真を削除しますか？\n（端末からも完全に削除されます）')) return;
-                await deletePhoto(btn.dataset.id);
-                rebuild();
+                try {
+                    await deletePhoto(btn.dataset.id);
+                    await rebuild();
+                } catch (err) {
+                    console.error(err);
+                    alert('写真の削除に失敗しました');
+                }
             });
         });
     }
 
-    rebuild();
+    await rebuild();
 }

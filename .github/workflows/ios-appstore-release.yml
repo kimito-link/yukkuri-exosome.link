@@ -150,12 +150,25 @@ jobs:
           fi
           npx cap copy ios
 
+      # WKWebView の file input からカメラ/写真ライブラリを開くための権限文言と、
       # 標準 HTTPS / OS 提供の TLS のみなら非免除暗号を使わない宣言（審査・輸出コンプライアンスの手戻り軽減）
-      - name: Info.plist export compliance (ITSAppUsesNonExemptEncryption)
+      - name: Info.plist privacy permissions + export compliance
         run: |
           set -euo pipefail
           PLIST="ios/App/App/Info.plist"
           test -f "$PLIST"
+          upsert_plist_string() {
+            key="$1"
+            value="$2"
+            if /usr/libexec/PlistBuddy -c "Print :$key" "$PLIST" >/dev/null 2>&1; then
+              /usr/libexec/PlistBuddy -c "Set :$key $value" "$PLIST"
+            else
+              /usr/libexec/PlistBuddy -c "Add :$key string $value" "$PLIST"
+            fi
+          }
+          upsert_plist_string "NSCameraUsageDescription" "写真記録のために、撮影した写真を端末内に保存する場合のみカメラを使用します。写真は外部に送信されません。"
+          upsert_plist_string "NSPhotoLibraryUsageDescription" "写真記録のために、選択した写真を端末内に保存する場合のみ写真ライブラリを使用します。写真は外部に送信されません。"
+          upsert_plist_string "NSPhotoLibraryAddUsageDescription" "写真記録の画像を端末内に保存・管理するために写真ライブラリへの保存権限を使用します。"
           if /usr/libexec/PlistBuddy -c "Print :ITSAppUsesNonExemptEncryption" "$PLIST" >/dev/null 2>&1; then
             /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST"
           else
