@@ -13,52 +13,70 @@
 // Issue #54 (false-positive DEMO_ACCOUNT classification on our own
 // "Use the supplied demo credentials at /sign-in" template). Don't.
 
+// Each pattern: regex で Apple のリジェクト本文を判定 → category + action + reply template を返す。
+// `replyTemplate` は app-review-replies/ 配下のテンプレファイル名。
+// 順序が重要：より具体的な PURPOSE_STRINGS を先に判定し、汎用的な PRIVACY は最後。
 const PATTERNS = [
+  {
+    code: 'PURPOSE_STRINGS',
+    label: 'Guideline 5.1.1(ii) — purpose strings insufficient',
+    regex: /purpose\s?string|usage\s?description|sufficiently explain|provide an example|nscamera|nsphotolibrary|nsmicrophone|nslocation/i,
+    action: 'fix-info-plist-purpose-strings',
+    replyTemplate: 'app-review-replies/5.1.1-ii-purpose-strings.md',
+    hint:
+      'Info.plist の NSCameraUsageDescription / NSPhotoLibraryUsageDescription 等が「具体例なし」で弾かれた。Workflow YAML の Info.plist privacy permissions ステップで、各 purpose string に「使い道 + 具体例 + 端末内保存の明示 + サーバー送信なし」を含める。Reply template: app-review-replies/5.1.1-ii-purpose-strings.md',
+  },
   {
     code: 'TWO_THREE_TEN',
     label: 'Guideline 2.3.10 — other-platform reference',
     regex: /(android|google\s?play|play\s?store|amazon\s?appstore|galaxy\s?store)/i,
     action: 'retry-after-metadata-fix',
+    replyTemplate: 'app-review-replies/2.3.10-other-platform-reference.md',
     hint:
-      'Metadata mentions a non-Apple platform. Edit description-ja.txt / keywords-ja.txt / release-notes to stay platform-neutral and re-push.',
+      'Metadata mentions a non-Apple platform. Edit description-ja.txt / keywords-ja.txt / release-notes to stay platform-neutral and re-push. Reply template: app-review-replies/2.3.10-other-platform-reference.md',
   },
   {
     code: 'SCREENSHOT',
-    label: 'Screenshot rejection',
+    label: 'Guideline 4.0 — Screenshot rejection',
     regex: /screenshot|misleading|app preview|inaccurate/i,
     action: 'retry-with-fresh-screenshots',
+    replyTemplate: 'app-review-replies/4.0-design-screenshot.md',
     hint:
-      'Screenshots failed visual review. Improve scripts/capture-appstore-screenshots.mjs (add captions / multiple slides) then re-trigger ios-appstore-release.',
+      'Screenshots failed visual review. Regenerate with scripts/icon-gen/make_screenshots.py (filename prefix must be iphone-67-* or iphone-65-*) then re-trigger ios-appstore-release. Reply template: app-review-replies/4.0-design-screenshot.md',
   },
   {
     code: 'DEMO_ACCOUNT',
-    label: 'Demo account / sign-in required',
+    label: 'Guideline 2.1 — Demo account / sign-in required',
     regex: /demo\s?account|sign[- ]?in|credentials|login|unable to access/i,
     action: 'add-demo-account-secret',
+    replyTemplate: 'app-review-replies/2.1-demo-account.md',
     hint:
-      'Reviewer could not access the app. Set IOS_REVIEW_DEMO_USERNAME / IOS_REVIEW_DEMO_PASSWORD repo secrets with a working partner.reverse-re-birth-hack.com account, then re-trigger ios-appstore-release.',
-  },
-  {
-    code: 'PRIVACY',
-    label: 'Privacy policy / data collection',
-    regex: /privacy|data collection|app privacy|tracking/i,
-    action: 'review-app-privacy-form',
-    hint:
-      'App Privacy form needs adjustment in ASC web UI. Compare disclosed data types with what the app actually collects.',
+      'Reviewer could not access the app. For login-required apps (リバースハック), set IOS_REVIEW_DEMO_USERNAME / IOS_REVIEW_DEMO_PASSWORD repo secrets with a working account and update Reviewer Notes. For no-account apps (ゆっくりエクソソーム), update Reviewer Notes to explicitly state "No login required". Reply template: app-review-replies/2.1-demo-account.md',
   },
   {
     code: 'CRASH_BUG',
-    label: 'Crash or bug in build',
+    label: 'Guideline 2.5.1 — Crash or bug in build',
     regex: /crash|bug|freeze|hang|broken/i,
     action: 'fix-and-rebuild',
+    replyTemplate: 'app-review-replies/2.5.1-software-requirements.md',
     hint:
-      'Build crashed during review. Fix the bug, push to main, the iOS workflow will rebuild and resubmit automatically.',
+      'Build crashed during review. Read the reviewer\'s reproduction steps, fix the root cause (often WKWebView-specific issues on the latest iOS), push to main, the iOS workflow rebuilds and resubmits automatically. Reply template: app-review-replies/2.5.1-software-requirements.md',
+  },
+  {
+    code: 'PRIVACY',
+    label: 'Guideline 5.1.1(i) — Privacy policy / data collection mismatch',
+    regex: /privacy|data collection|app privacy|tracking/i,
+    action: 'review-app-privacy-form',
+    replyTemplate: 'app-review-replies/5.1.1-i-privacy-data-collection.md',
+    hint:
+      'App Privacy form does not match implementation. Compare disclosed data types in ASC > App Privacy with what the app actually collects (incl. transitively via 3rd party SDKs). Reply template: app-review-replies/5.1.1-i-privacy-data-collection.md',
   },
   {
     code: 'INVALID_BINARY',
     label: 'Invalid binary',
     regex: /invalid binary|missing.*entitlement|signing/i,
     action: 'rebuild-and-resubmit',
+    replyTemplate: null,
     hint:
       'Binary failed Apple processing. This is often transient; re-trigger ios-appstore-release.yml.',
   },
@@ -72,18 +90,23 @@ export function classifyRejection({ state, feedbackText = '' }) {
         code: p.code,
         label: p.label,
         action: p.action,
+        replyTemplate: p.replyTemplate || null,
         hint: p.hint,
       };
     }
   }
   // State-only fallbacks when no feedback text is available yet.
-  if (state === 'INVALID_BINARY') return PATTERNS.find((p) => p.code === 'INVALID_BINARY');
+  if (state === 'INVALID_BINARY') {
+    const p = PATTERNS.find((x) => x.code === 'INVALID_BINARY');
+    return p && { code: p.code, label: p.label, action: p.action, replyTemplate: p.replyTemplate || null, hint: p.hint };
+  }
   return {
     code: 'UNKNOWN',
     label: `Unclassified (${state})`,
     action: 'manual-review',
+    replyTemplate: null,
     hint:
-      'No matching pattern. Open the App Store Connect rejection email and decide between (a) metadata change + re-push, (b) code fix + re-push, or (c) ASC UI work.',
+      'No matching pattern. Open the App Store Connect rejection email and decide between (a) metadata change + re-push, (b) code fix + re-push, or (c) ASC UI work. Then write a new template in app-review-replies/ so future you can reuse it.',
   };
 }
 

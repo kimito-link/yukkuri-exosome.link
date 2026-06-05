@@ -32,6 +32,8 @@
     "release:appstore:release-pending": "node scripts/appstore-release-pending.mjs",
     "release:appstore:release-now": "node scripts/appstore-release-now.mjs",
     "release:appstore:check": "node scripts/asc-review-check.mjs",
+    "release:appstore:reject:handle": "node scripts/asc-rejection-handle.mjs",
+    "release:appstore:reject:copy": "node scripts/asc-rejection-handle.mjs --copy",
     "play:set-listing": "node scripts/play-set-listing.mjs",
     "play:set-app-content": "node scripts/play-set-app-content.mjs",
     "setup": "node scripts/setup-new-app.mjs",
