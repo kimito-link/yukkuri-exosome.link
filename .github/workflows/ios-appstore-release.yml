@@ -166,9 +166,15 @@ jobs:
               /usr/libexec/PlistBuddy -c "Add :$key string $value" "$PLIST"
             fi
           }
-          upsert_plist_string "NSCameraUsageDescription" "写真記録のために、撮影した写真を端末内に保存する場合のみカメラを使用します。写真は外部に送信されません。"
-          upsert_plist_string "NSPhotoLibraryUsageDescription" "写真記録のために、選択した写真を端末内に保存する場合のみ写真ライブラリを使用します。写真は外部に送信されません。"
-          upsert_plist_string "NSPhotoLibraryAddUsageDescription" "写真記録の画像を端末内に保存・管理するために写真ライブラリへの保存権限を使用します。"
+          # Apple 2026-06-03 リジェクト 5.1.1(ii) 対応:
+          # purpose strings は「データの使い道」と「具体例」を必ず含める必要がある。
+          # 例: "App needs camera access" は NG。
+          # ゆっくりエクソソームでは Today 画面の「ビフォーアフター写真記録」機能で
+          # 肌・疲労の変化を可視化するためにカメラ/写真ライブラリを使用する。
+          # データはすべて端末内 (IndexedDB) のみに保存し、サーバー送信や第三者共有はしない。
+          upsert_plist_string "NSCameraUsageDescription" "肌や目元の状態の変化を記録するため、ビフォーアフター写真を撮影します。例: 今日の肌コンディションを撮影し、1か月後に同じ部位を撮って比較することで、自分のセルフケア習慣の積み上がりを確認できます。撮影された写真はすべてこの端末の内部（IndexedDB）にのみ保存され、サーバーには送信されず、第三者と共有されることもありません。"
+          upsert_plist_string "NSPhotoLibraryUsageDescription" "肌や目元の変化記録に既存の写真を活用するため、写真ライブラリから過去のビフォー写真を選択します。例: 先月撮影した目元の写真を選んで取り込み、今日撮影した写真と並べて比較できます。選択された写真はこの端末の内部にのみ保存され、サーバーには送信されません。"
+          upsert_plist_string "NSPhotoLibraryAddUsageDescription" "アプリ内で撮影した記録写真をご自身の写真ライブラリにも保存できるようにするため、書き込み権限を使用します。例: クリニックの診察前に、アプリで撮りためたビフォーアフター写真を写真アプリへエクスポートして担当医に見せられます。"
           if /usr/libexec/PlistBuddy -c "Print :ITSAppUsesNonExemptEncryption" "$PLIST" >/dev/null 2>&1; then
             /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST"
           else

@@ -32,7 +32,7 @@ const REPO = path.resolve(__dirname, '..');
 const APP_CONFIG = loadAppConfig();
 const PRODUCTION_URL = `https://${APP_CONFIG.identity.productionDomain}`;
 
-const BUNDLE_ID = process.env.APP_BUNDLE_ID || APP_CONFIG.identity.bundleId || 'com.reversehack.partner';
+const BUNDLE_ID = process.env.APP_BUNDLE_ID || APP_CONFIG.identity.bundleId;
 const PLATFORM = 'IOS';
 const POLL_INTERVAL_MS = 30_000;
 const POLL_MAX_MIN = 30;
@@ -121,7 +121,7 @@ function normalizeVersion(v) {
 // Fallback copyright string used when no prior live version exists and
 // Apple has not auto-populated it. Apple requires copyright on the
 // appStoreVersion before submit-for-review.
-const DEFAULT_COPYRIGHT = process.env.IOS_COPYRIGHT || `© ${new Date().getFullYear()} BEST TRUST K.K.`;
+const DEFAULT_COPYRIGHT = process.env.IOS_COPYRIGHT || `© ${new Date().getFullYear()} ${APP_CONFIG.contact.companyName || 'BEST TRUST K.K.'}`;
 
 // Backfill copyright on an existing version if Apple has it empty.
 // Idempotent — does nothing when copyright is already set, so user
@@ -452,7 +452,7 @@ async function ensureAppCategories(api, appId) {
         type: 'appInfos',
         id: appInfoId,
         relationships: {
-          primaryCategory: { data: { type: 'appCategories', id: 'HEALTH_AND_FITNESS' } },
+          primaryCategory: { data: { type: 'appCategories', id: APP_CONFIG.stores.primaryCategory } },
           secondaryCategory: { data: { type: 'appCategories', id: 'LIFESTYLE' } },
         },
       },
@@ -596,8 +596,8 @@ const REVIEW_CONTACT_DEFAULTS = {
       '\n' +
       'CONTACT\n' +
       `- Support URL: ${PRODUCTION_URL}/about/\n` +
-      '- Email: info@best-trust.biz\n' +
-      '- Phone: +81 90 4180 3041\n' +
+      `- Email: ${APP_CONFIG.contact.email}\n` +
+      `- Phone: ${APP_CONFIG.contact.phoneE164}\n` +
       '\n' +
       'Thank you for the review.',
 };
