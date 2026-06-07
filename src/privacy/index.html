@@ -21,10 +21,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プライバシーポリシー | ゆっくりエクソソーム</title>
-    <meta name="description" content="ゆっくりエクソソームのプライバシーポリシー。本アプリは個人情報を収集せず、すべてのデータは端末内にのみ保存されます。">
+    <meta name="description" content="ゆっくりエクソソームのプライバシーポリシー。本アプリで扱われるデータの種類・使用目的・保存場所・保持期間・削除方法・第三者提供の有無を明示しています。">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="プライバシーポリシー | ゆっくりエクソソーム">
+    <meta property="og:description" content="本アプリで扱うデータの種類・保存場所・削除方法を明示するプライバシーポリシー。">
+    <meta property="og:url" content="https://yukkuri-exosome.link/privacy/">
+    <link rel="canonical" href="https://yukkuri-exosome.link/privacy/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-depth="1">
@@ -40,85 +45,156 @@
         <article class="article">
             <div class="container container--narrow">
                 <header class="article__header">
+                    <span class="article__category">法的情報</span>
                     <h1 class="article__title">プライバシーポリシー</h1>
+                    <div class="article__lead">
+                        <strong>「ゆっくりエクソソーム」</strong>（以下「本アプリ」）は、利用者の方々のプライバシーを最大限尊重して設計されています。<br>
+                        本アプリは <strong>アカウント登録不要</strong>、<strong>すべてのデータは利用者の端末内のみに保存</strong> される設計で、サーバーへのデータ送信や第三者への提供は一切行いません。
+                    </div>
+                    <p style="font-size:.85rem; color:#8a7d76; margin-top:1rem;">
+                        最終更新日: 2026年6月3日 / 運営: Kimito-Link（株式会社ベストトラスト）
+                    </p>
                 </header>
 
                 <section class="article__section">
-                    <h2 class="article__h2">🛡️ 基本方針（データ収集なし）</h2>
-                    <p>ゆっくりエクソソーム（以下「本アプリ」）は、ユーザーのプライバシーを最優先に設計されています。本アプリは個人情報を収集せず、外部サーバーへのデータ送信も行いません。</p>
-                    <p>記録した内容はすべてお使いの端末の中だけに保存されます。開発者を含む第三者が閲覧・取得することは一切できません。</p>
+                    <h2 class="article__h2">1. 適用範囲</h2>
+                    <p>本ポリシーは、Kimito-Link（株式会社ベストトラスト、以下「当社」）が提供する以下のサービスに適用されます。</p>
+                    <ul>
+                        <li>iOS / Android スマートフォン向けアプリ「ゆっくりエクソソーム」（App Store / Google Play で配信）</li>
+                        <li>本アプリの公式ウェブサイト <a href="https://yukkuri-exosome.link/">https://yukkuri-exosome.link/</a></li>
+                    </ul>
                 </section>
 
                 <section class="article__section">
-                    <h2 class="article__h2">📋 収集する情報</h2>
-                    <p>本アプリは以下の情報を<strong>収集しません</strong>。</p>
+                    <h2 class="article__h2">2. 当社が収集するデータの種類</h2>
+                    <p>当社は、サーバー上で利用者の個人情報を一切収集しません。本アプリの設計上、以下に該当します。</p>
+
+                    <h3 style="margin-top:1.5rem;">2-1. アプリ内で利用者の端末に保存されるデータ</h3>
+                    <p>本アプリは、以下のデータを <strong>利用者の端末の内部ストレージ（localStorage および IndexedDB）のみに保存</strong> します。これらのデータはサーバーには送信されず、当社およびその他の第三者はこれらのデータにアクセスできません。</p>
+                    <ul>
+                        <li><strong>セルフケア記録</strong>: 肌のセルフチェックスコア、疲労回復度、ケア項目のチェック</li>
+                        <li><strong>サプリ・点滴の記録</strong>: 利用者が記録した栄養素・施術の摂取履歴</li>
+                        <li><strong>クリニック関連メモ</strong>: 利用者が任意で入力する医療機関への質問メモ</li>
+                        <li><strong>ビフォーアフター写真</strong>: 利用者が任意で撮影または選択した記録写真（IndexedDB に Blob 形式で保存）</li>
+                        <li><strong>設定情報</strong>: 通知設定、リマインダー時刻、選択中のキャラクター</li>
+                        <li><strong>進捗データ</strong>: 連続記録日数、累計日数、レベル、EP、バッジ獲得状況、クイズスコア</li>
+                    </ul>
+
+                    <h3 style="margin-top:1.5rem;">2-2. サーバーから取得する情報</h3>
+                    <p>本アプリは、起動時に公開ウェブサイト <a href="https://yukkuri-exosome.link/">https://yukkuri-exosome.link/</a> のコンテンツ（HTML / CSS / JavaScript / 画像 / フォント）を表示用に取得します。これらは <strong>すべての利用者に共通の静的コンテンツ</strong> であり、個人を特定する情報を含みません。</p>
+
+                    <h3 style="margin-top:1.5rem;">2-3. 当社が収集しないデータ</h3>
+                    <p>本アプリは以下のデータを <strong>一切収集しません</strong>。</p>
                     <ul>
                         <li>氏名・メールアドレス・電話番号などの個人情報</li>
-                        <li>位置情報（GPS・Wi-Fi・Bluetooth による位置）</li>
-                        <li>広告 ID（IDFA / GAID）</li>
-                        <li>端末の連絡先・カメラ・マイク・写真ライブラリ</li>
-                        <li>クラッシュレポートや分析データの外部送信</li>
+                        <li>位置情報（GPS データ）</li>
+                        <li>連絡先・カレンダー</li>
+                        <li>利用者の IP アドレス、端末識別子（IDFA、Android Advertising ID 等）</li>
+                        <li>アプリの利用ログ、行動分析データ、クラッシュレポート</li>
+                        <li>サードパーティ広告 SDK 経由のあらゆるデータ</li>
                     </ul>
-                    <p>アプリ内でユーザーが入力するセルフケア記録・メモなどは、端末内にのみ保存され、外部へは一切送信されません。</p>
                 </section>
 
                 <section class="article__section">
-                    <h2 class="article__h2">💾 データの保存場所</h2>
-                    <p>本アプリが扱うすべてのデータは、<strong>端末内のローカルストレージ</strong>にのみ保存されます。</p>
+                    <h2 class="article__h2">3. データの使用目的</h2>
+                    <p>端末内に保存されたデータは、利用者本人がアプリの機能を利用するための目的（記録・閲覧・比較・進捗確認）のためにのみ、利用者の端末内で処理されます。当社はこれらのデータを参照しないため、当社による二次利用や分析は技術的に不可能です。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">4. 第三者への提供・共有</h2>
+                    <p>当社は <strong>利用者のデータを第三者に一切提供・共有しません</strong>。これは、端末内のデータをサーバーに送信していないため、第三者が技術的にアクセスできない構造であることに起因します。</p>
+                    <p>本アプリは、サードパーティの広告 SDK、アクセス解析 SDK、トラッキング SDK を一切組み込んでおりません。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">5. データの保存場所と保持期間</h2>
+
+                    <h3 style="margin-top:1.5rem;">5-1. 保存場所</h3>
+                    <p>すべての利用者データは、利用者の <strong>端末内</strong>（iOS / Android スマートフォンの内部ストレージ、具体的にはアプリ専用の localStorage および IndexedDB 領域）のみに保存されます。クラウド同期、外部バックアップ、サーバー転送は一切行われません。</p>
+
+                    <h3 style="margin-top:1.5rem;">5-2. 保持期間</h3>
+                    <p>端末内のデータは、利用者が次のいずれかの操作を行うまで端末内に保持されます。</p>
                     <ul>
-                        <li>クラウド同期は行いません</li>
-                        <li>外部データベース・サーバーへの接続はありません</li>
-                        <li>アプリをアンインストールするとデータはすべて削除されます</li>
+                        <li>利用者がアプリ内のデータ削除機能を実行する（次項 6 を参照）</li>
+                        <li>利用者が本アプリを端末からアンインストールする</li>
+                        <li>利用者が端末の設定からアプリのデータをクリアする</li>
+                        <li>利用者がブラウザのストレージをクリアする（PWA 利用時）</li>
                     </ul>
+                    <p>当社は、これらの操作とは別に利用者のデータを保持し続けることはありません。サーバー側にはそもそもデータが存在しないため、当社側で「保持期間」という概念が技術的に発生しません。</p>
                 </section>
 
                 <section class="article__section">
-                    <h2 class="article__h2">🤝 第三者への提供</h2>
-                    <p>本アプリは、ユーザーのデータを第三者へ提供・販売・共有することは<strong>一切ありません</strong>。</p>
-                    <p>提供するデータが存在しないため、第三者提供の同意取得も不要です。</p>
-                </section>
+                    <h2 class="article__h2">6. データの削除方法</h2>
+                    <p>利用者は以下の方法で、いつでもご自身のデータを完全に削除できます。</p>
 
-                <section class="article__section">
-                    <h2 class="article__h2">📢 広告</h2>
-                    <p>本アプリは広告を表示しません。広告ネットワーク・アナリティクス SDK の組み込みもありません。</p>
-                </section>
+                    <h3 style="margin-top:1.5rem;">6-1. アプリ内からの削除（推奨）</h3>
+                    <p>本アプリでは、以下のいずれかの方法で記録データを削除できます。</p>
+                    <ol>
+                        <li>個別の記録項目（写真・メモ・スコアなど）について、アプリ画面上の「削除」操作を行う</li>
+                        <li>「<strong>Me（マイページ）</strong>」タブ内の「<strong>すべてのデータを削除</strong>」ボタンを使用する（本アプリで端末内に保存されたすべての記録データを一括削除します）</li>
+                    </ol>
 
-                <section class="article__section">
-                    <h2 class="article__h2">👤 アカウント</h2>
-                    <p>本アプリはアカウント登録が<strong>不要</strong>です。ユーザー登録・ログインなしですべての機能をご利用いただけます。</p>
-                    <p>アカウントが存在しないため、データの削除依頼などの手続きも不要です。アプリをアンインストールするだけで、すべての記録が端末から完全に削除されます。</p>
-                </section>
-
-                <section class="article__section">
-                    <h2 class="article__h2">💳 課金・サブスクリプション</h2>
-                    <p>本アプリは完全無料です。アプリ内課金およびサブスクリプションはありません。</p>
-                </section>
-                <section class="article__section">
-                    <h2 class="article__h2">👶 子どものプライバシー</h2>
-                    <p>本アプリは<strong>18歳以上</strong>の方を対象としています。18歳未満の方のご利用は想定しておりません。</p>
-                    <p>本アプリは個人情報を収集しないため、年齢を問わずデータが外部に送信されることはありません。</p>
-                </section>
-
-                <section class="article__section">
-                    <h2 class="article__h2">🔄 本ポリシーの変更</h2>
-                    <p>本プライバシーポリシーは、法令の改正・アプリのアップデート等に伴い予告なく変更される場合があります。変更後のポリシーは本ページに掲載した時点で効力を生じます。</p>
-                    <p>重要な変更がある場合は、アプリのリリースノートまたは本ページにて告知します。</p>
-                    <p>最新のポリシーは常に <a href="https://yukkuri-exosome.link/privacy/" target="_blank" rel="noopener">https://yukkuri-exosome.link/privacy/</a> でご確認ください。</p>
-                </section>
-
-                <section class="article__section">
-                    <h2 class="article__h2">📧 お問い合わせ</h2>
-                    <p>本プライバシーポリシーに関するご質問・ご意見は、下記の窓口よりお問い合わせください。</p>
+                    <h3 style="margin-top:1.5rem;">6-2. 端末設定からの削除</h3>
+                    <p>下記の方法でもデータを削除できます。</p>
                     <ul>
-                        <li>メール：<a href="mailto:info@best-trust.biz">info@best-trust.biz</a></li>
-                        <li>ウェブサイト：<a href="https://yukkuri-exosome.link/" target="_blank" rel="noopener">https://yukkuri-exosome.link/</a></li>
+                        <li><strong>iOS</strong>: 設定アプリ &gt; 一般 &gt; iPhone ストレージ &gt; 「ゆっくりエクソソーム」 &gt; App を削除</li>
+                        <li><strong>Android</strong>: 設定アプリ &gt; アプリ &gt; 「ゆっくりエクソソーム」 &gt; ストレージとキャッシュ &gt; ストレージを消去（または「アンインストール」）</li>
+                        <li><strong>Web ブラウザ（PWA）</strong>: ブラウザの設定からサイトデータ（localStorage / IndexedDB）をクリア</li>
                     </ul>
+
+                    <h3 style="margin-top:1.5rem;">6-3. 削除リクエストのお問い合わせ</h3>
+                    <p>当社はサーバーに利用者データを保持していないため、当社による削除作業は技術的に不要かつ不可能です。削除手順についてのサポートが必要な場合は、本ポリシー末尾の連絡先までご相談ください。</p>
                 </section>
 
-                <div class="article__source">
-                    最終更新：2026年6月<br>
-                    本ページの内容は予告なく変更されることがあります。
-                </div>
+                <section class="article__section">
+                    <h2 class="article__h2">7. カメラ・写真ライブラリへのアクセス</h2>
+                    <p>本アプリは、利用者がビフォーアフター写真を記録する機能を任意で使用する際にのみ、以下の権限の許可を求めます。</p>
+                    <ul>
+                        <li><strong>カメラ</strong>: 肌や目元の状態変化を記録するため、新しい写真を撮影する場合に使用します。例: 今日の肌コンディションを撮影し、1か月後に同じ部位を撮って比較します。</li>
+                        <li><strong>写真ライブラリ（読み取り）</strong>: 既存の写真を取り込んで「ビフォー写真」として使用する場合に使用します。例: 先月撮影した目元の写真を選んで、今日の写真と並べて比較します。</li>
+                        <li><strong>写真ライブラリ（書き込み）</strong>: アプリで撮影した記録写真を端末の写真アプリへ保存する場合に使用します。例: 担当医に見せるためにエクスポートします。</li>
+                    </ul>
+                    <p>撮影・選択された写真は、利用者の端末内（IndexedDB）にのみ保存され、当社のサーバーや第三者に送信されることは一切ありません。これらの権限は、利用者の端末の設定からいつでも変更（拒否・取り消し）できます。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">8. 通知（プッシュ通知 / ローカル通知）</h2>
+                    <p>本アプリは、利用者が任意で設定する「毎日のセルフケアリマインダー」のために、端末のローカル通知機能を使用する場合があります。通知の内容は端末内で生成され、当社のサーバーから配信されるものではありません。利用者は端末の設定からいつでも通知を無効にできます。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">9. 子どもの個人情報の取り扱い</h2>
+                    <p>本アプリは13歳未満の児童を主たる対象とした設計にはなっておりませんが、年齢制限を「4+」として App Store / Google Play に申請しており、保護者の同意のもとであれば利用は可能です。本アプリは収集データを一切持たない設計のため、児童のオンラインプライバシー保護法（COPPA）等にも適合します。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">10. プライバシーポリシーの変更</h2>
+                    <p>本ポリシーの内容を変更する場合があります。重要な変更は、本ページの「最終更新日」を更新するとともに、必要に応じてアプリ内通知や公式 X（旧 Twitter）等を通じてお知らせします。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">11. お問い合わせ・連絡先</h2>
+                    <p>本ポリシーに関するご質問、データの削除支援、その他のお問い合わせは、以下までご連絡ください。</p>
+                    <div style="background:#fffaf3; border-left:3px solid #c9a96e; padding:1rem 1.5rem; margin:1rem 0; border-radius:6px;">
+                        <p><strong>運営者</strong>: Kimito-Link（株式会社ベストトラスト）</p>
+                        <p><strong>連絡先メールアドレス</strong>: <a href="mailto:info@best-trust.biz">info@best-trust.biz</a></p>
+                        <p><strong>担当者</strong>: 小林 孝至</p>
+                        <p><strong>ウェブサイト</strong>: <a href="https://yukkuri-exosome.link/">https://yukkuri-exosome.link/</a></p>
+                    </div>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">12. 適用法令</h2>
+                    <p>本ポリシーは、日本国の法令に従って解釈されます。本アプリは、個人情報の保護に関する法律（個人情報保護法）、EU 一般データ保護規則（GDPR）の各種要件、米国カリフォルニア州消費者プライバシー法（CCPA）等を可能な限り考慮し、サーバー側でデータを一切保持しないという最も厳格な構造を採用しています。</p>
+                </section>
+
+                <section class="article__section article__section--source">
+                    <h2 class="article__h2">📚 関連ページ</h2>
+                    <ul>
+                        <li><a href="../about/">サイトについて</a></li>
+                        <li><a href="../">ホームに戻る</a></li>
+                    </ul>
+                </section>
             </div>
         </article>
     </main>
@@ -126,5 +202,6 @@
     <div data-footer></div>
 
     <script src="../js/common.js"></script>
+    <script src="../js/app.js"></script>
 </body>
 </html>
