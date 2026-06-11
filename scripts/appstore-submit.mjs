@@ -66,6 +66,17 @@ function assertNoBannedPlatformReferences(text) {
   }
 }
 
+function stripDisallowedEmoji(text) {
+  // App Store Connect は whatsNew に絵文字を許可しない
+  // (409 ENTITY_ERROR.ATTRIBUTE.INVALID.INVALID_CHARACTERS。🐢🌱 で実測、2026-06-11)。
+  // Google Play は絵文字OKなので release-notes/CURRENT-ja.txt 自体には残し、
+  // iOS 提出時だけここで除去する。
+  return text
+    .replace(/\p{Extended_Pictographic}(\u200D\p{Extended_Pictographic})*/gu, '')
+    .replace(/[\u{1F3FB}-\u{1F3FF}\uFE0E\uFE0F\u200D]/gu, '')
+    .replace(/[ \t]+$/gm, '');
+}
+
 function readWhatsNew() {
   const p = path.join(REPO, 'release-notes', 'CURRENT-ja.txt');
   if (!fs.existsSync(p)) {
@@ -73,7 +84,11 @@ function readWhatsNew() {
   }
   const text = fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n').trim();
   assertNoBannedPlatformReferences(text);
-  return text;
+  const sanitized = stripDisallowedEmoji(text).trim();
+  if (sanitized !== text) {
+    console.log('  [whatsNew] App Store が許可しない絵文字を除去しました（Play 側の listing には影響なし）');
+  }
+  return sanitized;
 }
 
 function resolvePrivateKey() {
