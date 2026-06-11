@@ -185,6 +185,7 @@ jobs:
         run: |
           set -euo pipefail
           MASTER="store-assets/appstore/app-icon-1024.png"
+          SPLASH_MASTER="store-assets/appstore/splash-2732.png"
           mkdir -p assets store-assets/appstore
           if [ -f "$MASTER" ]; then
             cp "$MASTER" assets/icon-only.png
@@ -198,7 +199,25 @@ jobs:
               exit 1
             fi
           fi
+          # スプラッシュのマスターが無いと @capacitor/assets はスプラッシュを生成せず、
+          # `cap add ios` が置いた Capacitor デフォルト（青い×ロゴ）がそのまま出荷される。
+          # → マスター必須。無ければここでビルドを止める（配信前ゲート）。
+          if [ ! -f "$SPLASH_MASTER" ]; then
+            echo "::error::$SPLASH_MASTER がありません。Capacitorデフォルトのスプラッシュが出荷されるため中止します。python scripts/icon-gen/make_icons.py --only A で生成して commit してください。"
+            exit 1
+          fi
+          cp "$SPLASH_MASTER" assets/splash.png
+          cp "$SPLASH_MASTER" assets/splash-dark.png
+          SPLASH_OUT="ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png"
+          BEFORE="$(shasum -a 256 "$SPLASH_OUT" 2>/dev/null | awk '{print $1}' || echo none)"
           npx @capacitor/assets generate --ios --iosProject ios/App --assetPath assets --splashBackgroundColor '#FFFAF3' --splashBackgroundColorDark '#FFFAF3'
+          # 直接証拠ゲート: Splash.imageset が実際にブランド素材へ差し替わったことをハッシュで確認
+          AFTER="$(shasum -a 256 "$SPLASH_OUT" | awk '{print $1}')"
+          if [ "$AFTER" = "$BEFORE" ]; then
+            echo "::error::Splash.imageset が差し替わっていません（Capacitorデフォルトのまま出荷されるため中止）。@capacitor/assets のログを確認してください。"
+            exit 1
+          fi
+          echo "Splash regenerated from $SPLASH_MASTER (sha256: $AFTER)"
 
       - name: Force iOS deployment target + iPhone-only device family
         run: |

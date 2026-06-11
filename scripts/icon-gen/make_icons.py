@@ -358,6 +358,36 @@ VARIANTS = {
 
 
 # ─────────────────────────────────────────────────────
+# iOS 起動スプラッシュ（2732×2732）
+# ─────────────────────────────────────────────────────
+
+SPLASH_SIZE = 2732  # Capacitor universal splash の規定サイズ（@1x/2x/3x 共通）
+
+
+def compose_splash(master_1024: Image.Image) -> Image.Image:
+    """iOS 起動スプラッシュ: ブランド背景の中央にアイコンを円形配置。
+
+    画面アスペクト比に合わせて上下左右がクロップされるため、
+    ロゴは中央 ~40% に収める（セーフエリア）。
+    """
+    canvas = make_background(SPLASH_SIZE).convert("RGBA")
+
+    d = 1100  # ロゴ直径（2732 の約40%）
+    logo = master_1024.resize((d, d), Image.LANCZOS).convert("RGBA")
+    mask = Image.new("L", (d, d), 0)
+    mdraw = ImageDraw.Draw(mask)
+    mdraw.ellipse([(0, 0), (d, d)], fill=255)
+    x = (SPLASH_SIZE - d) // 2
+    canvas.paste(logo, (x, x), mask)
+
+    # くすみローズの細リングで円の輪郭を締める
+    ring = ImageDraw.Draw(canvas)
+    ring.ellipse([(x, x), (x + d, x + d)], outline=BG_ROSE + (255,), width=8)
+
+    return canvas.convert("RGB")
+
+
+# ─────────────────────────────────────────────────────
 # 各プラットフォームへの自動展開
 # ─────────────────────────────────────────────────────
 
@@ -384,6 +414,12 @@ def propagate_to_platforms(master_1024: Image.Image, variant_key: str, master: b
         # iOS App Store
         master_1024.save(OUT_APPSTORE / "app-icon-1024.png", "PNG", optimize=True)
         print(f"[OK] {(OUT_APPSTORE / 'app-icon-1024.png').relative_to(ROOT)}")
+
+        # iOS 起動スプラッシュ（CI がこれを Splash.imageset に展開する。
+        # 無いと Capacitor デフォルトの青ロゴが出荷されるため必須）
+        splash = compose_splash(master_1024)
+        splash.save(OUT_APPSTORE / "splash-2732.png", "PNG", optimize=True)
+        print(f"[OK] {(OUT_APPSTORE / 'splash-2732.png').relative_to(ROOT)} (2732×2732)")
 
         # Play Store icon (512)
         master_1024.resize((512, 512), Image.LANCZOS).save(
