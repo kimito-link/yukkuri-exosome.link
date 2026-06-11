@@ -76,37 +76,51 @@ gradle = gradle.replace(/(versionName\s+)"[^"]*"/, `$1"${toVersion}"`);
 fs.writeFileSync(GRADLE, gradle);
 console.log(`  build.gradle updated (versionCode ${oldCode} -> ${newCode}, versionName ${toVersion})`);
 
-let sw = fs.readFileSync(SW, 'utf8');
-const swMatch = sw.match(/(CACHE_NAME\s*=\s*'fuji-direction-v)(\d+)(')/);
-if (swMatch) {
-  const oldCacheN = Number(swMatch[2]);
-  const newCacheN = oldCacheN + 1;
-  sw = sw.replace(swMatch[0], `${swMatch[1]}${newCacheN}${swMatch[3]}`);
-  fs.writeFileSync(SW, sw);
-  console.log(`  sw.js cache version ${oldCacheN} -> ${newCacheN}`);
+// 以下3ファイルは fujisan 系レイアウト前提のオプション項目。
+// ファイル自体が無いアプリ（例: Exosome は src/ 直下構成で sw.js 無し）では
+// 警告してスキップする。ファイルが「ある」のにパターン不一致の場合だけ throw
+// （黙ってスキップすると表示がズレ続けるため）。
+if (fs.existsSync(SW)) {
+  let sw = fs.readFileSync(SW, 'utf8');
+  const swMatch = sw.match(/(CACHE_NAME\s*=\s*'fuji-direction-v)(\d+)(')/);
+  if (swMatch) {
+    const oldCacheN = Number(swMatch[2]);
+    const newCacheN = oldCacheN + 1;
+    sw = sw.replace(swMatch[0], `${swMatch[1]}${newCacheN}${swMatch[3]}`);
+    fs.writeFileSync(SW, sw);
+    console.log(`  sw.js cache version ${oldCacheN} -> ${newCacheN}`);
+  } else {
+    console.warn(`  [warn] sw.js: CACHE_NAME pattern not matched, leaving as-is`);
+  }
 } else {
-  console.warn(`  [warn] sw.js: CACHE_NAME pattern not matched, leaving as-is`);
+  console.warn('  [warn] sw.js が無いためスキップ');
 }
 
-// アプリ内バージョン表示を package.json と必ず揃える。
-// パターン不一致は throw する（黙ってスキップすると表示がズレ続けるため）。
-let indexHtml = fs.readFileSync(INDEX_HTML, 'utf8');
-const metaRe = /(<meta\s+name="app-version"\s+content=")[^"]*(">)/;
-if (!metaRe.test(indexHtml)) {
-  throw new Error('release-bump: <meta name="app-version"> not found in index.html');
+if (fs.existsSync(INDEX_HTML)) {
+  let indexHtml = fs.readFileSync(INDEX_HTML, 'utf8');
+  const metaRe = /(<meta\s+name="app-version"\s+content=")[^"]*(">)/;
+  if (!metaRe.test(indexHtml)) {
+    throw new Error('release-bump: <meta name="app-version"> not found in index.html');
+  }
+  indexHtml = indexHtml.replace(metaRe, `$1${toVersion}$2`);
+  fs.writeFileSync(INDEX_HTML, indexHtml);
+  console.log(`  index.html app-version meta -> ${toVersion}`);
+} else {
+  console.warn('  [warn] index.html が無いためスキップ');
 }
-indexHtml = indexHtml.replace(metaRe, `$1${toVersion}$2`);
-fs.writeFileSync(INDEX_HTML, indexHtml);
-console.log(`  index.html app-version meta -> ${toVersion}`);
 
-let appJs = fs.readFileSync(APP_JS, 'utf8');
-const defaultVerRe = /(const DEFAULT_APP_VERSION = ')[^']*(';)/;
-if (!defaultVerRe.test(appJs)) {
-  throw new Error('release-bump: DEFAULT_APP_VERSION not found in app.js');
+if (fs.existsSync(APP_JS)) {
+  let appJs = fs.readFileSync(APP_JS, 'utf8');
+  const defaultVerRe = /(const DEFAULT_APP_VERSION = ')[^']*(';)/;
+  if (!defaultVerRe.test(appJs)) {
+    throw new Error('release-bump: DEFAULT_APP_VERSION not found in app.js');
+  }
+  appJs = appJs.replace(defaultVerRe, `$1${toVersion}$2`);
+  fs.writeFileSync(APP_JS, appJs);
+  console.log(`  app.js DEFAULT_APP_VERSION -> ${toVersion}`);
+} else {
+  console.warn('  [warn] app.js が無いためスキップ');
 }
-appJs = appJs.replace(defaultVerRe, `$1${toVersion}$2`);
-fs.writeFileSync(APP_JS, appJs);
-console.log(`  app.js DEFAULT_APP_VERSION -> ${toVersion}`);
 
 // アプリ内アップデート通知用の最新版 JSON を揃える（ios/android を toVersion に）。
 if (fs.existsSync(APP_LATEST)) {
