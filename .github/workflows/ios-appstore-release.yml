@@ -208,16 +208,36 @@ jobs:
           fi
           cp "$SPLASH_MASTER" assets/splash.png
           cp "$SPLASH_MASTER" assets/splash-dark.png
-          SPLASH_OUT="ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png"
-          BEFORE="$(shasum -a 256 "$SPLASH_OUT" 2>/dev/null | awk '{print $1}' || echo none)"
+          SPLASH_DIR="ios/App/App/Assets.xcassets/Splash.imageset"
+          list_referenced() {
+            python3 -c 'import json,sys; [print(i["filename"]) for i in json.load(open(sys.argv[1]))["images"] if i.get("filename")]' "$SPLASH_DIR/Contents.json"
+          }
+          # 生成前に Contents.json が参照する画像（= cap add ios が置いた Capacitor デフォルト）の
+          # ハッシュ集合を記録しておく。
+          # 注意: @capacitor/assets は旧ファイルを上書きせず「新しいファイル名で書いて
+          # Contents.json を差し替える」ため、固定ファイル名のハッシュ比較では検証できない。
+          DEFAULT_HASHES="$(list_referenced | while read -r f; do shasum -a 256 "$SPLASH_DIR/$f" | awk '{print $1}'; done | sort -u)"
           npx @capacitor/assets generate --ios --iosProject ios/App --assetPath assets --splashBackgroundColor '#FFFAF3' --splashBackgroundColorDark '#FFFAF3'
-          # 直接証拠ゲート: Splash.imageset が実際にブランド素材へ差し替わったことをハッシュで確認
-          AFTER="$(shasum -a 256 "$SPLASH_OUT" | awk '{print $1}')"
-          if [ "$AFTER" = "$BEFORE" ]; then
-            echo "::error::Splash.imageset が差し替わっていません（Capacitorデフォルトのまま出荷されるため中止）。@capacitor/assets のログを確認してください。"
+          # 直接証拠ゲート: 出荷時に実際に参照される画像（生成後の Contents.json 基準）が
+          # 全て存在し、かつ Capacitor デフォルトのハッシュ集合に1つも含まれないことを確認。
+          REFERENCED="$(list_referenced)"
+          if [ -z "$REFERENCED" ]; then
+            echo "::error::生成後の Splash.imageset/Contents.json が画像を参照していません。"
             exit 1
           fi
-          echo "Splash regenerated from $SPLASH_MASTER (sha256: $AFTER)"
+          echo "$REFERENCED" | while read -r f; do
+            if [ ! -f "$SPLASH_DIR/$f" ]; then
+              echo "::error::Contents.json が参照する $f が存在しません（壊れた imageset が出荷されるため中止）。"
+              exit 1
+            fi
+            h="$(shasum -a 256 "$SPLASH_DIR/$f" | awk '{print $1}')"
+            if printf '%s\n' "$DEFAULT_HASHES" | grep -q "$h"; then
+              echo "::error::$f が Capacitor デフォルトのスプラッシュのままです（ブランド素材に差し替わっていないため中止）。"
+              exit 1
+            fi
+            echo "splash OK: $f (sha256: $h)"
+          done
+          echo "Splash regenerated from $SPLASH_MASTER"
 
       - name: Force iOS deployment target + iPhone-only device family
         run: |
