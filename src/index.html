@@ -12,6 +12,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
+    <!-- iOS Safari 純正スマートアプリバナー（Safari以外は無視。Capacitorアプリ内では作用しない） -->
+    <meta name="apple-itunes-app" content="app-id=6775201794, app-argument=https://yukkuri-exosome.link/">
     <meta property="og:image" content="icons/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -283,6 +285,32 @@
                             <div class="quest-card__arrow">→</div>
                         </a>
                     </div>
+
+                    <!-- アプリダウンロード（Webのみ表示。Capacitorアプリ内では非表示） -->
+                    ${(typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ? '' : (function() {
+                        const APPLE = 'https://apps.apple.com/jp/app/id6775201794';
+                        const PLAY = 'https://play.google.com/store/apps/details?id=com.kimito.link.yukkuriexosome';
+                        const ua = (navigator.userAgent || '');
+                        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                        const isAndroid = /Android/.test(ua);
+                        // 公式バッジ（Apple: 日本語「App Storeで入手」 / Google: 日本語「Google Playで手に入れよう」）
+                        const appleBadge = `<a href="${APPLE}" target="_blank" rel="noopener" class="store-badge" aria-label="App Storeで入手"><img src="images/store-badges/apple-appstore-ja.svg" alt="App Storeで入手"></a>`;
+                        const playBadge = `<a href="${PLAY}" target="_blank" rel="noopener" class="store-badge" aria-label="Google Playで手に入れよう"><img src="images/store-badges/google-play-ja.png" alt="Google Playで手に入れよう"></a>`;
+                        // デバイス出し分け：iOSはApp Storeのみ／AndroidはPlayのみ／PC等は両方
+                        let badges, note;
+                        if (isIOS) { badges = appleBadge; note = ''; }
+                        else if (isAndroid) { badges = playBadge; note = ''; }
+                        else { badges = appleBadge + playBadge; note = '<p class="app-download__note">スマホで開くと、お使いの端末に合ったストアが表示されます</p>'; }
+                        return `
+                    <div class="app-download">
+                        <div class="app-download__chip">Download</div>
+                        <h2 class="app-download__title">アプリでもっとゆっくり</h2>
+                        <p class="app-download__lead">iPhone・Android アプリをリリースしました。<br>毎日のセルフケアを、もっと手軽に。完全無料・登録不要。</p>
+                        <div class="app-download__badges">${badges}</div>
+                        ${note}
+                    </div>
+                    `;
+                    })()}
 
                     <!-- ロゴ控えめ表示 -->
                     <div style="text-align: center; margin: 32px 0 16px; opacity: 0.6;">
