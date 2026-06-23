@@ -53,6 +53,17 @@ const MINDCARE_GROUP_COLOR = {
     '生きがい': '#a78a6b'   // ベージュブラウン
 };
 
+// kimito.link 送客導線（つながりグループの下に表示）。
+// linktree 本体(kimito.link)は X 含む SNS のハブなので、ここが新規ユーザー獲得の主導線。
+// すれ違い通信のような重いバックエンドは使わず、リンクで連携する軽量版。
+const KIMITO_LINK_URL = 'https://kimito.link/';
+const KIMITO_X_SHARE_TEXT = '今日もゆっくりエクソソームでセルフケア中🌿 #ゆっくりエクソ #エクソソーム';
+function getKimitoXIntentUrl() {
+    const text = encodeURIComponent(KIMITO_X_SHARE_TEXT);
+    const url = encodeURIComponent(KIMITO_LINK_URL);
+    return `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+}
+
 /** 今日のキー */
 function getMindcareTodayKey() {
     return `mindcare_${getTodayKey()}`;
@@ -123,6 +134,17 @@ function renderMindCare(containerId) {
                                     `;
                                 }).join('')}
                             </div>
+                            ${g === 'つながり' ? `
+                                <div style="margin-top:8px; padding:12px 14px; background:#faf6f1; border:1px dashed ${accent}; border-radius:14px;">
+                                    <div style="font-size:.7rem; color:#2e2622; line-height:1.5; margin-bottom:8px;">
+                                        🌐 Kimito-Link で、推しやなかまとつながろう。
+                                    </div>
+                                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                        <a href="${KIMITO_LINK_URL}" target="_blank" rel="noopener" class="mindcare-connect" data-connect="kimito" style="flex:1 1 auto; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">kimito.link を開く</a>
+                                        <a href="${getKimitoXIntentUrl()}" target="_blank" rel="noopener" class="mindcare-connect" data-connect="x" style="flex:0 0 auto; text-align:center; padding:10px 14px; background:#fff; color:#2e2622; border:1px solid #d8cbbb; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">𝕏 でつぶやく</a>
+                                    </div>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                 }).join('')}
@@ -159,6 +181,29 @@ function renderMindCare(containerId) {
                 // 心のケアはロンジェビティ・スコアの一部なので、スコア表示も更新
                 if (typeof renderLongevityScore === 'function' && document.getElementById('today-longevity')) {
                     renderLongevityScore('today-longevity');
+                }
+            });
+        });
+
+        // kimito.link / X 導線：開いたら「人やコミュニティに関わった」を記録扱いにする。
+        // リンクの遷移自体は target=_blank で通常どおり行わせる（preventDefault しない）。
+        container.querySelectorAll('.mindcare-connect').forEach(link => {
+            link.addEventListener('click', () => {
+                const set = getTodayMindcare();
+                if (!set.has('connect_reach')) {
+                    set.add('connect_reach');
+                    setTodayMindcare(set);
+                    if (typeof App !== 'undefined') {
+                        App.addEP(5, 'mindcare');
+                        if (typeof App.notifyEP === 'function') App.notifyEP(5, 'つながり');
+                    }
+                    // 新しいタブが開くので描画更新は次回表示時で十分だが、戻ってきた時のために更新しておく
+                    setTimeout(() => {
+                        rebuild();
+                        if (typeof renderLongevityScore === 'function' && document.getElementById('today-longevity')) {
+                            renderLongevityScore('today-longevity');
+                        }
+                    }, 0);
                 }
             });
         });
