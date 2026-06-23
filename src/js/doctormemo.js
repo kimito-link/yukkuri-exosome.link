@@ -17,6 +17,17 @@ const MEMO_TEMPLATES = [
     '次のステップアップ施術'
 ];
 
+// ロンジェビティ（予防・健康投資）視点の相談テンプレ。
+// 「悪くなってから行く」のではなく「先に整える」予防医療の相談を後押しする。
+const MEMO_LONGEVITY_TEMPLATES = [
+    '点滴・サプリの効果的なタイミング',
+    'アプリで記録した睡眠データの相談',
+    '受けておくとよい検査・バイオマーカー',
+    '今の生活で足りていない長寿スキル',
+    '疲労回復・睡眠の質を上げる方法',
+    '年齢に合わせた予防ケアの優先順位'
+];
+
 /** メモ全件を取得（古い→新しい） */
 function getAllMemos() {
     return YEStorage.get('doctor_memos', []);
@@ -94,11 +105,21 @@ function renderDoctorMemo(containerId) {
                 </div>
 
                 <!-- テンプレートチップ -->
-                <div style="margin-bottom:14px;">
+                <div style="margin-bottom:10px;">
                     <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.1em; margin-bottom:6px;">💡 よくある質問テンプレ</div>
                     <div style="display:flex; gap:5px; flex-wrap:wrap;">
                         ${MEMO_TEMPLATES.map(t => `
                             <button class="memo-template" data-text="${t}" style="padding:4px 10px; background:#faf6f1; border:1px solid #ebe0d0; border-radius:999px; font-size:.7rem; color:#8a7d76; cursor:pointer; letter-spacing:.02em;">${t}</button>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- ロンジェビティ（予防・健康投資）相談テンプレ -->
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:.65rem; color:#a78a6b; letter-spacing:.1em; margin-bottom:6px;">🧬 ロンジェビティ相談（予防・健康投資）</div>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                        ${MEMO_LONGEVITY_TEMPLATES.map(t => `
+                            <button class="memo-template" data-text="${t}" style="padding:4px 10px; background:rgba(167,138,107,.08); border:1px solid #ddccb5; border-radius:999px; font-size:.7rem; color:#a78a6b; cursor:pointer; letter-spacing:.02em;">${t}</button>
                         `).join('')}
                     </div>
                 </div>

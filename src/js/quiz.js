@@ -102,41 +102,73 @@ const QUIZ_QUESTIONS = [
             { text: 'アミノ酸20種類', correct: false }
         ],
         explain: '2012年の名古屋大学の発表では、培養液中に「IGF-1（インスリン様成長因子）・VEGF（血管内皮増殖因子）・TGF-β1（形質転換成長因子）・HGF（肝細胞増殖因子）」など多数のサイトカインが含まれることが報告されました。'
+    },
+    {
+        q: '近年欧米で注目される「ロンジェビティ（長寿）」の考え方として正しいのは？',
+        options: [
+            { text: 'とにかく寿命の長さだけを延ばすこと', correct: false },
+            { text: '食事・睡眠・運動・つながり・医療・美容・生きがいなど複数のスキルの掛け算で健康寿命を延ばすこと', correct: true },
+            { text: 'サプリだけ飲んでいれば達成できること', correct: false },
+            { text: '若いうちは関係ない、高齢者だけのテーマ', correct: false }
+        ],
+        explain: 'ロンジェビティは「ただ長生き」ではなく「健康なまま長く活動できる期間（健康寿命）」を延ばす考え方。食事・睡眠・運動といった体のケアに加え、人との「つながり」や「生きがい」までを含めた複数スキルの掛け算で実現する、というのが近年の潮流です。'
+    },
+    {
+        q: '「生物学的年齢（Biological Age）」とは何のこと？',
+        options: [
+            { text: '生まれてから経過した戸籍上の年齢', correct: false },
+            { text: '細胞や臓器が実際にどれくらい老化しているかを示す年齢', correct: true },
+            { text: '一番元気だった頃の年齢', correct: false },
+            { text: '血液型から分かる年齢', correct: false }
+        ],
+        explain: '生物学的年齢は、実年齢（戸籍上の年齢）とは別に、細胞や臓器の老化度を示すもの。生活習慣しだいで実年齢より若くも老けてもなります。欧米ではAIやバイオマーカーでこの差を可視化する「エイジテック」が注目されています。'
+    },
+    {
+        q: '「リスキリング（学び直し）」と長寿の関係について、近年の考え方は？',
+        options: [
+            { text: '学びと健康はまったく無関係', correct: false },
+            { text: '学び続けて脳を若く保つことは、長く健康に働く力（健康寿命）と表裏一体', correct: true },
+            { text: 'リスキリングは体の健康を悪くする', correct: false },
+            { text: '学ぶのは仕事のためだけで寿命には影響しない', correct: false }
+        ],
+        explain: '人生120年時代には、学び直し（リスキリング）で脳を若々しく保つことが、体の健康寿命と同じくらい重要だと考えられています。「学び」「つながり」「生きがい」は、体のケアと一体の長寿スキルです。'
     }
 ];
 
 // 結果のリアクション
+// ratio = 正解率のしきい値。問題数が増減しても順位の意味が保たれるよう、
+// 絶対値ではなく割合で判定する（renderResult 側で QUIZ_QUESTIONS.length に掛ける）。
 const QUIZ_RESULTS = [
     {
-        min: 9,
+        ratio: 0.85,
         rank: 'エクソソーム博士👑',
         message: 'すごい！エクソソームのことをよく理解していますね。<br>もう周りの人にも説明できるレベルです。',
         char: 'tanunee',
         expression: 'smileOpen'
     },
     {
-        min: 7,
+        ratio: 0.65,
         rank: 'エクソソーム上級者✨',
         message: 'かなり詳しいですね！細かいところまで押さえています。<br>もう一歩で博士レベルです。',
         char: 'tanunee',
         expression: 'smile'
     },
     {
-        min: 5,
+        ratio: 0.45,
         rank: 'エクソソーム中級者💪',
         message: '基本はしっかり押さえています！<br>もう少し記事を読むと、もっと詳しくなれますよ。',
         char: 'konta',
         expression: 'smileOpen'
     },
     {
-        min: 3,
+        ratio: 0.25,
         rank: 'エクソソーム入門者🌱',
         message: 'まだ始まったばかり！<br>記事を順番に読んでいけば、すぐ詳しくなれますよ。',
         char: 'konta',
         expression: 'normal'
     },
     {
-        min: 0,
+        ratio: 0,
         rank: 'エクソソームこれから🍡',
         message: 'これから一緒に学んでいこう！<br>「エクソソームって何？」の記事から始めるのがおすすめです。',
         char: 'rink',
@@ -275,7 +307,8 @@ function handleAnswer(e) {
 
 function renderResult() {
     const container = document.getElementById('quiz-container');
-    const result = QUIZ_RESULTS.find(r => score >= r.min);
+    const totalQ = questions.length || QUIZ_QUESTIONS.length;
+    const result = QUIZ_RESULTS.find(r => score >= Math.ceil(r.ratio * totalQ)) || QUIZ_RESULTS[QUIZ_RESULTS.length - 1];
     const char = CHARACTERS[result.char];
     const charImg = getImagePath(result.char, result.expression, 1);
 
