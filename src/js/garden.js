@@ -11,11 +11,32 @@ const BADGES = [
     { id: 'level_10',     emoji: '✨', name: 'Lv.10到達',     desc: 'レベル10',         check: () => App.getLevel().lv >= 10 },
     { id: 'level_20',     emoji: '🌸', name: 'Lv.20到達',     desc: 'レベル20',         check: () => App.getLevel().lv >= 20 },
     { id: 'level_30',     emoji: '🌌', name: 'マスター',       desc: 'レベル30',         check: () => App.getLevel().lv >= 30 },
-    { id: 'quiz_perfect', emoji: '🧠', name: 'クイズ満点',     desc: '10問全問正解',     check: () => YEStorage.get('quiz_best', 0) >= 10 },
+    { id: 'quiz_perfect', emoji: '🧠', name: 'クイズ満点',     desc: '全問正解',         check: () => { const t = (typeof QUIZ_QUESTIONS !== 'undefined') ? QUIZ_QUESTIONS.length : 10; return YEStorage.get('quiz_best', 0) >= t; } },
     { id: 'care_50',      emoji: '🌿', name: 'ケア50日',       desc: '累計50日',         check: () => YEStorage.get('app_total_days', 0) >= 50 },
     { id: 'care_100',     emoji: '🏆', name: 'ケア100日',      desc: '累計100日',        check: () => YEStorage.get('app_total_days', 0) >= 100 },
-    { id: 'advice_10',    emoji: '💬', name: 'アドバイス10回', desc: 'アドバイス10回',   check: () => YEStorage.get('advice_count', 0) >= 10 }
+    { id: 'advice_10',    emoji: '💬', name: 'アドバイス10回', desc: 'アドバイス10回',   check: () => YEStorage.get('advice_count', 0) >= 10 },
+    // --- 学び・つながり（ロンジェビティ）系バッジ ---
+    { id: 'mind_first',   emoji: '🌷', name: '心のケア',       desc: '心と社会のケアを初記録', check: () => (typeof getMindLearnDays === 'function') && getMindLearnDays() >= 1 },
+    { id: 'learn_7',      emoji: '📚', name: 'いきいき脳',     desc: '学び・生きがいを7日',   check: () => (typeof getMindLearnDays === 'function') && getMindLearnDays() >= 7 }
 ];
+
+/**
+ * 「心と社会のケア（生きがい/学び）」を記録した日数を数える。
+ * mindcare の保存キー（mindcare_YYYY-MM-DD）を直近90日ぶん走査。
+ * mindcare.js が読み込まれていなくても動くよう、ストレージを直接見る。
+ */
+function getMindLearnDays() {
+    let count = 0;
+    const today = new Date();
+    for (let i = 0; i < 90; i++) {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        const key = `mindcare_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const arr = YEStorage.get(key, []);
+        if (Array.isArray(arr) && arr.length > 0) count++;
+    }
+    return count;
+}
 
 const STAGE_NAMES = {
     egg: 'たまご期',
@@ -77,6 +98,39 @@ const STAGE_EMOJI = {
                     </div>
                 ` : `<div class="garden-hero__next"><strong>🏆 MAX レベル到達！</strong></div>`}
             </div>
+
+            <!-- 脳の若々しさ（学び・生きがいメーター） -->
+            ${(function(){
+                const learnDays = (typeof getMindLearnDays === 'function') ? getMindLearnDays() : 0;
+                const quizBest = YEStorage.get('quiz_best', 0);
+                const quizMax = (typeof QUIZ_QUESTIONS !== 'undefined') ? QUIZ_QUESTIONS.length : 13;
+                // 学び度 = 学び日数(最大30で頭打ち)70% + クイズ正解率30%
+                const learnPct = Math.min(1, learnDays / 30) * 70 + (quizMax ? (quizBest / quizMax) : 0) * 30;
+                const pct = Math.round(learnPct);
+                let brainLabel, brainEmoji, brainColor;
+                if (pct >= 70)      { brainLabel = 'いきいき脳細胞'; brainEmoji = '✨🧠'; brainColor = '#7ca97a'; }
+                else if (pct >= 40) { brainLabel = 'すくすく学び中'; brainEmoji = '📚🧠'; brainColor = '#8eb4c7'; }
+                else if (pct >= 15) { brainLabel = 'めばえ脳';       brainEmoji = '🌱🧠'; brainColor = '#c9a96e'; }
+                else                { brainLabel = 'これから脳';     brainEmoji = '🥚🧠'; brainColor = '#b39a8b'; }
+                return `
+                    <div style="background:#fff; border-radius:18px; padding:16px 18px; box-shadow:0 4px 16px rgba(46,38,34,.06); margin:0 0 4px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <div style="font-family:'Noto Serif JP',serif; font-size:.92rem; font-weight:600; letter-spacing:.06em;">${brainEmoji} 脳の若々しさ</div>
+                            <div style="font-size:.72rem; color:${brainColor}; font-weight:700;">${brainLabel}</div>
+                        </div>
+                        <div style="height:10px; background:#f0e8df; border-radius:99px; overflow:hidden;">
+                            <div style="width:${pct}%; height:100%; background:linear-gradient(90deg, ${brainColor}, #c9899a); border-radius:99px; transition:width .4s;"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:.64rem; color:#8a7d76; margin-top:6px;">
+                            <span>学び・生きがい ${learnDays}日</span>
+                            <span>クイズ最高 ${quizBest}/${quizMax}</span>
+                        </div>
+                        <div style="font-size:.62rem; color:#8a7d76; margin-top:8px; line-height:1.5; letter-spacing:.02em;">
+                            🧬 学び続ける脳は若い。リスキリングは長寿スキルの柱。「心と社会のケア」とクイズで育ちます。
+                        </div>
+                    </div>
+                `;
+            })()}
 
             <!-- 3人組 -->
             <div class="garden-chars">
