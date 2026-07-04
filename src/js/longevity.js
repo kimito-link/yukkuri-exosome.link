@@ -98,11 +98,11 @@ function evalLongevity(score) {
     return                  { color: '#b39a8b', label: 'これから',   char: 'rink',   emoji: '🌱' };
 }
 
-/** 直近7日のスコア */
-function getLongevity7Days() {
+/** 直近N日のスコア（読み取り専用・新規データ収集なし）。 */
+function getLongevityNDays(n) {
     const days = [];
     const today = new Date();
-    for (let i = 6; i >= 0; i--) {
+    for (let i = n - 1; i >= 0; i--) {
         const d = new Date();
         d.setDate(today.getDate() - i);
         const s = calcLongevityScore(d);
@@ -115,6 +115,70 @@ function getLongevity7Days() {
     }
     return days;
 }
+
+/** 直近7日のスコア（既存呼び出し元との互換のため維持。表示は無変更）。 */
+function getLongevity7Days() {
+    return getLongevityNDays(7);
+}
+
+/**
+ * 期間の平均スコア（記録がある日だけで平均）。記録日数が足りなければ null。
+ * @param {Array} days getLongevityNDays() の戻り値
+ * @param {number} minDays この日数未満の記録しかなければ null（過大表示防止）
+ */
+function avgLongevityScore(days, minDays) {
+    const withData = days.filter(d => d.hasData);
+    if (withData.length < minDays) return null;
+    return withData.reduce((s, d) => s + d.score, 0) / withData.length;
+}
+
+/**
+ * 「直近period日平均 vs その前period日平均」の向上度（%）。
+ * 比較元期間の記録が3日未満なら null（「記録を貯めています」表示に回す）。
+ */
+function calcImprovement(period) {
+    const recentDays = getLongevityNDays(period);
+    const allDays = getLongevityNDays(period * 2);
+    const priorDays = allDays.slice(0, period);
+
+    const recentAvg = avgLongevityScore(recentDays, 3);
+    const priorAvg = avgLongevityScore(priorDays, 3);
+    if (recentAvg === null || priorAvg === null || priorAvg === 0) return null;
+
+    return Math.round(((recentAvg - priorAvg) / priorAvg) * 100);
+}
+
+/** 記録の足あと（期間内の記録日数）。 */
+function getRecordFootprint(period) {
+    const days = getLongevityNDays(period);
+    const recorded = days.filter(d => d.hasData).length;
+    return { recorded, period };
+}
+
+/** 内訳5項目それぞれの期間平均（記録がある日だけで平均・pts値そのまま）。 */
+function calcPartsTrend(period) {
+    const today = new Date();
+    const keys = ['care', 'mind', 'sleep', 'fat', 'boost'];
+    const sums = { care: 0, mind: 0, sleep: 0, fat: 0, boost: 0 };
+    let counted = 0;
+
+    for (let i = period - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        const s = calcLongevityScore(d);
+        if (!s.hasAny) continue;
+        keys.forEach(k => { sums[k] += s.parts[k].pts; });
+        counted++;
+    }
+
+    if (counted === 0) return null;
+    const result = {};
+    keys.forEach(k => { result[k] = { avg: sums[k] / counted, max: SCORE_PART_MAX[k] }; });
+    return result;
+}
+
+const SCORE_PART_MAX = { care: 30, mind: 20, sleep: 20, fat: 20, boost: 10 };
+const SCORE_PART_LABEL = { care: 'セルフケア', mind: '心と社会', sleep: '睡眠', fat: '疲労回復', boost: 'ブースト' };
 
 /**
  * Today画面に Longevity Score カードを挿入
@@ -198,6 +262,8 @@ function renderLongevityScore(containerId) {
                 </div>
             </div>
 
+            ${renderPremiumSection(ev)}
+
             ${(typeof RefPartner !== 'undefined' && RefPartner.has && RefPartner.has()) ? `
                 <div style="margin-top:12px; padding:12px 14px; background:linear-gradient(135deg,#c9899a10,#a78a6b10); border:1px solid ${ev.color}33; border-radius:14px;">
                     <div style="font-size:.66rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:8px;">🩺 監修：銀座スマートクリニック 大谷医師</div>
@@ -230,4 +296,134 @@ function renderLongevityScore(containerId) {
             } catch (e) { /* 記録失敗は黙殺（遷移は止めない） */ }
         });
     }
+
+    // プレミアム解放：チケット貼り付け欄（ネイティブ・Web共通）。
+    const ticketInput = container.querySelector('#lp-ticket-input');
+    const ticketBtn = container.querySelector('#lp-ticket-submit');
+    if (ticketInput && ticketBtn) {
+        const submit = () => {
+            const raw = ticketInput.value.trim();
+            if (!raw) return;
+            if (typeof LongevityPremium === 'undefined') return;
+            ticketBtn.disabled = true;
+            ticketBtn.textContent = '確認中…';
+            LongevityPremium.verifyAndStoreTicket(raw).then(ok => {
+                if (ok) {
+                    renderLongevityScore(containerId);
+                } else {
+                    ticketBtn.disabled = false;
+                    ticketBtn.textContent = '解放する';
+                    const err = container.querySelector('#lp-ticket-error');
+                    if (err) err.style.display = 'block';
+                }
+            });
+        };
+        ticketBtn.addEventListener('click', submit);
+        ticketInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    }
+}
+
+/**
+ * ロンジェビティ・プレミアム区画のHTML（未解放=ティーザー／解放済み=長期グラフ）。
+ * ネイティブアプリ内では価格・購入導線を一切出さない（Apple 3.1.1対策）。
+ * `window.Capacitor.isNativePlatform()` は既存 index.html:303 と同一パターン。
+ */
+function renderPremiumSection(ev) {
+    const isNative = (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform)
+        ? window.Capacitor.isNativePlatform()
+        : false;
+    const unlocked = (typeof LongevityPremium !== 'undefined') && LongevityPremium.isUnlocked();
+
+    const unlockInputHtml = `
+        <div style="margin-top:10px; display:flex; gap:6px;">
+            <input type="text" id="lp-ticket-input" placeholder="解放チケットを貼り付け" style="flex:1; min-width:0; padding:9px 10px; border:1.5px solid #ebe0d0; border-radius:10px; font-size:.75rem; font-family:inherit; background:#fff; color:#2e2622;">
+            <button type="button" id="lp-ticket-submit" style="padding:0 14px; background:linear-gradient(135deg,#c9899a,#c9a96e); color:#fff; border:none; border-radius:10px; font-size:.75rem; font-weight:700; cursor:pointer; flex-shrink:0;">解放する</button>
+        </div>
+        <div id="lp-ticket-error" style="display:none; margin-top:6px; font-size:.66rem; color:#c05a5a;">チケットを確認できませんでした。もう一度お試しください。</div>
+    `;
+
+    if (!unlocked) {
+        return `
+            <div style="margin-top:12px; padding:14px; background:#faf6f1; border-radius:14px; border:1px dashed ${ev.color}55;">
+                <div style="font-size:.78rem; font-weight:700; color:#2e2622; margin-bottom:4px;">📈 記録をもっと長く振り返る（プレミアム）</div>
+                <div style="font-size:.7rem; color:#8a7d76; line-height:1.6; margin-bottom:8px;">30日・90日のスコア推移と、先週比・先月比の変化率を表示します。毎日の記録を、長く楽しく続けるための機能です。</div>
+                ${isNative ? `
+                    <div style="font-size:.68rem; color:#8a7d76; margin-bottom:2px;">解放チケットをお持ちの方はこちら</div>
+                    ${unlockInputHtml}
+                ` : `
+                    <a href="${(typeof RefPartner !== 'undefined' ? RefPartner.getKimitoUrlWithRef('https://kimito.link/') : 'https://kimito.link/')}" target="_blank" rel="noopener" style="display:inline-block; padding:8px 16px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.72rem; font-weight:700; text-decoration:none; margin-bottom:2px;">kimito.link で解放する</a>
+                    ${unlockInputHtml}
+                `}
+            </div>
+        `;
+    }
+
+    const days30 = getLongevityNDays(30);
+    const days90 = getLongevityNDays(90);
+    const improve7 = calcImprovement(7);
+    const improve30 = calcImprovement(30);
+    const partsTrend = calcPartsTrend(30);
+    const footprint = getRecordFootprint(90);
+
+    const trendBar = (days, maxBar) => `
+        <div style="display:flex; gap:2px; align-items:flex-end; height:36px;">
+            ${days.map(d => {
+                const h = d.hasData ? Math.max(3, (d.score / maxBar) * 36) : 3;
+                const dev = evalLongevity(d.score);
+                const bg = d.hasData ? dev.color : '#ebe0d0';
+                return `<div style="flex:1; height:${h}px; background:${bg}; border-radius:2px 2px 0 0; min-height:3px;" title="${d.label}: ${d.hasData ? d.score + '点' : '記録なし'}"></div>`;
+            }).join('')}
+        </div>
+    `;
+
+    const improveText = (v) => v === null
+        ? '<span style="color:#8a7d76;">記録を貯めています</span>'
+        : v > 0
+            ? `<strong style="color:#7ca97a;">↑ ${v}%</strong>`
+            : v < 0
+                ? `<strong style="color:#c9899a;">↓ ${Math.abs(v)}%</strong>`
+                : '<strong style="color:#8a7d76;">±0%</strong>';
+
+    return `
+        <div style="margin-top:12px; padding:14px; background:#fff; border-radius:14px; border:1px solid ${ev.color}33;">
+            <div style="font-size:.78rem; font-weight:700; color:#2e2622; margin-bottom:10px;">📈 30日・90日の推移（プレミアム）</div>
+
+            <div style="margin-bottom:12px;">
+                <div style="font-size:.64rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:4px;">この30日</div>
+                ${trendBar(days30, 100)}
+            </div>
+            <div style="margin-bottom:12px;">
+                <div style="font-size:.64rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:4px;">この90日</div>
+                ${trendBar(days90, 100)}
+            </div>
+
+            <div style="display:flex; gap:12px; margin-bottom:12px; font-size:.72rem;">
+                <div style="flex:1; text-align:center; padding:8px; background:#faf6f1; border-radius:10px;">
+                    <div style="color:#8a7d76; font-size:.62rem; margin-bottom:2px;">先週比</div>
+                    ${improveText(improve7)}
+                </div>
+                <div style="flex:1; text-align:center; padding:8px; background:#faf6f1; border-radius:10px;">
+                    <div style="color:#8a7d76; font-size:.62rem; margin-bottom:2px;">先月比</div>
+                    ${improveText(improve30)}
+                </div>
+            </div>
+
+            ${partsTrend ? `
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:.64rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:6px;">内訳の30日平均</div>
+                    ${Object.keys(partsTrend).map(k => `
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                            <div style="flex:0 0 64px; font-size:.66rem; color:#8a7d76;">${SCORE_PART_LABEL[k]}</div>
+                            <div style="flex:1; height:6px; background:#f0e8df; border-radius:99px; overflow:hidden;">
+                                <div style="width:${(partsTrend[k].avg / partsTrend[k].max) * 100}%; height:100%; background:${ev.color}; border-radius:99px;"></div>
+                            </div>
+                            <div style="flex:0 0 36px; text-align:right; font-size:.64rem; color:#8a7d76;">${Math.round(partsTrend[k].avg)}/${partsTrend[k].max}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
+
+            <div style="font-size:.66rem; color:#8a7d76;">この${footprint.period}日で${footprint.recorded}日記録</div>
+        </div>
+    `;
 }
