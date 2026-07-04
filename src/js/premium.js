@@ -22,13 +22,12 @@
     var TICKET_KEY = 'lp_ticket';
     var FEATURE_ID = 'longevity_premium';
 
-    // kimito.link が持つ秘密鍵と対の公開鍵（JWK形式）。
-    // 本番運用時は kimito 側の鍵ペア生成スクリプトが出力する公開鍵に差し替える。
+    // kimito.link が持つ秘密鍵と対の公開鍵（JWK形式）。本番鍵ペア（2026-07-04生成）。
     var PUBLIC_KEY_JWK = {
         kty: 'EC',
         crv: 'P-256',
-        x: 'jIsOciU4NvdMErgg3pS4glikYkVH6qWTT1HYgAIZrmY',
-        y: '9vaVyVml5OWFjFmd9QLEvry_Pau1y6EmjQkJeYu5gC4'
+        x: 'M-MglnNDsdbgnOAHqznrzCNPFop-eeikEo9DAbxJdz4',
+        y: 'hGyBHsRTLEupFEDmrvatGhhysjraRcjNZUdPlfc2Jco'
     };
 
     var cachedPublicKey = null;
