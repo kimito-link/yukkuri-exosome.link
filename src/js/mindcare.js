@@ -140,7 +140,7 @@ function renderMindCare(containerId) {
                                         🌐 Kimito-Link で、推しやなかまとつながろう。
                                     </div>
                                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                                        <a href="${KIMITO_LINK_URL}" target="_blank" rel="noopener" class="mindcare-connect" data-connect="kimito" style="flex:1 1 auto; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">kimito.link を開く</a>
+                                        <a href="${typeof getKimitoUrlWithRef === 'function' ? getKimitoUrlWithRef(KIMITO_LINK_URL) : KIMITO_LINK_URL}" target="_blank" rel="noopener" class="mindcare-connect" data-connect="kimito" style="flex:1 1 auto; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">kimito.link を開く</a>
                                         <a href="${getKimitoXIntentUrl()}" target="_blank" rel="noopener" class="mindcare-connect" data-connect="x" style="flex:0 0 auto; text-align:center; padding:10px 14px; background:#fff; color:#2e2622; border:1px solid #d8cbbb; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">𝕏 でつぶやく</a>
                                     </div>
                                 </div>

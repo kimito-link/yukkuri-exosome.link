@@ -55,6 +55,7 @@
     <script src="js/photolog.js"></script>
     <script src="js/fatigue.js"></script>
     <script src="js/sleep.js"></script>
+    <script src="js/refpartner.js"></script>
     <script src="js/mindcare.js"></script>
     <script src="js/longevity.js"></script>
     <script>
@@ -416,6 +417,9 @@
 
             // ロンジェビティ・スコア（擬似・体内細胞年齢）
             renderLongevityScore('today-longevity');
+
+            // 医師紹介コードで来た人への歓迎バー（初回のみ・app-screen 構築後に呼ぶ）
+            if (typeof RefPartner !== 'undefined' && RefPartner.showWelcomeOnce) RefPartner.showWelcomeOnce();
 
             // 疲労回復度チェック（院長リクエスト）
             renderFatigueCheck('today-fatigue');

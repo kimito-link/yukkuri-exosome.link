@@ -198,9 +198,36 @@ function renderLongevityScore(containerId) {
                 </div>
             </div>
 
+            ${(typeof RefPartner !== 'undefined' && RefPartner.has && RefPartner.has()) ? `
+                <div style="margin-top:12px; padding:12px 14px; background:linear-gradient(135deg,#c9899a10,#a78a6b10); border:1px solid ${ev.color}33; border-radius:14px;">
+                    <div style="font-size:.66rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:8px;">🩺 監修：銀座スマートクリニック 大谷医師</div>
+                    <a href="${RefPartner.getKimitoUrlWithRef('https://kimito.link/')}" target="_blank" rel="noopener" class="longevity-doc-cta" style="display:block; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">先生のロンジェビティ解説を見る</a>
+                </div>
+            ` : ''}
+
             <div style="margin-top:12px; padding:8px; background:#faf6f1; border-radius:8px; font-size:.62rem; color:#8a7d76; line-height:1.5; letter-spacing:.03em;">
                 💡 このスコア・年齢は習慣化を楽しむための<strong>イメージ表示</strong>で、医療的な生物学的年齢の測定値ではありません。
             </div>
         </div>
     `;
+
+    // 監修CTA：開いたら「人やコミュニティに関わった」を1回だけ記録扱いにする（mindcare と同方針・二重取り防止）。
+    // 遷移は target=_blank で通常どおり行わせる（preventDefault しない）。
+    const docCta = container.querySelector('.longevity-doc-cta');
+    if (docCta) {
+        docCta.addEventListener('click', () => {
+            try {
+                const mindKey = `mindcare_${(new Date()).getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`;
+                const set = new Set(YEStorage.get(mindKey, []) || []);
+                if (!set.has('connect_reach')) {
+                    set.add('connect_reach');
+                    YEStorage.set(mindKey, Array.from(set));
+                    if (typeof App !== 'undefined') {
+                        App.addEP(5, 'mindcare');
+                        if (typeof App.notifyEP === 'function') App.notifyEP(5, 'つながり');
+                    }
+                }
+            } catch (e) { /* 記録失敗は黙殺（遷移は止めない） */ }
+        });
+    }
 }
