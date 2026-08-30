@@ -226,3 +226,119 @@
     color: #fff;
     font-weight: 700;
 }
+
+/* ===== 今日の彩り（food 項目の中身） =====
+   ★.selfcare__item の【外】に置かれる前提のスタイル。
+     中に入れると label のクリックを拾ってチェックが反転する。 */
+.meal-detail {
+    margin: -4px 0 var(--space-sm);
+    padding: 0;
+}
+
+.meal-detail__toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--color-bg-section);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    text-align: left;
+}
+
+.meal-detail__toggle-label {
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.meal-detail__toggle-value {
+    margin-left: auto;
+    color: var(--color-text-muted);
+}
+
+.meal-detail__toggle-arrow {
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+}
+
+.meal-detail__body {
+    padding: var(--space-sm) 14px var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.meal-detail__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.meal-detail__chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 4px;
+    background: var(--color-bg-section);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.meal-detail__chip--on {
+    background: var(--rink-bg);
+    border-color: var(--rink-border);
+}
+
+.meal-detail__chip-emoji { font-size: 1.3rem; line-height: 1; }
+
+.meal-detail__chip-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.meal-detail__chip-eg {
+    font-size: 0.58rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.3;
+}
+
+.meal-detail__ferment {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    margin-bottom: 10px;
+    background: var(--color-bg-section);
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    font-family: inherit;
+    font-size: 0.74rem;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.meal-detail__ferment--on {
+    background: var(--rink-bg);
+    border-color: var(--rink-border);
+}
+
+.meal-detail__note {
+    margin: 0 0 6px;
+    font-size: 0.64rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+.meal-detail__note--fine { margin-bottom: 0; }
