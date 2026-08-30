@@ -12,13 +12,88 @@
  *   ここでは「夜間に日内リズムがあると考えられている」帯として、
  *   目盛りのない薄い輪でだけ示す。
  *
- * 依存: common.js（YEStorage / getTodayKey）, notify.js
+ * 依存: common.js（YEStorage / getTodayKey）, sleep.js（記録の読み取り）, notify.js
  */
 
 const BC_KEY = 'bodyclock_times';
 
+/** 既定値（睡眠の記録も手入力も無いとき） */
+const BC_DEFAULTS = { wake: '07:00', sleep: '23:00' };
+
+/**
+ * 睡眠ログ（sleep_YYYY-MM-DD）から起床・就寝時刻の傾向を出す。
+ *
+ * ★HANDOFF-20260824.md §7-3 の対応。
+ *   体内時計ダイヤルは当初この2つを別入力で持っていたが、
+ *   sleep.js が「おやすみ／おはよう」のタップで実時刻を既に持っている。
+ *   同じことを2度聞かない（＝二重管理をやめる）ため、記録があればそこから引く。
+ *
+ * 実装上の注意:
+ *   - bedAt / wakeAt は ms epoch。深夜0時をまたぐので、就寝時刻は
+ *     「12時を基準に近いほう」へ寄せた角度で平均する（単純平均だと
+ *     23:00 と 01:00 の平均が 12:00 になってしまう）。
+ *   - 直近14日のうち記録のある日だけを見る。3日未満なら傾向とみなさない。
+ *
+ * @returns {{wake:string, sleep:string, days:number}|null}
+ */
+function bcTrendFromSleepLog() {
+    if (typeof YEStorage === 'undefined') return null;
+
+    const beds = [];
+    const wakes = [];
+    const today = new Date();
+    for (let i = 0; i < 14; i++) {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const rec = YEStorage.get(`sleep_${y}-${m}-${day}`, null);
+        if (!rec || !rec.bedAt || !rec.wakeAt) continue;
+        const b = new Date(rec.bedAt);
+        const w = new Date(rec.wakeAt);
+        beds.push(b.getHours() * 60 + b.getMinutes());
+        wakes.push(w.getHours() * 60 + w.getMinutes());
+    }
+
+    // 3日未満は「たまたま」なので傾向として扱わない。
+    if (beds.length < 3) return null;
+
+    return { wake: bcFmt(bcMeanMinutes(wakes)), sleep: bcFmt(bcMeanMinutes(beds)), days: beds.length };
+}
+
+/**
+ * 時刻（分）の平均。24時をまたぐ値があるので円周上のベクトル平均で出す。
+ * 例: 23:00 と 01:00 → 00:00（単純平均の 12:00 ではなく）
+ */
+function bcMeanMinutes(mins) {
+    let sx = 0, sy = 0;
+    for (const m of mins) {
+        const rad = (m / 1440) * Math.PI * 2;
+        sx += Math.cos(rad);
+        sy += Math.sin(rad);
+    }
+    if (sx === 0 && sy === 0) return 0;
+    let rad = Math.atan2(sy / mins.length, sx / mins.length);
+    if (rad < 0) rad += Math.PI * 2;
+    return Math.round((rad / (Math.PI * 2)) * 1440) % 1440;
+}
+
+/**
+ * ダイヤルに使う時刻。
+ * 優先順位: 手入力（明示的に保存したもの）> 睡眠ログの傾向 > 既定値
+ * ★手入力を上に置くのは、記録より本人の申告を尊重するため。
+ */
 function bcGetTimes() {
-    return Object.assign({ wake: '07:00', sleep: '23:00' }, YEStorage.get(BC_KEY, {}));
+    const saved = YEStorage.get(BC_KEY, null);
+    if (saved && saved.wake && saved.sleep) {
+        return Object.assign({}, BC_DEFAULTS, saved, { source: 'manual' });
+    }
+    const trend = bcTrendFromSleepLog();
+    if (trend) {
+        return { wake: trend.wake, sleep: trend.sleep, source: 'log', days: trend.days };
+    }
+    return Object.assign({}, BC_DEFAULTS, { source: 'default' });
 }
 
 function bcToMin(hhmm) {
@@ -177,7 +252,13 @@ function bcIn(min, from, to) {
 
         <div class="bc__panel">
             <div class="bc__panel-h">あなたの時間に合わせる</div>
-            <p class="bc__panel-sub">起きる時刻と寝る時刻を入れると、帯の位置がその生活に合わせて動きます。端末のなかだけに保存されます。</p>
+            <p class="bc__panel-sub">${
+                times.source === 'log'
+                    ? `睡眠ログの直近${times.days}日から、起床 ${times.wake} ／ 就寝 ${times.sleep} として帯を置いています。変えたいときは下から直せます。`
+                    : times.source === 'manual'
+                        ? '手入力した時刻を使っています。空にして保存すると、睡眠ログの記録に戻ります。'
+                        : '起きる時刻と寝る時刻を入れると、帯の位置がその生活に合わせて動きます。「おやすみ／おはよう」の記録が3日たまると、そちらから自動で合わせます。'
+            }端末のなかだけに保存されます。</p>
             <div class="bc__times">
                 <div class="bc__field">
                     <label for="bcWake">起きる時刻</label>
@@ -200,9 +281,14 @@ function bcIn(min, from, to) {
         `;
 
         document.getElementById('bcSave').addEventListener('click', () => {
-            const wake = document.getElementById('bcWake').value || '07:00';
-            const sleep = document.getElementById('bcSleep').value || '23:00';
-            YEStorage.set(BC_KEY, { wake, sleep });
+            const wake = document.getElementById('bcWake').value;
+            const sleep = document.getElementById('bcSleep').value;
+            // 両方空 = 手入力をやめる意思表示。睡眠ログ（あれば）に戻す。
+            if (!wake && !sleep) {
+                YEStorage.remove(BC_KEY);
+            } else {
+                YEStorage.set(BC_KEY, { wake: wake || BC_DEFAULTS.wake, sleep: sleep || BC_DEFAULTS.sleep });
+            }
             render();
         });
 
