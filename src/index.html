@@ -156,7 +156,7 @@
                     <!-- 体内マップ -->
                     <div id="today-bodymap"></div>
 
-                    <!-- ロンジェビティ・スコア（擬似・体内細胞年齢） -->
+                    <!-- ロンジェビティ・スコア（今週の手ごたえ） -->
                     <div id="today-longevity"></div>
 
                     <!-- 上田先生の今日の検証 -->
@@ -174,10 +174,10 @@
                     <!-- 心と社会のケア（つながり・生きがい） -->
                     <div id="today-mindcare"></div>
 
-                    <!-- 疲労回復度チェック（院長リクエスト） -->
+                    <!-- 疲労回復度チェック -->
                     <div id="today-fatigue"></div>
 
-                    <!-- 院長への質問メモ -->
+                    <!-- 先生への質問メモ -->
                     <div id="today-memo"></div>
 
                     <!-- ビフォーアフター写真記録 -->
@@ -336,6 +336,19 @@
                     `;
                     })()}
 
+                    <!-- LINE公式アカウント導線（りんく・こん太・たぬ姉と直接やりとり） -->
+                    <div class="line-connect">
+                        <div class="line-connect__chip">LINE公式アカウント</div>
+                        <h2 class="line-connect__title">ゆっくり3人組と、LINEでもつながれます</h2>
+                        <p class="line-connect__lead">アプリを開かなくても、気になったことをそのまま話しかけられます。<br>友だち追加は無料・登録不要です。</p>
+                        <div class="line-connect__body">
+                            <img src="images/line/line-qr.png" alt="LINE公式アカウント友だち追加QRコード" class="line-connect__qr" loading="lazy">
+                            <a href="https://lin.ee/zMVlevv" target="_blank" rel="noopener" class="line-connect__cta">
+                                <span>友だち追加はこちら →</span>
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- ロゴ控えめ表示 -->
                     <div style="text-align: center; margin: 32px 0 16px; opacity: 0.6;">
                         <a href="https://kimito-link.com/" target="_blank" rel="noopener" style="display: inline-block;">
@@ -426,16 +439,16 @@
             // 心と社会のケア（つながり・生きがい）
             renderMindCare('today-mindcare');
 
-            // ロンジェビティ・スコア（擬似・体内細胞年齢）
+            // ロンジェビティ・スコア（今週の手ごたえ）
             renderLongevityScore('today-longevity');
 
             // 医師紹介コードで来た人への歓迎バー（初回のみ・app-screen 構築後に呼ぶ）
             if (typeof RefPartner !== 'undefined' && RefPartner.showWelcomeOnce) RefPartner.showWelcomeOnce();
 
-            // 疲労回復度チェック（院長リクエスト）
+            // 疲労回復度チェック
             renderFatigueCheck('today-fatigue');
 
-            // 院長への質問メモ
+            // 先生への質問メモ
             renderDoctorMemo('today-memo');
 
             // ビフォーアフター写真記録（非同期）
@@ -449,3 +462,4 @@
     </script>
 </body>
 </html>
+

@@ -100,7 +100,7 @@ function getOnboardingSlides(depth = 0) {
             `
         },
         // ───────────────────────────────────────
-        // Slide 5: Memo + Photo Log（院長メモ・写真）★NEW
+        // Slide 5: Memo + Photo Log（質問メモ・写真）★NEW
         // ───────────────────────────────────────
         {
             id: 'memo-photo',
@@ -117,7 +117,7 @@ function getOnboardingSlides(depth = 0) {
                 </p>
                 <ul class="onboarding__features">
                     <li>📅 次回の点滴・サプリ予定をカウントダウン</li>
-                    <li>💬 院長への質問メモ（画面ごとお見せできます）</li>
+                    <li>💬 先生への質問メモ（画面ごとお見せできます）</li>
                     <li>📸 ビフォーアフター写真記録（端末内のみ）</li>
                 </ul>
             `
