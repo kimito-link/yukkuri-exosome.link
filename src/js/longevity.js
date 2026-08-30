@@ -1,10 +1,11 @@
 /**
- * Longevity Score - ロンジェビティ・スコア（擬似・体内細胞年齢）
+ * Longevity Score - ロンジェビティ・スコア（今週の手ごたえ）
  *
  * 動画「健康を可視化する最新技術（エイジテック）」より。
  * 欧米では AI・バイオマーカーで「生物学的年齢」と実年齢の差を可視化する
- * 流れがある。それを、このアプリが持つ日々のデータだけで
- * "ゲーム的に・端末内だけで" 再現する。
+ * 流れがある。ただしそれは測定に基づくものなので、
+ * このアプリは「年齢に換算しない」形だけを借りる（§7-1）。
+ * 記録したチェック項目を集計して、その日の手ごたえを言葉で返すだけ。
  *
  * 既存データを集計するだけの読み取り専用 widget。
  * 他システム（EP・体内マップ・各チェック）には一切書き込まない＝安全。
@@ -16,11 +17,10 @@
  *   疲労回復度（平均/10）      20点   = 平均 / 10 * 20
  *   ブースト（当日記録あり）   10点
  *
- * 擬似・体内細胞年齢:
- *   スコアを「若さの相対オフセット」に変換して表示する。
- *   実年齢を聞かない（オンボーディング不要・正直）ので、
- *   "実年齢より◯歳若い/老けた相当" という相対表現にとどめる。
- *   100点 → -7歳相当 / 50点 → ±0 / 0点 → +7歳相当（線形）
+ * 今週の手ごたえ:
+ *   スコアを言葉に変換して表示する（scoreToFeelText）。年齢には換算しない。
+ *   ★2026-08-24 以前は "実年齢より◯歳若い相当" を出していた。やめた理由は
+ *     scoreToFeelText のコメントを参照。復活させないこと。
  */
 
 /** 指定 Date のロンジェビティ・スコア内訳を計算（読み取り専用） */
@@ -83,10 +83,22 @@ function calcLongevityScore(dateLike) {
     };
 }
 
-/** スコア → 擬似・体内年齢オフセット（"実年齢より◯歳"） */
-function scoreToCellAgeOffset(score) {
-    // 100点 → -7 / 50点 → 0 / 0点 → +7
-    return Math.round(((50 - score) / 50) * 7);
+/** スコア → 「今週の手ごたえ」の言い回し（年齢に換算しない）
+ *
+ * 以前は score を "実年齢より◯歳若い相当" に線形変換して出していたが、
+ * 次の理由で年齢換算をやめた（HANDOFF-20260824.md §7-1）:
+ *   - 実年齢を聞いていないので、差分の基準になる数字がそもそも存在しない
+ *   - 生物学的年齢はバイオマーカー測定の用語であり、チェック項目の集計から
+ *     出した数字に「◯歳」を付けると測定値と受け取られる
+ *   - 同じカードに課金導線とクリニックCTAが並ぶため、効果を示す数字に見える
+ * 数字を出さず、その日の手ごたえを言葉で返すだけにする。
+ */
+function scoreToFeelText(score) {
+    if (score >= 80) return '積み上がっています';
+    if (score >= 60) return '整ってきています';
+    if (score >= 40) return 'ふだんどおりです';
+    if (score >= 20) return 'ひと休みしどきかも';
+    return 'ここから整えていきましょう';
 }
 
 /** スコア → 色・ラベル */
@@ -189,16 +201,11 @@ function renderLongevityScore(containerId) {
 
     const s = calcLongevityScore();
     const ev = evalLongevity(s.total);
-    const offset = scoreToCellAgeOffset(s.total);
     const days = getLongevity7Days();
     const maxBar = 100;
 
     // ゲージ（半円ではなく横バー＋大きな数値。SVGなしで軽量に）
-    const ageText = offset < 0
-        ? `実年齢より <strong style="color:${ev.color};">${Math.abs(offset)}歳 若い</strong> 相当`
-        : offset > 0
-            ? `実年齢より <strong style="color:${ev.color};">${offset}歳 上</strong> 相当`
-            : `実年齢 <strong style="color:${ev.color};">ぴったり</strong> 相当`;
+    const feelText = `<strong style="color:${ev.color};">${scoreToFeelText(s.total)}</strong>`;
 
     const partRow = (p) => `
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
@@ -227,7 +234,7 @@ function renderLongevityScore(containerId) {
                     </div>
                     <div style="flex:1; min-width:0;">
                         <div style="display:inline-block; padding:3px 12px; border-radius:99px; background:${ev.color}1a; color:${ev.color}; font-size:.78rem; font-weight:700; letter-spacing:.06em; margin-bottom:6px;">${ev.emoji} ${ev.label}</div>
-                        <div style="font-size:.82rem; color:#2e2622; line-height:1.5;">🧫 擬似・体内細胞年齢：${ageText}</div>
+                        <div style="font-size:.82rem; color:#2e2622; line-height:1.5;">🧫 今週の手ごたえ：${feelText}</div>
                     </div>
                 </div>
 
@@ -242,7 +249,7 @@ function renderLongevityScore(containerId) {
             ` : `
                 <div style="text-align:center; padding:14px 8px 18px;">
                     <div style="font-size:2.2rem; margin-bottom:6px;">🧬</div>
-                    <div style="font-size:.82rem; color:#2e2622; line-height:1.6; margin-bottom:4px;">今日のケアを記録すると、<br>スコアと擬似・体内細胞年齢が表示されます。</div>
+                    <div style="font-size:.82rem; color:#2e2622; line-height:1.6; margin-bottom:4px;">今日のケアを記録すると、<br>スコアと今週の手ごたえが表示されます。</div>
                     <div style="font-size:.68rem; color:#8a7d76;">セルフケア・睡眠・心のケア・疲労・ブーストから自動計算。</div>
                 </div>
             `}
@@ -266,13 +273,13 @@ function renderLongevityScore(containerId) {
 
             ${(typeof RefPartner !== 'undefined' && RefPartner.has && RefPartner.has()) ? `
                 <div style="margin-top:12px; padding:12px 14px; background:linear-gradient(135deg,#c9899a10,#a78a6b10); border:1px solid ${ev.color}33; border-radius:14px;">
-                    <div style="font-size:.66rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:8px;">🩺 監修：銀座スマートクリニック 大谷医師</div>
-                    <a href="${RefPartner.getKimitoUrlWithRef('https://kimito.link/')}" target="_blank" rel="noopener" class="longevity-doc-cta" style="display:block; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">先生のロンジェビティ解説を見る</a>
+                    <div style="font-size:.66rem; color:#8a7d76; letter-spacing:.06em; margin-bottom:8px;">🩺 医師監修</div>
+                    <a href="${RefPartner.getKimitoUrlWithRef('https://kimito.link/')}" target="_blank" rel="noopener" class="longevity-doc-cta" style="display:block; text-align:center; padding:10px 12px; background:linear-gradient(135deg,#c9899a,#a78a6b); color:#fff; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em; text-decoration:none; touch-action:manipulation;">ロンジェビティの解説を見る</a>
                 </div>
             ` : ''}
 
             <div style="margin-top:12px; padding:8px; background:#faf6f1; border-radius:8px; font-size:.62rem; color:#8a7d76; line-height:1.5; letter-spacing:.03em;">
-                💡 このスコア・年齢は習慣化を楽しむための<strong>イメージ表示</strong>で、医療的な生物学的年齢の測定値ではありません。
+                💡 このスコアは記録した項目を集計した<strong>イメージ表示</strong>で、健康状態の測定値ではありません。気になることは医療機関でご相談ください。
             </div>
         </div>
     `;
