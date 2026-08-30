@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体内時計ダイヤル | ゆっくりエクソソーム</title>
+    <meta name="description" content="24時間のどこにいるかで、体のモードは変わります。起きる時刻と寝る時刻に合わせて動くダイヤル。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bodyclock.css">
+</head>
+<body data-depth="1">
+    <div data-header></div>
+
+    <nav class="breadcrumb">
+        <a href="../">ホーム</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>体内時計ダイヤル</span>
+    </nav>
+
+    <main>
+        <article class="article">
+            <div class="container container--narrow">
+                <header class="article__header">
+                    <span class="article__category">うごく記録</span>
+                    <h1 class="article__title">体内時計ダイヤル</h1>
+                    <p class="hero__subtitle" style="margin-top:12px;">
+                        開くたびに針が進み、体のモードが変わります。
+                    </p>
+                </header>
+            </div>
+
+            <div id="bodyclock" class="bc"></div>
+
+            <div class="container container--narrow">
+                <section class="article__section">
+                    <h2 class="article__h2">なぜ「何時間経ったか」を数えないのか</h2>
+                    <p>自食作用（オートファジー）に日内リズムがあることは知られていますが、ヒトで何時間目から、どの臓器で、どれくらい起きるのかは分かっていません。よく見かける時間の数字は、その多くが酵母や動物の実験に由来します。</p>
+                    <p>数えられないものを数えて見せると、それは正確さを装った作り話になります。このアプリは詳しい人にも読まれる前提で作っているので、そこは踏みません。</p>
+
+                    <div class="article__note">
+                        <strong>もうひとつの理由</strong><br>
+                        時間を数える表示は、実質的に食事の間隔を測るタイマーとして働きます。肌のセルフチェックや写真の記録があるこのアプリで、そこに通知を重ねると、食事を抜くことを促す方向に働きかねません。数えない、通知しない、という判断はそのためのものです。<br>
+                        食事や体重のことで気持ちがつらくなっているときは、ひとりで抱えずに医療機関や相談窓口を頼ってください。
+                    </div>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">通知について</h2>
+                    <p>このアプリから届く通知は、寝る時刻のお知らせ1種類だけです。1日1回まで。記録が途切れたこと、スコアが下がったこと、連続日数については通知しません。</p>
+                    <p>続けたくなる理由を、失う不安ではなく、翌朝ひらいたときに見えるものの側に置いています。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">あわせて見る</h2>
+                    <div class="cards">
+                        <a class="card" href="../cinema/">
+                            <div class="card__inner">
+                                <div class="card__title">細胞シアター</div>
+                                <p class="card__desc">修復の時間に何が起きているのかを、ACT 5「眠る」で。</p>
+                                <span class="card__cta">見る →</span>
+                            </div>
+                        </a>
+                        <a class="card" href="../turnover/">
+                            <div class="card__inner">
+                                <div class="card__title">入れ替わりリング</div>
+                                <p class="card__desc">こちらは日単位。腸は数日、肌は数週間、髪は年単位で一巡します。</p>
+                                <span class="card__cta">見る →</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <div data-footer></div>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/notify.js"></script>
+    <script src="../js/bodyclock.js"></script>
+</body>
+</html>

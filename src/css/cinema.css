@@ -1,0 +1,260 @@
+/* ============================================
+   細胞シアター（cinema） — 5幕のシーンプレイヤー
+   style.css の変数を前提にしています
+   ============================================ */
+
+.cinema {
+    max-width: 720px;
+    margin: 0 auto var(--space-lg);
+    padding: 0 var(--space-md);
+}
+
+/* ---- ステージ ---- */
+.cinema__stage {
+    position: relative;
+    background: linear-gradient(180deg, #fffaf3 0%, #f6f0e6 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.cinema__progress {
+    display: flex;
+    gap: 4px;
+    padding: 12px 14px 0;
+}
+
+.cinema__progress span {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--color-border);
+    overflow: hidden;
+    position: relative;
+}
+
+.cinema__progress span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+}
+
+.cinema__progress span.is-done::after { transform: scaleX(1); }
+
+.cinema__screen {
+    padding: 8px 10px 0;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cinema__screen svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* ---- 説明パネル ---- */
+.cinema__panel {
+    padding: 6px var(--space-md) var(--space-md);
+}
+
+.cinema__act {
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--color-secondary);
+}
+
+.cinema__title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 2px 0 8px;
+}
+
+.cinema__fact {
+    font-size: 0.93rem;
+    line-height: 1.85;
+    color: var(--color-text);
+    margin-bottom: 12px;
+}
+
+.cinema__note {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    background: var(--color-bg-section);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+
+/* キャラのひとこと */
+.cinema__say {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.cinema__say img {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.cinema__bubble {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    background: var(--color-bg-card);
+    box-shadow: var(--shadow-sm);
+}
+
+.cinema__say--rink .cinema__bubble { background: var(--rink-bg); border-left: 3px solid var(--rink-border); }
+.cinema__say--konta .cinema__bubble { background: var(--konta-bg); border-left: 3px solid var(--konta-border); }
+.cinema__say--tanunee .cinema__bubble { background: var(--tanunee-bg); border-left: 3px solid var(--tanunee-border); }
+
+/* ---- 操作 ---- */
+.cinema__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 var(--space-md) var(--space-md);
+    flex-wrap: wrap;
+}
+
+.cinema__btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.cinema__btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.cinema__btn--main { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+
+.cinema__hint {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    padding-bottom: 12px;
+}
+
+/* ---- 幕インデックス ---- */
+.cinema__index {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    margin-top: var(--space-md);
+}
+
+.cinema__chip {
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.cinema__chip.is-active {
+    border-color: var(--color-primary);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+}
+
+.cinema__chip b { display: block; font-size: 0.72rem; color: var(--color-secondary); font-family: var(--font-serif); }
+
+/* ============================================
+   シーン内のアニメーション
+   （幕を切り替えるたびにSVGを再生成するので
+     animation は毎回頭から再生される）
+   ============================================ */
+
+.ce-cell { fill: #fdf2f4; stroke: #e6c9d1; stroke-width: 2; }
+.ce-nuc  { fill: #f3e3e8; stroke: #d9b4bf; stroke-width: 1.5; }
+.ce-label { font-size: 12px; fill: #8a7d76; font-family: 'Noto Sans JP', sans-serif; }
+.ce-label--s { font-size: 10.5px; }
+
+.ce-fade   { opacity: 0; animation: ceFade .8s ease forwards; }
+.ce-pop    { opacity: 0; transform-box: fill-box; transform-origin: center; animation: cePop .7s cubic-bezier(.2,1.3,.4,1) forwards; }
+.ce-drift  { opacity: 0; animation: ceDrift 1.6s ease forwards; }
+.ce-pulse  { animation: cePulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.ce-vanish { animation: ceVanish 1s ease forwards; transform-box: fill-box; transform-origin: center; }
+
+@keyframes ceFade { to { opacity: 1; } }
+@keyframes cePop { 0% { opacity: 0; transform: scale(.3); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes ceDrift { 0% { opacity: 0; transform: translate(0, 0); } 20% { opacity: 1; } 100% { opacity: 1; transform: translate(var(--dx, 0), var(--dy, 0)); } }
+@keyframes cePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes ceVanish { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.4); } }
+
+/* 隔離膜が伸びて閉じる */
+.ce-wrap {
+    fill: none;
+    stroke: #8eb4c7;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 270;
+    stroke-dashoffset: 270;
+    animation: ceWrap 2s cubic-bezier(.5,0,.2,1) forwards;
+}
+
+@keyframes ceWrap { to { stroke-dashoffset: 0; } }
+
+/* 線を描いていく（睡眠グラフなど） */
+.ce-draw {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: ceDraw 3s ease forwards;
+}
+
+@keyframes ceDraw { to { stroke-dashoffset: 0; } }
+
+/* リソソームが寄ってきて融合 */
+.ce-move { animation: ceMove 1.6s cubic-bezier(.5,0,.3,1) forwards; }
+@keyframes ceMove { to { transform: translate(var(--dx, 0), var(--dy, 0)); } }
+
+/* 分解中のゆらぎ */
+.ce-digest { animation: ceDigest 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ceDigest { 0%, 100% { transform: scale(1); opacity: .5; } 50% { transform: scale(1.1); opacity: .8; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .ce-fade, .ce-pop, .ce-drift, .ce-pulse, .ce-vanish,
+    .ce-wrap, .ce-draw, .ce-move, .ce-digest {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        opacity: 1 !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .cinema { padding: 0 12px; }
+    .cinema__title { font-size: 1.1rem; }
+    .cinema__panel { padding: 6px 14px 14px; }
+}

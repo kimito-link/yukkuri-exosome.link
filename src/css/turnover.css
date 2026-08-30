@@ -1,0 +1,230 @@
+/* ============================================
+   入れ替わりリング（turnover）
+   style.css の変数を前提にしています
+   ============================================ */
+
+.tv { max-width: 720px; margin: 0 auto; padding: 0 var(--space-md); }
+
+.tv__lead {
+    background: var(--color-bg-section);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+}
+
+.tv__day {
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.tv__day-n {
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.tv__day-l {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.12em;
+    margin-top: 6px;
+}
+
+/* ---- リング ---- */
+.tv__rings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-sm);
+}
+
+.tv__ring {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 12px 14px;
+    text-align: center;
+}
+
+.tv__ring svg { width: 108px; height: 108px; display: block; margin: 0 auto 8px; }
+
+.tv__ring-track { fill: none; stroke: var(--color-border); stroke-width: 9; }
+
+.tv__ring-arc {
+    fill: none;
+    stroke-width: 9;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+.tv__ring-pct {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    fill: var(--color-text);
+}
+
+.tv__ring-lap { font-size: 9.5px; fill: var(--color-text-muted); }
+
+.tv__ring-name { font-size: 0.9rem; font-weight: 700; }
+.tv__ring-cycle { font-size: 0.7rem; color: var(--color-text-muted); margin-top: 3px; }
+
+/* ---- 一巡カード ---- */
+.tv__lap {
+    margin: var(--space-md) 0;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #fff6f8 0%, #fdf6e9 100%);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.tv__lap-eyebrow {
+    font-family: var(--font-serif);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--color-secondary);
+}
+
+.tv__lap-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 4px 0 8px;
+}
+
+.tv__lap-body { font-size: 0.9rem; line-height: 1.85; }
+
+/* ---- 手ごたえ ---- */
+.tv__panel {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.tv__panel-h {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.tv__panel-sub {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+    line-height: 1.7;
+}
+
+.tv__delta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.tv__delta-card {
+    background: var(--color-bg-section);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    text-align: center;
+}
+
+.tv__delta-l { font-size: 0.75rem; color: var(--color-text-muted); }
+
+.tv__delta-v {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.tv__delta-n { font-size: 0.68rem; color: var(--color-text-muted); }
+
+.tv__wait {
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    padding: var(--space-sm);
+}
+
+.tv__wait b { color: var(--color-primary); font-family: var(--font-serif); font-size: 1.2rem; }
+
+/* ---- 重なり ---- */
+.tv__overlay-row { display: flex; gap: 4px; align-items: flex-end; height: 56px; }
+.tv__overlay-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; height: 100%; }
+.tv__bar { border-radius: 3px 3px 0 0; min-height: 3px; }
+.tv__bar--sleep { background: var(--color-accent); }
+.tv__bar--skin { background: var(--color-primary); }
+.tv__overlay-labels { display: flex; gap: 4px; margin-top: 5px; }
+.tv__overlay-labels div { flex: 1; text-align: center; font-size: 0.6rem; color: var(--color-text-muted); }
+
+.tv__legend { display: flex; gap: 14px; justify-content: center; margin-top: 10px; font-size: 0.72rem; color: var(--color-text-muted); }
+.tv__legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+
+.tv__note {
+    margin-top: var(--space-md);
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    background: var(--color-bg-section);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tv__ring-arc { transition: none; }
+}
+
+@media (max-width: 480px) {
+    .tv { padding: 0 12px; }
+    .tv__rings { grid-template-columns: repeat(2, 1fr); }
+    .tv__ring svg { width: 92px; height: 92px; }
+}
+
+/* ============================================
+   細胞周期（cellcycle）
+   ============================================ */
+
+.cc__stage {
+    background: linear-gradient(180deg, #fffaf3 0%, #f6f0e6 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) 6px 4px;
+    margin-bottom: var(--space-sm);
+}
+
+.cc__stage svg { display: block; width: 100%; height: auto; }
+
+.cc__label { font-size: 13px; font-weight: 700; }
+.cc__sub { font-size: 10px; fill: var(--color-text-muted); }
+.cc__mid { font-size: 11px; fill: var(--color-text-muted); }
+
+.cc__dot {
+    transform-box: view-box;
+    transform-origin: 110px 120px;
+    animation: ccSpin 16s linear infinite;
+}
+
+@keyframes ccSpin { to { transform: rotate(360deg); } }
+
+.cc__kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+
+.cc__kind {
+    background: var(--color-bg-section);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+}
+
+.cc__kind-h { font-size: .88rem; font-weight: 700; margin-bottom: 4px; }
+.cc__kind-b { font-size: .78rem; line-height: 1.75; color: var(--color-text-muted); }
+.cc__kind-b b { color: var(--color-text); font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+    .cc__dot { animation: none; }
+}

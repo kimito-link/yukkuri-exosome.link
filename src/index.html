@@ -310,6 +310,42 @@
                         </a>
                     </div>
 
+                    <!-- からだを眺める（細胞シアター・入れ替わりリング・体内時計）
+                         記録を促す導線ではなく「眺めるだけ」の3画面。EP報酬は付けない。
+                         HANDOFF-20260824.md §5 の方針どおり、未読バッジ・催促・
+                         「まだ見ていません」の類は置かないこと。 -->
+                    <h2 class="app-section-title">
+                        <span class="app-section-title__emoji">🔬</span>
+                        からだを眺める
+                    </h2>
+
+                    <div class="quest-list">
+                        <a href="cinema/" class="quest-card">
+                            <div class="quest-card__icon" style="background: linear-gradient(135deg, #e8e0ff, #d8f3ff);">🎬</div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">細胞シアター</div>
+                                <div class="quest-card__desc">6幕で見る、細胞の中で起きていること</div>
+                            </div>
+                            <div class="quest-card__arrow">→</div>
+                        </a>
+                        <a href="turnover/" class="quest-card">
+                            <div class="quest-card__icon" style="background: linear-gradient(135deg, #ffe4ec, #f4e8d8);">🔄</div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">入れ替わりリング</div>
+                                <div class="quest-card__desc">貯めるのではなく、入れ替え続けている</div>
+                            </div>
+                            <div class="quest-card__arrow">→</div>
+                        </a>
+                        <a href="clock/" class="quest-card">
+                            <div class="quest-card__icon" style="background: linear-gradient(135deg, #d8f3ff, #fff0d6);">🕐</div>
+                            <div class="quest-card__content">
+                                <div class="quest-card__title">体内時計ダイヤル</div>
+                                <div class="quest-card__desc">いま、体はどのモードにいるのか</div>
+                            </div>
+                            <div class="quest-card__arrow">→</div>
+                        </a>
+                    </div>
+
                     <!-- アプリダウンロード（Webのみ表示。Capacitorアプリ内では非表示） -->
                     ${(typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ? '' : (function() {
                         const APPLE = 'https://apps.apple.com/jp/app/id6775201794';

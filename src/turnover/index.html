@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入れ替わりリング | ゆっくりエクソソーム</title>
+    <meta name="description" content="腸は数日、肌は数週間、髪は年単位。部位ごとに違う入れ替わりの速さを、記録を始めた日からの経過で眺めるページ。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/turnover.css">
+</head>
+<body data-depth="1">
+    <div data-header></div>
+
+    <nav class="breadcrumb">
+        <a href="../">ホーム</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>入れ替わりリング</span>
+    </nav>
+
+    <main>
+        <article class="article">
+            <div class="container container--narrow">
+                <header class="article__header">
+                    <span class="article__category">うごく記録</span>
+                    <h1 class="article__title">入れ替わりリング</h1>
+                </header>
+            </div>
+
+            <div id="turnover" class="tv"></div>
+
+            <div class="tv">
+                <div class="tv__panel">
+                    <div class="tv__panel-h">細胞周期 — 分裂のひとまわり</div>
+                    <p class="tv__panel-sub">入れ替わりの中身です。この輪は、早く回せばいいというものではありません。</p>
+                    <div id="cellcycle"></div>
+                </div>
+            </div>
+
+            <div class="container container--narrow">
+                <section class="article__section">
+                    <h2 class="article__h2">分裂は、多いほどいいわけではない</h2>
+                    <p>細胞周期には、先へ進む前に確かめる場所（チェックポイント）がいくつかあります。DNAに傷があればそこで止まり、直してから先へ進みます。直せなければ、その細胞は二度と分裂しない状態に入ります。止まることは故障ではなく、仕組みの一部です。</p>
+                    <p>体細胞が分裂できる回数に上限があることも知られています（ヘイフリック限界）。だから、分裂を増やすこと自体は目的になりません。必要なところで必要なだけ起きて、それ以外はG0期で休んでいることのほうが、体にとっては普通の状態です。</p>
+                    <p>神経細胞や心筋のように、ほとんど分裂せず一生はたらき続ける細胞もあります。入れ替わることだけが体を保つ方法ではない、ということです。</p>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">なぜ「一巡」を数えるのか</h2>
+                    <p>体は貯めるのではなく、入れ替え続けています。腸の粘膜は数日、表皮は数週間、赤血球は約4か月、髪は年単位。部位ごとに別の速さで時間が流れています。</p>
+                    <p>だから「積み上がった点数」よりも、「いま何巡目にいるのか」のほうが体の実際に近い見方になります。1巡したとき、記録を始めた日のその部位をつくっていた細胞は、もうそこにありません。</p>
+
+                    <div class="article__note">
+                        <strong>大事なところ</strong><br>
+                        入れ替わりは、記録してもしなくても進みます。リングが進むのは時間が経ったからで、このアプリを使ったからではありません。ここを混ぜないことが、この道具の前提です。
+                    </div>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">つづきを見る</h2>
+                    <div class="cards">
+                        <a class="card" href="../cinema/">
+                            <div class="card__inner">
+                                <div class="card__title">細胞シアター</div>
+                                <p class="card__desc">入れ替わりのなかで実際に何が起きているのかを、6幕のアニメーションで。</p>
+                                <span class="card__cta">見る →</span>
+                            </div>
+                        </a>
+                        <a class="card" href="../">
+                            <div class="card__inner">
+                                <div class="card__title">今日の記録をつける</div>
+                                <p class="card__desc">肌と疲労回復度をつけると、ここに出る情報が増えていきます。</p>
+                                <span class="card__cta">ホームへ →</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <div data-footer></div>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/turnover.js"></script>
+    <script src="../js/cellcycle.js"></script>
+</body>
+</html>

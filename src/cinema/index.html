@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>細胞シアター | ゆっくりエクソソーム</title>
+    <meta name="description" content="細胞のなかで起きていることを5幕のアニメーションで。掃除（オートファジー）、細胞から細胞への伝言（エクソソーム）、培養上清、そして毎日の記録まで。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cinema.css">
+</head>
+<body data-depth="1">
+    <div data-header></div>
+
+    <nav class="breadcrumb">
+        <a href="../">ホーム</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>細胞シアター</span>
+    </nav>
+
+    <main>
+        <article class="article">
+            <div class="container container--narrow">
+                <header class="article__header">
+                    <span class="article__category">うごく解説</span>
+                    <h1 class="article__title">細胞シアター</h1>
+                    <p class="hero__subtitle" style="margin-top:12px;">
+                        文章だと入ってこないところを、6幕のアニメーションで。<br>
+                        タップで進みます。
+                    </p>
+                </header>
+            </div>
+
+            <!-- プレイヤー -->
+            <div id="cinema" class="cinema"></div>
+
+            <div class="container container--narrow">
+                <section class="article__section">
+                    <h2 class="article__h2">この6幕でわかること</h2>
+                    <ul>
+                        <li><strong>ACT 1 たまる</strong> — 使い終わった部品が細胞のなかに残っていく</li>
+                        <li><strong>ACT 2 掃除する</strong> — 膜が包んで分解し、材料として使い直す（オートファジー）</li>
+                        <li><strong>ACT 3 伝える</strong> — 小胞が外へ出て、隣の細胞に届く（エクソソーム）</li>
+                        <li><strong>ACT 4 上ずみ</strong> — 細胞を取り除いたあとに残る液（培養上清）</li>
+                        <li><strong>ACT 5 眠る</strong> — 動かすモードから、修復と片づけのモードへ</li>
+                        <li><strong>ACT 6 記録する</strong> — 見えないものを、毎日の記録で眺める</li>
+                    </ul>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">よくある誤解</h2>
+
+                    <h3 class="article__h3">「掃除が進むと細胞分裂が活発になって若返る」</h3>
+                    <p>オートファジーは細胞を分裂させる仕組みではありません。増えるのは細胞の数ではなく、いまある細胞の中身が入れ替わるという話です。むしろ体の細胞が分裂できる回数には上限があることが知られています（ヘイフリック限界）。</p>
+
+                    <h3 class="article__h3">「オートファジーが脂肪を燃やしてくれる」</h3>
+                    <p>分解の対象は細胞のなかの古い部品であって、体脂肪そのものではありません。食事の間隔があくと「脂肪が使われる状態」と「掃除が起きやすい状態」が同じ条件のもとで重なるため、混ざって伝わりやすいところです。</p>
+
+                    <h3 class="article__h3">「◯時間空ければ必ずスイッチが入る」</h3>
+                    <p>よく語られる時間の根拠の多くは、酵母や動物を使った実験に由来します。ヒトで何時間から、どの臓器でどれくらい起きるのかは、まだはっきりしていません。</p>
+
+                    <h3 class="article__h3">「寝ている間に細胞分裂が活発になって痩せる」</h3>
+                    <p>睡眠中に強まるのは修復と片づけです。皮膚など一部の組織では入れ替わりに日内リズムがあることが知られていますが、入れ替わること自体は維持の作業です。体重について確かめられているのは食欲のほうで、睡眠が足りないとレプチンが下がりグレリンが上がることが、ヒトを対象とした研究で報告されています。</p>
+
+                    <div class="article__note">
+                        <strong>お願い</strong><br>
+                        このページは一般的な情報の紹介です。食事の量やタイミングを大きく変えるとき、持病や服薬があるとき、施術を検討するときは、必ず医療機関で医師にご相談ください。
+                    </div>
+                </section>
+
+                <section class="article__section">
+                    <h2 class="article__h2">つづきを読む</h2>
+                    <div class="cards">
+                        <a class="card" href="../basics/">
+                            <div class="card__inner">
+                                <div class="card__title">エクソソームの基礎</div>
+                                <p class="card__desc">そもそも何なのか、なにが分かっていて、なにが分かっていないのか。</p>
+                                <span class="card__cta">記事を読む →</span>
+                            </div>
+                        </a>
+                        <a class="card" href="../glossary/">
+                            <div class="card__inner">
+                                <div class="card__title">用語集</div>
+                                <p class="card__desc">オートファジー・リソソーム・培養上清など、出てきた言葉の意味。</p>
+                                <span class="card__cta">用語を見る →</span>
+                            </div>
+                        </a>
+                        <a class="card" href="../">
+                            <div class="card__inner">
+                                <div class="card__title">今日の記録をつける</div>
+                                <p class="card__desc">体内シグナルマップに、今日のぶんをひとつ。</p>
+                                <span class="card__cta">ホームへ →</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <div data-footer></div>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/cinema.js"></script>
+</body>
+</html>
