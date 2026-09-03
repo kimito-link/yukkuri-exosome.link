@@ -93,6 +93,26 @@
                 </div>
             </div>
 
+            <!-- アカウント（kimito.link 共通アカウント・すみわけ）
+                 ★ログインは任意。ここを一切触らなくても、今まで通りアプリは
+                 フルに使える。ログインした人だけ、記録の端末間引き継ぎと
+                 他サービスへの導線が増える。premium.js のチケット検証・
+                 YEStorage の記録はログインの有無に関係なく動く。 -->
+            <h2 class="app-section-title">
+                <span class="app-section-title__emoji">🔗</span>
+                アカウント
+            </h2>
+            <div class="me-list">
+                <div class="me-list__item" id="account-row">
+                    <div class="me-list__icon">👤</div>
+                    <div class="me-list__label" id="account-label">kimito.link でログイン</div>
+                    <div class="me-list__arrow" id="account-arrow">→</div>
+                </div>
+            </div>
+            <p style="font-size:.72rem; color:var(--color-text-muted); margin:6px 2px 0; line-height:1.6;">
+                ログインしなくても、このアプリは今まで通り使えます。ログインすると、記録の端末間引き継ぎと他サービスへの行き来ができるようになります。
+            </p>
+
             <!-- 詳しく知る -->
             <h2 class="app-section-title">
                 <span class="app-section-title__emoji">📚</span>
@@ -172,6 +192,30 @@
     `;
 
     document.getElementById('me-screen').innerHTML = html;
+
+    // アカウント（kimito.link ログイン・すみわけ）
+    if (typeof YEAuth !== 'undefined') {
+        const accountLabel = document.getElementById('account-label');
+        const accountArrow = document.getElementById('account-arrow');
+        if (YEAuth.isSignedIn()) {
+            accountLabel.textContent = 'kimito.link でログイン中';
+            accountArrow.textContent = '';
+        }
+        document.getElementById('account-row').addEventListener('click', () => {
+            if (YEAuth.isSignedIn()) {
+                if (confirm('ログアウトしますか？\n記録は端末に残ります。')) {
+                    YEAuth.signOut().then(() => {
+                        App.showToast('ログアウトしました', '👋');
+                        setTimeout(() => location.reload(), 600);
+                    });
+                }
+            } else {
+                YEAuth.openSignIn().catch(() => {
+                    App.showToast('ログインを開けませんでした。時間をおいて試してください', '⚠️', 3000);
+                });
+            }
+        });
+    }
 
     // 通知トグル
     document.getElementById('notif-toggle').addEventListener('click', async () => {
