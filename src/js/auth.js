@@ -31,10 +31,9 @@
 (function () {
     'use strict';
 
-    // ★実配置時にオーナーが本番の pk_live_ 値へ差し替える（公開可能キーなので
-    //   平文でよい。秘密鍵ではない）。フェーズ0.5の間は Clerk Dashboard の
-    //   Developers > API Keys から取得した検証用の値を一時的に入れる。
-    var CLERK_PUBLISHABLE_KEY = 'pk_live_REPLACE_ME';
+    // kimito.link 本番の公開可能キー（Clerk Dashboard > kimitolink-linktree > API Keys）。
+    // ★公開可能キーなので静的サイトに平文で置いてよい。秘密鍵(sk_live_)は絶対に置かない。
+    var CLERK_PUBLISHABLE_KEY = 'pk_live_Y2xlcmsua2ltaXRvLmxpbmsk';
 
     // kimito.link の Clerk Frontend API カスタムドメイン。
     var CLERK_FRONTEND_API = 'clerk.kimito.link';
@@ -57,6 +56,13 @@
             script.async = true;
             script.crossOrigin = 'anonymous';
             script.setAttribute('data-clerk-publishable-key', CLERK_PUBLISHABLE_KEY);
+            // ★satellite は script タグの属性で渡す必要がある。
+            //   Clerk.load() のオプションだけでは
+            //   「Missing domain and proxyUrl」で初期化に失敗する（実測）。
+            if (IS_SATELLITE) {
+                script.setAttribute('data-clerk-is-satellite', 'true');
+                script.setAttribute('data-clerk-domain', CLERK_FRONTEND_API);
+            }
             // Clerk のバージョンタグは実装直前に公式ドキュメントで最新を確認すること。
             script.src = 'https://' + CLERK_FRONTEND_API + '/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
             script.onload = function () {
