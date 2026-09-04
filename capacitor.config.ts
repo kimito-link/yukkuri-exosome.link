@@ -4,7 +4,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
  * iOS / Android Capacitor シェル（fujisan-cleanと同じ構成）。
  *
  * 方式: server.url で本番Webを読み込む「リモート読込型」。
- * - Web は Vercel に常時デプロイ済み (https://yukkuri-exosome.link)
+ * - Web は Vercel に常時デプロイ済み (https://exosome.kimito.link)
  * - iOS / Android のネイティブシェルは WKWebView / WebView で
  *   本番URLをそのまま表示するだけのラッパー
  *
@@ -42,14 +42,14 @@ const config: CapacitorConfig = {
     },
   },
   server: {
-    url: 'https://yukkuri-exosome.link',
+    url: 'https://exosome.kimito.link',
     cleartext: false,
-    hostname: 'yukkuri-exosome.link',
+    hostname: 'exosome.kimito.link',
     androidScheme: 'https',
     iosScheme: 'https',
     allowNavigation: [
-      'yukkuri-exosome.link',
-      '*.yukkuri-exosome.link',
+      'exosome.kimito.link',
+      '*.exosome.kimito.link',
     ],
   },
 };
