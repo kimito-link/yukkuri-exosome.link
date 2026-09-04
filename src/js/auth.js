@@ -11,12 +11,14 @@
  *   体感速度の主因（TBT 1,780ms）と判明し、遅延読込に直した経緯がある。
  *   （参考: surechigai-romi.link/app/_layout.tsx:92-96）
  *
- * ★フェーズ0.5（疎通検証）段階の実装:
- *   本番ドメイン（exosome.kimito.link）への移行前は、Clerk Dashboard の
- *   satellite domains に Vercel preview URL を一時登録して検証する。
- *   IS_SATELLITE / CLERK_FRONTEND_API は移行後に isSatellite が不要になるか
- *   実測してから確定する（SHARED-ACCOUNT-SATELLITE-GUIDE.md:17-18 参照 —
- *   同一親ドメイン *.kimito.link なら cookie 共有で足りる可能性が高い）。
+ * ★satellite は使わない（2026-09-05 実測で確定）。
+ *   exosome.kimito.link は kimito.link と同一親ドメインなので、Clerk の
+ *   __client cookie が .kimito.link で共有される。satellite 設定は不要
+ *   （SHARED-ACCOUNT-SATELLITE-GUIDE.md:16-17「satellite 設定すら最小で済む」）。
+ *   ★isSatellite: true のままだと Clerk 側で verified になっていない限り
+ *     /v1/client/sync が {"code":"form_param_missing","param_name":"link_domain"}
+ *     を返してログインに入れない。Dashboard の Satellites に登録が残っていても
+ *     Unverified なら同じ。サブドメイン運用では登録自体が不要。
  *
  * ★セッショントークンは保存しない。
  *   Clerk.session.getToken() を都度呼ぶだけにする。Clerk 自身が cookie と
@@ -38,9 +40,9 @@
     // kimito.link の Clerk Frontend API カスタムドメイン。
     var CLERK_FRONTEND_API = 'clerk.kimito.link';
 
-    // exosome.kimito.link 移行前（別ドメインのまま検証する間）は true。
-    // 移行後、cookie 共有だけで足りると実測できたら false に切り替える。
-    var IS_SATELLITE = true;
+    // ★false 固定。別ドメインで配信する場合だけ true にする
+    //   （その場合は Clerk Dashboard で verified にする必要がある）。
+    var IS_SATELLITE = false;
 
     // すみわけ用の軽いフラグ。トークンそのものは入れない。
     var AUTH_STATE_KEY = 'auth_signed_in'; // YEStorage 経由 → 実キーは ye_auth_signed_in
