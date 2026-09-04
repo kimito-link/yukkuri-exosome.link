@@ -1,0 +1,12 @@
+{
+  "version": "0.1.2",
+  "bumped_from": "0.1.1",
+  "bumped_at": "2026-09-04T08:29:10.054Z",
+  "release_notes": "起動画面をブランドデザインに改善しました🐢\n\n・アプリ起動時のスプラッシュ画面が、りんくたちのオリジナルデザインで表示されるようになりました。\n・そのほか細かな安定性の改善を行いました。\n\n毎日の小さなケアを、ゆっくり積み上げていきましょう🌱",
+  "gate_blackscreen_check_run_id": null,
+  "gate_blackscreen_check_result": null,
+  "gate_blackscreen_luma": null,
+  "released_at": null,
+  "released_git_sha": null,
+  "released_by": null
+}

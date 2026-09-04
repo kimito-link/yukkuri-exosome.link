@@ -63,7 +63,7 @@ android {
         applicationId "com.kimito.link.yukkuriexosome"
         minSdkVersion 23
         targetSdkVersion 36
-        versionCode 3
+        versionCode 4
         versionName "0.1.2"
 
         // The name for the application
