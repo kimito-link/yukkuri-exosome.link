@@ -8,7 +8,7 @@
     "bundleId": "com.kimito.link.yukkuriexosome",
     "iosScheme": "yukkuriexosome",
     "appleSiwaServiceId": null,
-    "productionDomain": "yukkuri-exosome.link",
+    "productionDomain": "exosome.kimito.link",
     "stagingDomain": null
   },
 
@@ -38,11 +38,11 @@
     "phoneE164": "+81 90 4180 3041",
     "firstName": "Kimito",
     "lastName": "Komura",
-    "supportUrl": "https://yukkuri-exosome.link/about/",
-    "privacyUrl": "https://yukkuri-exosome.link/privacy/",
+    "supportUrl": "https://exosome.kimito.link/about/",
+    "privacyUrl": "https://exosome.kimito.link/privacy/",
     "termsUrl": null,
-    "marketingUrl": "https://yukkuri-exosome.link/",
-    "dataDeletionUrl": "https://yukkuri-exosome.link/privacy/#6-%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%89%8A%E9%99%A4%E6%96%B9%E6%B3%95"
+    "marketingUrl": "https://exosome.kimito.link/",
+    "dataDeletionUrl": "https://exosome.kimito.link/privacy/#6-%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%89%8A%E9%99%A4%E6%96%B9%E6%B3%95"
   },
 
   "auth": {
@@ -68,7 +68,7 @@
     "organization": "Kimito-Link",
     "country": "JP",
     "githubOrg": "kimito-link",
-    "githubRepo": "yukkuri-exosome.link",
+    "githubRepo": "exosome.kimito.link",
     "vercelTeamSlug": "kimito-link",
     "vercelProjectName": "yukkuri-exosome"
   }

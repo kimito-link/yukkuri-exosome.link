@@ -1,5 +1,5 @@
 """
-yukkuri-exosome.link アプリアイコン生成
+exosome.kimito.link アプリアイコン生成
 
 Kimito-Link 丸ロゴ × エクソソーム粒子を合成して、
 favicon / apple-touch / PWA / OG 画像を一括生成。

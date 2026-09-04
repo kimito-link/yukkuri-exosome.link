@@ -191,7 +191,7 @@ function injectChrome(depth = 0) {
                         <a href="${base}glossary/">用語集</a>
                     </nav>
                     <div class="site-footer__copyright">
-                        © yukkuri-exosome.link — ゆっくり3人組と学ぶエクソソーム<br>
+                        © exosome.kimito.link — ゆっくり3人組と学ぶエクソソーム<br>
                         <small>キャラクター提供：<a href="https://kimito-link.com/" target="_blank" rel="noopener">Kimito-Link</a></small>
                     </div>
                 </div>

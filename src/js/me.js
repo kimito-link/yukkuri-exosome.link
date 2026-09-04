@@ -185,7 +185,7 @@
             </div>
 
             <div style="text-align:center; padding: 24px 0 8px; color: var(--color-text-muted); font-size: 0.75rem;">
-                yukkuri-exosome.link<br>
+                exosome.kimito.link<br>
                 v0.1.0 — 2026年5月
             </div>
         </div>

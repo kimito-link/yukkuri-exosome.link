@@ -76,3 +76,6 @@ play-service-account*.json
 
 # Bubblewrap user-specific paths (JDK/SDK in this PC)
 .bubblewrap-config.json
+
+.vercel
+.env*.local

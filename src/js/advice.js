@@ -74,7 +74,7 @@ function renderAdvice(advice) {
 
 function shareAdvice(advice) {
     const char = CHARACTERS[advice.char];
-    const text = `【ゆっくりエクソソームの${char.name}より】\n${advice.text}\n\n#ゆっくりエクソソーム\nhttps://yukkuri-exosome.link/advice/`;
+    const text = `【ゆっくりエクソソームの${char.name}より】\n${advice.text}\n\n#ゆっくりエクソソーム\nhttps://exosome.kimito.link/advice/`;
 
     if (navigator.share) {
         navigator.share({
