@@ -40,6 +40,10 @@
     {
       "name": "upload",
       "value": "E0:C1:E1:FE:B7:F0:49:A0:53:32:B5:5B:55:03:CF:67:39:A0:C1:46:38:12:00:20:E9:20:93:55:CC:54:2C:B3"
+    },
+    {
+      "name": "play-app-signing",
+      "value": "5B:06:F9:94:01:EE:41:2E:4C:F0:C7:E0:0E:97:32:DA:25:E7:09:5A:1A:3D:FE:40:BF:C2:E6:8B:E7:6F:6F:6E"
     }
   ],
   "additionalTrustedOrigins": [],
