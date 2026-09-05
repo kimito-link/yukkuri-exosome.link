@@ -1,0 +1,58 @@
+# Play Console の現在の状態を読むだけのワークフロー（提出はしない）。
+#
+# ★製品版へ昇格する前に「いま何がどのトラックに居て、審査はどうなっているか」を
+#   確認するために使う。play-review-check.mjs は一時的な edit を開いて読み、
+#   最後にその edit を削除するので、Play 側に変更を残さない。
+#
+# 使い方: Actions -> android-play-status -> Run workflow（track を選ぶ）
+#
+# 必要な Secret: GOOGLE_PLAY_SA_JSON_BASE64（android-play-release.yml と同じもの）
+name: android-play-status
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "確認したいトラック (production / internal / closed)"
+        required: false
+        default: "production"
+
+concurrency:
+  group: android-play-status-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    env:
+      PLAY_TRACK: ${{ inputs.track || 'production' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Write service account
+        env:
+          GOOGLE_PLAY_SA_JSON_BASE64: ${{ secrets.GOOGLE_PLAY_SA_JSON_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GOOGLE_PLAY_SA_JSON_BASE64:-}" ]; then
+            echo "GOOGLE_PLAY_SA_JSON_BASE64 が未設定です"
+            exit 1
+          fi
+          mkdir -p .secrets
+          printf '%s' "$GOOGLE_PLAY_SA_JSON_BASE64" | base64 -d > .secrets/google-play-sa.json
+
+      - name: Read Play state (read-only)
+        env:
+          GOOGLE_PLAY_SA_JSON_PATH: .secrets/google-play-sa.json
+        run: node scripts/play-review-check.mjs
+
+      - name: Cleanup secrets
+        if: always()
+        run: rm -rf .secrets
