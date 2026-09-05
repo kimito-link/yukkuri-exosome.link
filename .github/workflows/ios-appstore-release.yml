@@ -326,7 +326,16 @@ jobs:
             else
               openssl x509 -inform DER -in "$CERT_DER_PATH" -out "$CERT_PEM_PATH"
             fi
-            openssl pkcs12 -export \
+            # ★-legacy は外さない（2026-09-06 に macOS ランナーで実測して確定）。
+            #   openssl 3.x の既定の暗号化方式で P12 を作ると、macOS の security が
+            #   読めず SecKeychainItemImport: MAC verification failed で落ちる。
+            #   ★証明書も秘密鍵もパスワードも正しいのに「パスワードが違う」と見える。
+            #   -legacy を付けると "1 identity imported." で通る
+            #   （2026-06-23 に成功していた時と同じメッセージ）。
+            #   ★2026-07-04 から10回以上連続で失敗していた真因がこれ。
+            #   Secrets もワークフローも変えていないのに壊れたのは、
+            #   GitHub ランナーの openssl が上がったため。検証は ios-cert-diagnose.yml。
+            openssl pkcs12 -export -legacy \
               -inkey "$KEY_PEM_PATH" \
               -in "$CERT_PEM_PATH" \
               -out "$CERT_PATH" \
