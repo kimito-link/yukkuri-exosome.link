@@ -335,7 +335,9 @@ jobs:
             #   ★2026-07-04 から10回以上連続で失敗していた真因がこれ。
             #   Secrets もワークフローも変えていないのに壊れたのは、
             #   GitHub ランナーの openssl が上がったため。検証は ios-cert-diagnose.yml。
-            openssl pkcs12 -export -legacy \
+            #   ★正本: web-ios-android/templates/workflows/ios-appstore-release.yml
+            #     （キット側は既に対策済みだった。こちらが追従できていなかった）
+            openssl pkcs12 -export -macalg sha1 -legacy \
               -inkey "$KEY_PEM_PATH" \
               -in "$CERT_PEM_PATH" \
               -out "$CERT_PATH" \
