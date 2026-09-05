@@ -142,6 +142,16 @@ jobs:
           PLAY_AAB_PATH: android-twa/app/build/outputs/bundle/release/app-release.aab
         run: node scripts/play-publish.mjs
 
+      # ★アップロード後に、配布される署名が assetlinks.json に載っているか確かめる。
+      #   載っていないと実機で TWA のアドレスバーが出る。
+      #   ここで落ちてもアップロード自体は済んでいるので、assetlinks.json を直して
+      #   デプロイすれば復旧できる（APKの作り直しは不要）。
+      #   ★generatedApks はアップロード済みでないと取れないので、公開の「後」に置く。
+      - name: Verify TWA signing vs assetlinks
+        env:
+          GOOGLE_PLAY_SA_JSON_PATH: .secrets/google-play-sa.json
+        run: node scripts/play-check-signing.mjs
+
       - name: Cleanup secrets
         if: always()
         run: |
