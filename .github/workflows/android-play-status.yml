@@ -53,6 +53,13 @@ jobs:
           GOOGLE_PLAY_SA_JSON_PATH: .secrets/google-play-sa.json
         run: node scripts/play-review-check.mjs
 
+      # ★TWA のアドレスバーが出るかどうかの唯一の機械的判定。
+      #   DAL API も keytool も bubblewrap も、この不一致は検出できない。
+      - name: Check TWA signing vs assetlinks
+        env:
+          GOOGLE_PLAY_SA_JSON_PATH: .secrets/google-play-sa.json
+        run: node scripts/play-check-signing.mjs
+
       - name: Cleanup secrets
         if: always()
         run: rm -rf .secrets
