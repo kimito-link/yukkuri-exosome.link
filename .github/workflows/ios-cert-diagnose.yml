@@ -28,8 +28,11 @@ concurrency:
 
 jobs:
   diagnose:
-    # ★macOS でなくてよい（openssl だけ使う）。ubuntu の方が速い。
-    runs-on: ubuntu-latest
+    # ★2026-09-06 追記: ubuntu の openssl では「ペア一致・P12 正常」だった。
+    #   それでも本番CI(macOS)の security import だけが MAC verification で落ちる。
+    #   ★つまり原因は openssl 側ではなく macOS 側の扱いにある。
+    #   同じ材料を macOS で走らせて、どこで差が出るかを見る。
+    runs-on: macos-latest
 
     steps:
       - name: Diagnose certificate / private key pairing
@@ -120,6 +123,41 @@ jobs:
           else
             echo "  export: 失敗"
             sed 's/^/    /' "$WORK/export.err" | head -5
+          fi
+
+          echo ""
+          echo "=== 6. ★security import を再現する（本番CIが落ちている箇所） ==="
+          # ★ここが本番と同じ手順。openssl では通るのに security だけ落ちるなら、
+          #   原因は macOS の PKCS12 実装かパスワードの渡し方にある。
+          KC="$WORK/diag.keychain-db"
+          KCPASS="$(openssl rand -base64 24)"
+          security create-keychain -p "$KCPASS" "$KC" 2>&1 | sed 's/^/    /'
+          security unlock-keychain -p "$KCPASS" "$KC" 2>&1 | sed 's/^/    /'
+          if security import "$WORK/test.p12" -k "$KC" -P "${IOS_DIST_CERT_PASSWORD:-}" -T /usr/bin/codesign -T /usr/bin/security 2>"$WORK/import.err"; then
+            echo "  ✅ security import 成功 → 本番CIの失敗は別要因（環境差など）"
+          else
+            echo "  🔴 security import 失敗（本番CIと同じ症状を再現）"
+            sed 's/^/    /' "$WORK/import.err" | head -5
+            echo ""
+            echo "  ★openssl では読めるのに security で落ちる場合の定番原因:"
+            echo "    - パスワードに改行/引用符が混入している（Secrets登録時の事故）"
+            echo "    - P12 の暗号化方式が新しすぎて macOS の security が読めない"
+            echo "      → openssl 3.x の既定(AES-256-CBC)は古い security が非対応のことがある"
+            echo "      → -legacy または -certpbe/-keypbe を指定して作り直すと通る場合がある"
+            echo ""
+            echo "  ★検証: -legacy 付きで作り直して import できるか試す"
+            if openssl pkcs12 -export -legacy -inkey "$WORK/key.pem" -in "$WORK/cert.pem" -out "$WORK/legacy.p12" -passout "pass:${IOS_DIST_CERT_PASSWORD:-}" 2>/dev/null; then
+              KC2="$WORK/diag2.keychain-db"
+              security create-keychain -p "$KCPASS" "$KC2" >/dev/null 2>&1
+              security unlock-keychain -p "$KCPASS" "$KC2" >/dev/null 2>&1
+              if security import "$WORK/legacy.p12" -k "$KC2" -P "${IOS_DIST_CERT_PASSWORD:-}" -T /usr/bin/codesign 2>/dev/null; then
+                echo "    ✅ -legacy なら成功 → ★これが原因。ワークフローに -legacy を足せば直る"
+              else
+                echo "    ❌ -legacy でも失敗 → パスワードの中身を疑う"
+              fi
+            else
+              echo "    （-legacy が使えない openssl バージョン）"
+            fi
           fi
 
           rm -rf "$WORK"
