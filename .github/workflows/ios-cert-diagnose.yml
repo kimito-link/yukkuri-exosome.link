@@ -1,0 +1,126 @@
+# iOS の署名material（証明書と秘密鍵）が対になっているかを診断するだけのワークフロー。
+#
+# ★ビルドも提出もしない。証明書の中身も出力しない。
+#   出すのは「公開鍵のフィンガープリント（秘密ではない）」の一致/不一致だけ。
+#
+# なぜ要るか（2026-07-04 以降 iOS の提出CIが10回以上連続で失敗）:
+#   security: SecKeychainItemImport: MAC verification failed during PKCS12 import
+#   で落ちるが、export と import は同じ IOS_DIST_CERT_PASSWORD を使っているので
+#   パスワード不一致は論理的に起きないはず。
+#   ★仮説: IOS_DIST_CERT_CER_BASE64（証明書）と
+#     IOS_DIST_PRIVATE_KEY_PEM_BASE64（秘密鍵）が対になっていない。
+#     対でない CER/PEM から openssl pkcs12 -export しても【エラーにならず】
+#     壊れた P12 ができるため、次の security import で MAC 検証に落ちる。
+#
+#   Apple の Distribution 証明書が3枚あるので、7月前後にどれかが差し替わって
+#   ペアが崩れた可能性がある。Secrets の中身は人にも見えないため、
+#   ★CI の中でだけ突き合わせて、一致/不一致という結論だけを持ち帰る。
+#
+# 使い方: Actions -> ios-cert-diagnose -> Run workflow
+name: ios-cert-diagnose
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-cert-diagnose-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    # ★macOS でなくてよい（openssl だけ使う）。ubuntu の方が速い。
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Diagnose certificate / private key pairing
+        env:
+          IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          IOS_DIST_CERT_CER_BASE64: ${{ secrets.IOS_DIST_CERT_CER_BASE64 }}
+          IOS_DIST_PRIVATE_KEY_PEM_BASE64: ${{ secrets.IOS_DIST_PRIVATE_KEY_PEM_BASE64 }}
+          IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+        run: |
+          set -uo pipefail
+          WORK="$(mktemp -d)"
+
+          echo "=== 1. どのSecretsが入っているか（値は出さない） ==="
+          [ -n "${IOS_DIST_CERT_P12_BASE64:-}" ] && echo "  P12          : 設定あり" || echo "  P12          : 未設定"
+          [ -n "${IOS_DIST_CERT_CER_BASE64:-}" ] && echo "  CER          : 設定あり" || echo "  CER          : 未設定"
+          [ -n "${IOS_DIST_PRIVATE_KEY_PEM_BASE64:-}" ] && echo "  PRIVATE_KEY  : 設定あり" || echo "  PRIVATE_KEY  : 未設定"
+          [ -n "${IOS_DIST_CERT_PASSWORD:-}" ] && echo "  PASSWORD     : 設定あり" || echo "  PASSWORD     : 未設定"
+          echo ""
+
+          if [ -z "${IOS_DIST_CERT_CER_BASE64:-}" ] || [ -z "${IOS_DIST_PRIVATE_KEY_PEM_BASE64:-}" ]; then
+            echo "★CER と PRIVATE_KEY の両方が要る（この経路を使っているため）。診断できない。"
+            exit 2
+          fi
+
+          printf '%s' "$IOS_DIST_CERT_CER_BASE64" | tr -d '\n\r"' | base64 -d > "$WORK/cert.bin" 2>/dev/null
+          printf '%s' "$IOS_DIST_PRIVATE_KEY_PEM_BASE64" | tr -d '\n\r"' | base64 -d > "$WORK/key.pem" 2>/dev/null
+
+          echo "=== 2. デコードできたか ==="
+          echo "  cert: $(wc -c < "$WORK/cert.bin") bytes"
+          echo "  key : $(wc -c < "$WORK/key.pem") bytes"
+          echo ""
+
+          # 証明書は DER か PEM か
+          if grep -q "BEGIN CERTIFICATE" "$WORK/cert.bin" 2>/dev/null; then
+            cp "$WORK/cert.bin" "$WORK/cert.pem"
+            echo "  証明書の形式: PEM"
+          else
+            openssl x509 -inform DER -in "$WORK/cert.bin" -out "$WORK/cert.pem" 2>/dev/null \
+              && echo "  証明書の形式: DER" \
+              || { echo "  ★証明書として読めない"; exit 1; }
+          fi
+          echo ""
+
+          echo "=== 3. 証明書の中身（公開情報のみ） ==="
+          openssl x509 -in "$WORK/cert.pem" -noout -subject -issuer -dates 2>/dev/null || true
+          echo ""
+
+          echo "=== 4. ★ペアになっているかの判定 ==="
+          # 公開鍵のフィンガープリント同士を比べる。秘密は出ない。
+          CERT_PUB="$(openssl x509 -in "$WORK/cert.pem" -pubkey -noout 2>/dev/null | openssl sha256 | awk '{print $2}')"
+          KEY_PUB="$(openssl pkey -in "$WORK/key.pem" -pubout 2>/dev/null | openssl sha256 | awk '{print $2}')"
+
+          echo "  証明書から導いた公開鍵: ${CERT_PUB:-取得失敗}"
+          echo "  秘密鍵から導いた公開鍵: ${KEY_PUB:-取得失敗}"
+          echo ""
+
+          if [ -z "${CERT_PUB:-}" ] || [ -z "${KEY_PUB:-}" ]; then
+            echo "★判定不能: どちらかから公開鍵を取り出せなかった"
+            echo "  （秘密鍵がパスフレーズ付き、または形式が想定と違う可能性）"
+            exit 2
+          fi
+
+          if [ "$CERT_PUB" = "$KEY_PUB" ]; then
+            echo "✅ 一致。証明書と秘密鍵は対になっている。"
+            echo "   → MAC verification failed の原因は【ペアずれではない】。"
+            echo "     次に疑うのは IOS_DIST_CERT_PASSWORD の値（末尾の改行や引用符の混入）。"
+            PAIR_OK=1
+          else
+            echo "🔴 不一致。証明書と秘密鍵が対になっていない。"
+            echo "   → これが MAC verification failed の原因。"
+            echo "     対でない CER/PEM から作った P12 は壊れるが、openssl はエラーを返さない。"
+            echo "   直し方: Mac のキーチェーンから【証明書＋秘密鍵】を1つの .p12 として書き出し、"
+            echo "           IOS_DIST_CERT_P12_BASE64 に入れる（ペアずれが構造的に起きなくなる）。"
+            PAIR_OK=0
+          fi
+          echo ""
+
+          echo "=== 5. 実際に P12 を作って import できるか（本番CIと同じ手順） ==="
+          if openssl pkcs12 -export -inkey "$WORK/key.pem" -in "$WORK/cert.pem" \
+               -out "$WORK/test.p12" -passout "pass:${IOS_DIST_CERT_PASSWORD:-}" 2>"$WORK/export.err"; then
+            echo "  export: 成功（$(wc -c < "$WORK/test.p12") bytes）"
+            if openssl pkcs12 -in "$WORK/test.p12" -noout -passin "pass:${IOS_DIST_CERT_PASSWORD:-}" 2>"$WORK/verify.err"; then
+              echo "  ★読み戻し: 成功 → P12 自体は壊れていない"
+            else
+              echo "  ★読み戻し: 失敗 → 生成された P12 が壊れている"
+              sed 's/^/    /' "$WORK/verify.err" | head -5
+            fi
+          else
+            echo "  export: 失敗"
+            sed 's/^/    /' "$WORK/export.err" | head -5
+          fi
+
+          rm -rf "$WORK"
+          [ "${PAIR_OK:-0}" = "1" ] || exit 1
