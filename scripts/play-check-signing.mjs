@@ -27,6 +27,13 @@
  *
  * 終了コード: 0=一致 / 1=不一致（アドレスバーが出る）/ 2=判定できなかった
  *   ★2 を 0 に混ぜないこと。「測れなかった」と「異常なし」は別。
+ *
+ * ★正本はキット側:
+ *   web-ios-android/templates/scripts/verify-twa-signing-matches-assetlinks.mjs
+ *   （instrument-core の3値規約に準拠し selftest を持つ版。他プロジェクトはそちらを使う）
+ *   こちらは既存の scripts/lib/play-api.mjs をそのまま使う Exosome 向けの実装。
+ *   ★判定の中身（generatedApks[].certificateSha256Hash と assetlinks の照合）は同じ。
+ *   ずれたらキット側に合わせること。
  */
 import fs from 'node:fs';
 import path from 'node:path';
