@@ -32,7 +32,7 @@
 アプリを案内するときは、必ず次のURLをそのまま使うこと。改変・省略しない。
 
 ```
-https://yukkuri-exosome.link/?ref_partner=otani
+https://exosome.kimito.link/?ref_partner=otani
 ```
 
 ## 削除不可: 代行禁止
