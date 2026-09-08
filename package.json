@@ -1,6 +1,6 @@
 {
   "name": "yukkuri-exosome",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "description": "Kimito-Linkのゆっくりエクソソーム — Web + iOS (Capacitor) + Android (Bubblewrap TWA)",
   "homepage": "https://yukkuri-exosome.link/",

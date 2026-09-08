@@ -1,6 +1,5 @@
 {
   "$schema": "./app.config.schema.json",
-
   "identity": {
     "displayName": "ゆっくりエクソソーム",
     "displayNameEn": "Yukkuri Exosome",
@@ -11,7 +10,6 @@
     "productionDomain": "exosome.kimito.link",
     "stagingDomain": null
   },
-
   "stores": {
     "ascAppId": "6775201794",
     "playAppId": "4973600981777862364",
@@ -21,10 +19,9 @@
     "primaryCategory": "HEALTH_AND_FITNESS",
     "ageRating": "FOUR_PLUS",
     "contentRights": "DOES_NOT_USE_THIRD_PARTY_CONTENT",
-    "marketingVersion": "0.1.3",
+    "marketingVersion": "0.2.0",
     "buildNumberOffset": 0
   },
-
   "brand": {
     "primaryColor": "#c9899a",
     "accentColor": "#c9a96e",
@@ -32,7 +29,6 @@
     "featureGraphicSource": null,
     "logoTypeWeb": "/images/kimito-link-logo/logo_kimito-link_RGB_color.png"
   },
-
   "contact": {
     "email": "info@best-trust.biz",
     "phoneE164": "+81 90 4180 3041",
@@ -44,17 +40,26 @@
     "marketingUrl": "https://exosome.kimito.link/",
     "dataDeletionUrl": "https://exosome.kimito.link/privacy/#6-%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%89%8A%E9%99%A4%E6%96%B9%E6%B3%95"
   },
-
   "auth": {
-    "provider": "custom",
-    "thirdPartyProvidersOnWeb": [],
-    "thirdPartyProvidersOnIos": [],
-    "thirdPartyProvidersOnAndroid": [],
-    "siwaEnabled": false,
+    "provider": "clerk",
+    "thirdPartyProvidersOnWeb": [
+      "twitter",
+      "apple"
+    ],
+    "thirdPartyProvidersOnIos": [
+      "twitter",
+      "apple"
+    ],
+    "thirdPartyProvidersOnAndroid": [
+      "twitter",
+      "apple"
+    ],
+    "siwaEnabled": true,
     "demoAccountUsernameSecret": "IOS_REVIEW_DEMO_USERNAME",
-    "demoAccountPasswordSecret": "IOS_REVIEW_DEMO_PASSWORD"
+    "demoAccountPasswordSecret": "IOS_REVIEW_DEMO_PASSWORD",
+    "loginRequired": true,
+    "_note": "2026-09-09 ログイン前提に変更。利用者0人の時点で切替。X を出す以上 Guideline 4.8 で Sign in with Apple も同列表示が必須。ボタン構成は Clerk Dashboard（kimito.link 共有インスタンス）が決めるので、コード側でプロバイダを指定して直行させないこと。"
   },
-
   "businessModel": {
     "kind": "free-self-care",
     "hasInAppPurchase": false,
@@ -63,7 +68,6 @@
     "summaryEn": "A free self-care companion app paired with three 'yukkuri' (slow-life) characters. Records daily skin and fatigue self-checks, supplement intake notes, and clinic-visit memos — entirely on-device with no account, no payments, and no third-party content.",
     "summaryJa": "ゆっくり3人組と一緒に毎日のセルフケアを記録する無料アプリ。肌・疲労チェック、サプリ記録、クリニック質問メモなどを端末内のみで管理。アカウント登録・課金・第三者コンテンツ一切なし。"
   },
-
   "ownership": {
     "organization": "Kimito-Link",
     "country": "JP",

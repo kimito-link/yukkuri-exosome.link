@@ -1,9 +1,10 @@
 /**
- * kimito.link 共通アカウント（Clerk）ログイン — すみわけ方式
+ * kimito.link 共通アカウント（Clerk）ログイン — ★ログイン必須
  *
- * ★このアプリの土台は「ログイン不要・端末内完結」（premium.js と同じ思想）。
- *   このファイルは【任意】のログインを足すだけで、premium.js のチケット検証・
- *   YEStorage の記録は一切変更しない。ログインしない人には今まで通り何も起きない。
+ * ★2026-09-09 にログイン前提へ切り替えた（利用者0人の時点で決断）。
+ *   以前は「すみわけ」＝未ログインでも全機能が使える設計だった。
+ *   ゲート本体は auth-gate.js。このファイルは Clerk との接続だけを持つ。
+ *   premium.js のチケット検証と YEStorage の記録形式は変更していない。
  *
  * ★Clerk SDK は「サインイン」がタップされるまでネットワークに出さない。
  *   すれ違い通信（surechigai-romi.link）が実測した教訓の踏襲:
@@ -123,8 +124,37 @@
         return window.Clerk.session.getToken();
     }
 
+    /**
+     * Clerk 側に本物のセッションがあるか確かめる。
+     *
+     * ★isSignedIn() はローカルの軽いフラグを見るだけなので、
+     *   Clerk 側でセッションが切れていても true を返しうる。
+     *   ログイン必須ゲート（auth-gate.js）はそれを信じて通してしまうので、
+     *   裏で実セッションを確かめてフラグを正す。
+     *
+     * @returns {Promise<boolean>} 本物のセッションがあれば true
+     */
+    function ensureSession() {
+        return loadClerk().then(function (Clerk) {
+            var ok = !!(Clerk && Clerk.session);
+            // 実態に合わせてフラグを直す（次回の初期表示が正しくなる）
+            if (ok) {
+                YEStorage.set(AUTH_STATE_KEY, true);
+            } else {
+                YEStorage.remove(AUTH_STATE_KEY);
+            }
+            return ok;
+        }).catch(function () {
+            // ★読み込めなかったときは「切れている」とみなさない。
+            //   通信が細いだけで締め出すと、記録が見られなくなる。
+            //   ゲートは既にローカルフラグで通しているので、ここでは何もしない。
+            return true;
+        });
+    }
+
     window.YEAuth = {
         isSignedIn: isSignedIn,
+        ensureSession: ensureSession,
         openSignIn: openSignIn,
         signOut: signOut,
         getSyncToken: getSyncToken,

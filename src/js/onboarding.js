@@ -137,7 +137,7 @@ function getOnboardingSlides(depth = 0) {
                     3人組が、いつでも見守っています。
                 </p>
                 <ul class="onboarding__features">
-                    <li>無料・ログイン不要・端末内で完結</li>
+                    <li>無料・kimito.link アカウントでログイン</li>
                     <li>通知をオンにすると、毎日呼んでくれます</li>
                     <li>続けるほど、3人と仲よくなれます</li>
                 </ul>
@@ -457,3 +457,4 @@ function autoShowOnboardingIfNeeded(depth = 0) {
     setTimeout(() => showOnboarding(depth), 100);
     return true;
 }
+
