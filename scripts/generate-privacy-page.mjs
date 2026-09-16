@@ -62,7 +62,7 @@ function buildHtml(cfg) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プライバシーポリシー | ${displayName}</title>
-    <meta name="description" content="${displayName}のプライバシーポリシー。本アプリは個人情報を収集せず、すべてのデータは端末内にのみ保存されます。">
+    <meta name="description" content="${displayName}のプライバシーポリシー。ご利用には kimito.link アカウントが必要です。セルフケアの記録は端末に保存し、引き継ぎ用に kimito.link のサーバーへ複製します。写真・メモ・端末ごとの設定は端末内にのみ保存されます。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -85,38 +85,39 @@ function buildHtml(cfg) {
                 </header>
 
                 <section class="article__section">
-                    <h2 class="article__h2">🛡️ 基本方針（データ収集なし）</h2>
-                    <p>${displayName}（以下「本アプリ」）は、ユーザーのプライバシーを最優先に設計されています。本アプリのご利用には kimito.link アカウントが必要です。日々の記録は、機種変更などで引き継げるよう kimito.link のサーバーへ複製されます。</p>
-                    <p>記録した内容はお使いの端末に保存され、あわせて引き継ぎ用に kimito.link のサーバーへ複製されます。写真と端末ごとの設定は複製されず、端末の中だけに残ります。</p>
+                    <h2 class="article__h2">🛡️ 基本方針</h2>
+                    <p>${displayName}（以下「本アプリ」）は、ユーザーのプライバシーを最優先に設計されています。本アプリのご利用には kimito.link アカウント（X・Apple・Google のいずれかでサインイン）が必要です。</p>
+                    <p>記録した内容はお使いの端末に保存され、あわせて機種変更などで引き継げるよう kimito.link のサーバーへ複製されます。写真・メモ・端末ごとの設定は複製されず、端末の中だけに残ります。</p>
                 </section>
 
                 <section class="article__section">
                     <h2 class="article__h2">📋 収集する情報</h2>
-                    <p>本アプリは以下の情報を<strong>収集しません</strong>。</p>
+                    <p>本アプリが独自に収集する情報は、ユーザーが入力するセルフケアの記録だけです。以下の情報は<strong>収集しません</strong>。</p>
                     <ul>
-                        <li>氏名・メールアドレス・電話番号などの個人情報</li>
+                        <li>氏名・メールアドレス・電話番号などの個人情報（アプリ内で入力を求めることはありません）</li>
                         <li>位置情報（GPS・Wi-Fi・Bluetooth による位置）</li>
                         <li>広告 ID（IDFA / GAID）</li>
-                        <li>端末の連絡先・カメラ・マイク・写真ライブラリ</li>
+                        <li>端末の連絡先・カメラ・マイク・写真ライブラリへのアクセス（写真の記録はユーザーが選んだ画像を端末内に保存するだけです）</li>
                         <li>クラッシュレポートや分析データの外部送信</li>
                     </ul>
-                    <p>アプリ内でユーザーが入力するセルフケア記録は、端末内に保存されるとともに、引き継ぎのため kimito.link のサーバーへ複製されます。写真・メモ・端末ごとの設定は複製されません。</p>
+                    <p>ユーザーが入力するセルフケア記録（セルフケア・睡眠・疲労・肌の状態・サプリと点滴・食事の日次記録）は、端末内に保存されるとともに、引き継ぎのため kimito.link のサーバーへ複製されます。写真・メモ・端末ごとの設定は複製されません。</p>
+                    <p>ログインに用いる kimito.link アカウントの情報（表示名など）の取り扱いは、<a href="https://kimito.link/privacy/" target="_blank" rel="noopener">kimito.link のプライバシーポリシー</a>に従います。X・Apple・Google のパスワードを本アプリおよび kimito.link が受け取ることはありません（認証処理には Clerk を利用します）。</p>
                 </section>
 
                 <section class="article__section">
                     <h2 class="article__h2">💾 データの保存場所</h2>
-                    <p>本アプリが扱うすべてのデータは、<strong>端末内のローカルストレージ</strong>にのみ保存されます。</p>
+                    <p>本アプリのデータは、まず<strong>端末内のローカルストレージ</strong>に保存されます。そのうえで、種類によって扱いが異なります。</p>
                     <ul>
-                        <li>クラウド同期は行いません</li>
-                        <li>記録の引き継ぎのため kimito.link のサーバーへ接続します</li>
-                        <li>アプリをアンインストールするとデータはすべて削除されます</li>
+                        <li>セルフケアの日次記録：端末内に保存し、引き継ぎのため kimito.link のサーバーへ複製します（ログインしている場合のみ）</li>
+                        <li>写真・メモ・端末ごとの設定：端末内にのみ保存し、サーバーへは送りません</li>
+                        <li>アプリをアンインストールすると端末内のデータは削除されます。サーバーに複製された記録は残るため、削除をご希望の場合は下記「データの削除方法」をご覧ください</li>
                     </ul>
                 </section>
 
                 <section class="article__section">
                     <h2 class="article__h2">🤝 第三者への提供</h2>
                     <p>本アプリは、ユーザーのデータを第三者へ提供・販売・共有することは<strong>一切ありません</strong>。</p>
-                    <p>提供するデータが存在しないため、第三者提供の同意取得も不要です。</p>
+                    <p>記録の複製先である kimito.link のサーバーは、本アプリと同じ運営者（${displayName}の開発元）が管理する共通基盤であり、第三者ではありません。</p>
                 </section>
 
                 <section class="article__section">
@@ -126,14 +127,22 @@ function buildHtml(cfg) {
 
                 <section class="article__section">
                     <h2 class="article__h2">👤 アカウント</h2>
-                    <p>本アプリのご利用には kimito.link アカウント（X または Apple でのサインイン）が<strong>必要</strong>です。アカウントの削除は kimito.link 上で行えます。</p>
-                    <p>アカウントが存在しないため、データの削除依頼などの手続きも不要です。アプリをアンインストールするだけで、すべての記録が端末から完全に削除されます。</p>
+                    <p>本アプリのご利用には kimito.link アカウント（X・Apple・Google のいずれかでサインイン）が<strong>必要</strong>です。ひとつのアカウントで kimito.link の他のサービスも利用できます。アカウントの削除は kimito.link 上で行えます。</p>
+                </section>
+
+                <section class="article__section" id="6-データの削除方法">
+                    <h2 class="article__h2">🗑️ データの削除方法</h2>
+                    <ul>
+                        <li>端末内の記録（写真・メモ・設定を含む）：アプリをアンインストールすると削除されます。ブラウザでご利用の場合は、ブラウザのサイトデータを削除してください</li>
+                        <li>kimito.link のサーバーに複製された記録：下記のお問い合わせ窓口までご連絡ください。ご本人確認のうえ削除します</li>
+                        <li>kimito.link アカウントそのもの：kimito.link 上で削除できます</li>
+                    </ul>
                 </section>
 ${purchaseSection}
                 <section class="article__section">
                     <h2 class="article__h2">👶 子どものプライバシー</h2>
                     <p>本アプリは<strong>${targetAgeMin}歳以上</strong>の方を対象としています。${targetAgeMin}歳未満の方のご利用は想定しておりません。</p>
-                    <p>本アプリは個人情報を収集しないため、年齢を問わずデータが外部に送信されることはありません。</p>
+                    <p>本アプリは氏名やメールアドレスなどの個人情報の入力を求めません。外部へ送るのは、ログインしたアカウントに紐づくセルフケアの記録だけです。</p>
                 </section>
 
                 <section class="article__section">
