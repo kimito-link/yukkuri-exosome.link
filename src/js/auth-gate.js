@@ -40,15 +40,36 @@
         return false;
     }
 
-    /** アプリ本体を隠す（ログイン画面が出るまでの一瞬のちらつきを防ぐ） */
+    /**
+     * アプリ本体を隠す（ログイン画面が出るまでの一瞬のちらつきを防ぐ）
+     *
+     * ★2026-09-16 の地雷: 以前は `body > *:not(#ye-auth-gate) { visibility:hidden }` で
+     *   body 直下を丸ごと隠していた。Clerk のログインモーダルは openSignIn() 時に
+     *   body 直下へ `#clerk-components` を追加して描くので、それまで隠れてしまい
+     *   「ログイン画面をひらいています…」のまま何も出ない（本番で実測）。
+     *   → ゲートを出した時点で存在する要素だけに印を付けて隠す。
+     *     あとから追加される要素（Clerk のモーダル等）は隠さない。
+     */
+    var HIDDEN_ATTR = 'data-ye-gate-hidden';
+
     function hideApp() {
-        var s = document.createElement('style');
-        s.id = 'ye-auth-gate-style';
-        s.textContent = 'body > *:not(#ye-auth-gate) { visibility: hidden !important; }';
-        document.head.appendChild(s);
+        if (!document.getElementById('ye-auth-gate-style')) {
+            var s = document.createElement('style');
+            s.id = 'ye-auth-gate-style';
+            s.textContent = '[' + HIDDEN_ATTR + '] { visibility: hidden !important; }';
+            document.head.appendChild(s);
+        }
+        var kids = document.body.children;
+        for (var i = 0; i < kids.length; i++) {
+            var el = kids[i];
+            if (el.id === 'ye-auth-gate' || el.id === 'clerk-components') continue;
+            el.setAttribute(HIDDEN_ATTR, '');
+        }
     }
 
     function showApp() {
+        var hidden = document.querySelectorAll('[' + HIDDEN_ATTR + ']');
+        for (var i = 0; i < hidden.length; i++) hidden[i].removeAttribute(HIDDEN_ATTR);
         var s = document.getElementById('ye-auth-gate-style');
         if (s) s.remove();
         var g = document.getElementById('ye-auth-gate');

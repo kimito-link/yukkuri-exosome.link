@@ -99,9 +99,11 @@
                 var signedIn = !!(payload && payload.session);
                 YEStorage.set(AUTH_STATE_KEY, signedIn);
             });
+            // ★afterSignInUrl / afterSignUpUrl は Clerk v5 で非推奨（console に警告が出る）。
+            //   fallbackRedirectUrl が後継。
             Clerk.openSignIn({
-                afterSignInUrl: location.href,
-                afterSignUpUrl: location.href
+                signInFallbackRedirectUrl: location.href,
+                signUpFallbackRedirectUrl: location.href
             });
         });
     }
