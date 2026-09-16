@@ -177,7 +177,10 @@
      * @returns {Promise<{name:string, username:string|null, imageUrl:string|null}|null>}
      */
     function getUser() {
-        if (!isSignedIn()) return Promise.resolve(null);
+        // ★ローカルフラグ（isSignedIn）ではなく Clerk の実セッションで判定する。
+        //   フラグはモーダルでログインしたタブにしか立たず、別タブ・別端末・ticket
+        //   ログインでは Clerk セッションが生きていてもフラグが無い（＝アカウント表示が
+        //   出ない）ことがある。Clerk.user を実際に見る（2026-09-16 E2E で検出）。
         return loadClerk().then(function (Clerk) {
             var u = Clerk && Clerk.user;
             if (!u) return null;
