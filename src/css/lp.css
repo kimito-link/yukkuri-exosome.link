@@ -10,64 +10,269 @@
     padding: 0 20px 64px;
 }
 
-/* ---- ヒーロー ---- */
-.lp-hero {
-    text-align: center;
-    padding: 48px 0 40px;
+/* ---- 最小の帯（共通ヘッダーは使わない） ----
+ * ★LPは「ログインの入口」。kimito.link / すれ違ひ通信のLPと同じく、
+ *   ナビは出さず「ブランド + ログイン」だけ。
+ */
+.lp-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
 }
 
-.lp-hero__chip {
-    display: inline-block;
-    font-size: .72rem;
-    letter-spacing: .14em;
-    color: var(--color-primary);
-    background: var(--rink-bg);
-    border-radius: var(--radius-pill);
-    padding: 6px 16px;
-    margin: 0 0 20px;
-    font-weight: 700;
-}
-
-.lp-hero__title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.7rem, 5.2vw, 2.6rem);
-    font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: .04em;
+.lp-top__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
     color: var(--color-text);
-    margin: 0 0 18px;
-    text-wrap: balance;
+    font-weight: 700;
+    font-size: .92rem;
+    letter-spacing: .02em;
 }
 
-.lp-hero__lead {
-    font-size: .95rem;
-    line-height: 1.9;
-    color: var(--color-text-muted);
-    max-width: 34em;
-    margin: 0 auto 28px;
+.lp-top__brand img {
+    width: 44px;
+    height: auto;
+    display: block;
+}
+
+.lp-top__login {
+    font-family: inherit;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, .8);
+    border: 1.5px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    cursor: pointer;
+    min-height: 40px;
+}
+
+/* ---- ヒーロー: 1画面完結 ----
+ * 構成: キャラ3人 → 見出し(明朝) → 副題 → X ボタン1つ → 注記 → 下へ。
+ * 背景は「体内をただよう小胞」のイメージで、やわらかい円と輪を薄く散らす。
+ */
+.lp-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 0 48px;
+    margin: 0 -20px;
+    overflow: hidden;
+    background:
+        radial-gradient(60% 45% at 50% 0%, rgba(201, 137, 154, .16), transparent 70%),
+        linear-gradient(180deg, #fbf5ee 0%, #f7efe6 55%, #fbf6f0 100%);
+}
+
+.lp-hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.lp-hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, .9), rgba(201, 137, 154, .18) 60%, rgba(201, 137, 154, 0) 72%);
+    filter: blur(.3px);
+    animation: lp-float 9s ease-in-out infinite;
+}
+
+.lp-hero__orb--1 { width: 180px; height: 180px; left: 6%;  top: 12%; animation-delay: 0s; }
+.lp-hero__orb--2 { width: 110px; height: 110px; right: 10%; top: 18%; animation-delay: -3s; }
+.lp-hero__orb--3 { width: 70px;  height: 70px;  left: 18%; bottom: 20%; animation-delay: -5s; }
+.lp-hero__orb--4 { width: 140px; height: 140px; right: 6%;  bottom: 14%; animation-delay: -7s; background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.9), rgba(201,169,110,.2) 60%, rgba(201,169,110,0) 72%); }
+.lp-hero__orb--5 { width: 46px;  height: 46px;  left: 42%; top: 8%; animation-delay: -2s; background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.9), rgba(142,180,199,.25) 60%, rgba(142,180,199,0) 72%); }
+
+.lp-hero__ring {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 137, 154, .14);
+    transform: translate(-50%, -50%);
+}
+
+.lp-hero__ring--1 { width: 420px; height: 420px; }
+.lp-hero__ring--2 { width: 680px; height: 680px; border-color: rgba(201, 137, 154, .09); }
+.lp-hero__ring--3 { width: 960px; height: 960px; border-color: rgba(201, 137, 154, .06); }
+
+@keyframes lp-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
+}
+
+.lp-hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    padding: 0 20px;
+    margin: 0 auto;
 }
 
 .lp-hero__trio {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 8px;
-    margin-bottom: 28px;
+    gap: 4px;
+    margin-bottom: 22px;
 }
 
 .lp-hero__trio img {
-    width: clamp(84px, 22vw, 132px);
+    width: clamp(78px, 20vw, 120px);
     height: auto;
-    filter: drop-shadow(0 6px 16px rgba(46, 38, 34, .12));
+    filter: drop-shadow(0 8px 18px rgba(46, 38, 34, .14));
+    animation: lp-float 7s ease-in-out infinite;
 }
 
-.lp-hero__cta {
-    margin-bottom: 14px;
+.lp-hero__trio img:nth-child(1) { animation-delay: -1.5s; }
+.lp-hero__trio img:nth-child(3) { animation-delay: -3.5s; }
+
+.lp-hero__trio-main {
+    width: clamp(100px, 26vw, 150px) !important;
+    z-index: 1;
+}
+
+.lp-hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: .12em;
+    color: var(--color-text);
+    margin: 0 0 12px;
+}
+
+.lp-hero__sub {
+    font-family: var(--font-serif);
+    font-size: clamp(.9rem, 2.6vw, 1.05rem);
+    letter-spacing: .14em;
+    color: var(--color-primary);
+    margin: 0 0 14px;
+}
+
+.lp-hero__lead {
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--color-text-muted);
+    max-width: 30em;
+    margin: 0 auto 30px;
+}
+
+/* ---- X ボタン（主CTA。LPで唯一の行動） ---- */
+.lp-xcta {
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.lp-xbtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 60px;
+    padding: 12px 12px 12px 22px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #c9899a 0%, #b9748a 100%);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(185, 116, 138, .38), 0 0 0 6px rgba(201, 137, 154, .12);
+    transition: transform .15s, box-shadow .2s;
+}
+
+.lp-xbtn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(185, 116, 138, .42), 0 0 0 8px rgba(201, 137, 154, .14); }
+.lp-xbtn:active { transform: scale(.99); }
+
+.lp-xbtn__icon { width: 22px; height: 22px; flex-shrink: 0; }
+
+.lp-xbtn__label { flex: 1; text-align: center; }
+
+.lp-xbtn__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35);
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.lp-xcta__msg {
+    font-size: .78rem;
+    color: var(--color-text-muted);
+    min-height: 1.4em;
+    margin: 10px 0 0;
+}
+
+.lp-xcta__alt {
+    font-size: .82rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin: 4px 0 0;
+}
+
+.lp-xcta__alt a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+.lp-xcta__note {
+    font-size: .74rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    margin: 10px 0 0;
+}
+
+.lp-hero__more {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-top: 36px;
+    font-size: .74rem;
+    letter-spacing: .12em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+}
+
+.lp-hero__more svg { width: 18px; height: 18px; animation: lp-bob 1.8s ease-in-out infinite; }
+
+@keyframes lp-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(5px); }
 }
 
 .lp-hero__note {
     font-size: .84rem;
     margin: 0;
+}
+
+.lp-cta-section__apps {
+    font-size: .8rem;
+    color: var(--color-text-muted);
+    margin: 28px 0 10px;
 }
 
 .lp-hero__note a {
@@ -277,7 +482,11 @@
 
 @media (max-width: 560px) {
     .lp { padding: 0 16px 48px; }
-    .lp-hero { padding: 32px 0 28px; }
+    .lp-hero { padding: 72px 0 40px; margin: 0 -16px; }
+    .lp-hero__ring--1 { width: 300px; height: 300px; }
+    .lp-hero__ring--2 { width: 480px; height: 480px; }
+    .lp-hero__ring--3 { width: 680px; height: 680px; }
+    .lp-xbtn { font-size: .98rem; min-height: 56px; }
     .lp-section { padding: 32px 0; }
     .lp-section--tint { padding: 32px 18px; }
     .lp-shot img { width: 168px; }

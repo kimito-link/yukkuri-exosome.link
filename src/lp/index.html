@@ -33,33 +33,54 @@
     <link rel="stylesheet" href="../css/lp.css">
 </head>
 <body data-depth="1" class="lp-page">
-    <div data-header></div>
+    <!-- ★LPは「ログインの入口」。共通ヘッダーは出さず、最小の帯だけ（kimito.link / すれ違ひ通信LPと同じ型） -->
+    <header class="lp-top">
+        <a href="https://kimito.link/" target="_blank" rel="noopener" class="lp-top__brand" aria-label="kimito.link">
+            <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="44" height="33" alt="">
+            <span>kimito.link</span>
+        </a>
+        <button type="button" class="lp-top__login" data-lp-login>ログイン</button>
+    </header>
 
     <main class="lp">
 
-        <!-- ヒーロー -->
-        <section class="lp-hero">
+        <!-- ヒーロー: 1画面完結。キャラ → 見出し → X ボタン1つ → 注記。 -->
+        <section class="lp-hero" id="top">
+            <div class="lp-hero__bg" aria-hidden="true">
+                <span class="lp-hero__orb lp-hero__orb--1"></span>
+                <span class="lp-hero__orb lp-hero__orb--2"></span>
+                <span class="lp-hero__orb lp-hero__orb--3"></span>
+                <span class="lp-hero__orb lp-hero__orb--4"></span>
+                <span class="lp-hero__orb lp-hero__orb--5"></span>
+                <span class="lp-hero__ring lp-hero__ring--1"></span>
+                <span class="lp-hero__ring lp-hero__ring--2"></span>
+                <span class="lp-hero__ring lp-hero__ring--3"></span>
+            </div>
             <div class="lp-hero__inner">
-                <p class="lp-hero__chip">無料・kimito.link アカウントでログイン</p>
-                <h1 class="lp-hero__title">ゆっくり3人組と、<br>毎日のセルフケア。</h1>
-                <p class="lp-hero__lead">
-                    りんく・こん太・たぬ姉と一緒に、肌や疲れの記録を少しずつ積み上げていくアプリです。
-                    kimito.link のアカウント（X または Apple）でログインするだけ。
-                    記録は機種変更でも引き継げ、同じアカウントで kimito.link の他のアプリもそのまま使えます。
-                </p>
                 <div class="lp-hero__trio">
-                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="eager">
-                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" loading="eager">
-                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager">
+                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" loading="eager" fetchpriority="high">
+                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="eager" fetchpriority="high" class="lp-hero__trio-main">
+                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager" fetchpriority="high">
                 </div>
-                <div class="lp-hero__cta" id="lp-cta-top"></div>
-                <p class="lp-hero__login">
-                    <a href="../" class="btn btn--primary lp-login-btn">kimito.link アカウントで<br class="lp-br-sp">ログインしてはじめる</a>
-                </p>
-                <p class="lp-hero__note">
-                    アプリでもブラウザでも、同じアカウント・同じ記録。
-                    <a href="#lp-account">kimito.link アカウントとは →</a>
-                </p>
+                <h1 class="lp-hero__title">今日のケアを、<br>刻む。</h1>
+                <p class="lp-hero__sub">— キミのからだは今、どうなってる？ —</p>
+                <p class="lp-hero__lead">ゆっくり3人組と、肌・疲れ・サプリ・点滴の記録を、毎日すこしずつ。</p>
+
+                <div class="lp-xcta">
+                    <button type="button" class="lp-xbtn" data-lp-login>
+                        <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span class="lp-xbtn__label">X で、記録をはじめる</span>
+                        <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
+                    </button>
+                    <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
+                    <p class="lp-xcta__alt">Apple のアカウントでも入れます。どちらも <a href="#lp-account">kimito.link のアカウント</a>になります。</p>
+                    <p class="lp-xcta__note">30秒で完了。X のパスワードは保存しません（認証の安全処理に Clerk を利用）。</p>
+                </div>
+
+                <a href="#lp-account" class="lp-hero__more" aria-label="下へ">
+                    <span>kimito.link アカウントとは</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
             </div>
         </section>
 
@@ -238,13 +259,17 @@
         <section class="lp-section lp-cta-section">
             <h2 class="lp-section__title">はじめる</h2>
             <p class="lp-cta-section__lead">kimito.link アカウントでログインするだけ。アプリでも、ブラウザでも、同じ記録が続きます。</p>
+            <div class="lp-xcta">
+                <button type="button" class="lp-xbtn" data-lp-login>
+                    <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span class="lp-xbtn__label">X で、記録をはじめる</span>
+                    <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
+                </button>
+                <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
+                <p class="lp-xcta__note">アカウントがまだない方も、X か Apple があればその場で作れます。</p>
+            </div>
+            <p class="lp-cta-section__apps">スマホにはアプリもあります（同じアカウントでログイン）</p>
             <div id="lp-cta-bottom"></div>
-            <p class="lp-hero__login">
-                <a href="../" class="btn btn--primary lp-login-btn">kimito.link アカウントで<br class="lp-br-sp">ログインしてはじめる</a>
-            </p>
-            <p class="lp-hero__note">
-                アカウントがまだない方も、X か Apple があればその場で作れます。
-            </p>
         </section>
 
         <!-- 免責 -->
@@ -260,6 +285,58 @@
     <div data-footer></div>
 
     <script src="../js/common.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+    /**
+     * ★LPの X ボタン = その場で kimito.link（Clerk）のログインを開く。
+     *   アプリ本体（/）へ飛ばしてもう一度ボタンを押させない（kimito.link / すれ違ひ通信LPと同じ型）。
+     *   ログインが成立したらアプリ本体へ送る。すでにログイン済みなら最初からアプリへ送る。
+     *   ★provider は指定しない。Clerk 標準の選択画面（X / Apple）を出す（App Store 4.8）。
+     */
+    (function () {
+        var APP_ROOT = new URL('../', location.href).href;
+        var buttons = document.querySelectorAll('[data-lp-login]');
+        var msgs = document.querySelectorAll('[data-lp-login-msg]');
+
+        function setMsg(text) {
+            for (var i = 0; i < msgs.length; i++) msgs[i].textContent = text;
+        }
+
+        function goApp() { location.href = APP_ROOT; }
+
+        function watchForSession() {
+            var tries = 0;
+            var timer = setInterval(function () {
+                tries++;
+                if (window.Clerk && window.Clerk.session) { clearInterval(timer); goApp(); return; }
+                if (tries > 600) clearInterval(timer);
+            }, 500);
+        }
+
+        function onClick() {
+            if (typeof YEAuth === 'undefined') { goApp(); return; }
+            if (YEAuth.isSignedIn()) { goApp(); return; }
+            setMsg('ログイン画面をひらいています…');
+            YEAuth.openSignIn().then(function () {
+                setMsg('');
+                watchForSession();
+            }).catch(function (e) {
+                setMsg('ひらけませんでした。通信環境を確認してもう一度お試しください。');
+                if (window.console) console.error('[lp-login]', e);
+            });
+        }
+
+        for (var i = 0; i < buttons.length; i++) buttons[i].addEventListener('click', onClick);
+
+        // ログイン済みならボタンの文言を「つづきから」にする（押せば即アプリ）
+        if (typeof YEAuth !== 'undefined' && YEAuth.isSignedIn()) {
+            var labels = document.querySelectorAll('.lp-xbtn__label');
+            for (var j = 0; j < labels.length; j++) labels[j].textContent = 'つづきから記録する';
+            var top = document.querySelector('.lp-top__login');
+            if (top) top.textContent = 'アプリをひらく';
+        }
+    })();
+    </script>
     <script>
     /**
      * ストアバッジのデバイス出し分け。

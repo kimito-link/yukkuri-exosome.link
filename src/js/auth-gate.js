@@ -81,7 +81,9 @@
         var el = document.createElement('div');
         el.id = 'ye-auth-gate';
         el.setAttribute('style', [
-            'position:fixed', 'inset:0', 'z-index:99999',
+            // ★z-index は Clerk のモーダル(backdrop z-index:10000、本番で実測)より下にする。
+            //   99999 にしていたときはモーダルがゲートの裏に隠れて「開かない」ように見えた。
+            'position:fixed', 'inset:0', 'z-index:9000',
             'background:linear-gradient(160deg,#faf6f1,#f4ede4)',
             'display:flex', 'flex-direction:column',
             'align-items:center', 'justify-content:center',
