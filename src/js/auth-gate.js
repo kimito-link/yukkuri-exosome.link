@@ -65,9 +65,12 @@
             if (el.id === 'ye-auth-gate' || el.id === 'clerk-components') continue;
             el.setAttribute(HIDDEN_ATTR, '');
         }
+        // ★隠したアプリ本体の高さぶんスクロールできてしまうのを止める
+        document.documentElement.style.overflow = 'hidden';
     }
 
     function showApp() {
+        document.documentElement.style.overflow = '';
         var hidden = document.querySelectorAll('[' + HIDDEN_ATTR + ']');
         for (var i = 0; i < hidden.length; i++) hidden[i].removeAttribute(HIDDEN_ATTR);
         var s = document.getElementById('ye-auth-gate-style');
@@ -177,18 +180,27 @@
 
         // ローカルの軽いフラグで即判定（Clerk の読み込みを待たない）
         if (YEAuth.isSignedIn()) {
-            // Clerk 側の実セッションを裏で確かめ、切れていたらゲートに戻す
+            // Clerk 側の実セッションを裏で確かめ、切れていたら LP（ログインの入口）へ
             YEAuth.ensureSession().then(function (ok) {
-                if (!ok) {
-                    hideApp();
-                    renderGate();
-                }
+                if (!ok) goToLp();
             });
             return;
         }
 
+        goToLp();
+    }
+
+    /**
+     * ★未ログインは素のゲートを見せず、LP（/lp/）へ送る（2026-09-16）。
+     *   素のゲートは「キャラ1人とボタン1つ」の固定画面で、裏に隠したアプリ本体の高さぶん
+     *   スクロールできてしまい「動かしても同じ画面」になっていた（ユーザー指摘）。
+     *   LP はログインの入口として作ってあり（X ボタンでその場で Clerk が開く）、
+     *   ログインが成立すると / へ戻ってくる。/lp/ は PUBLIC_PATHS なのでループしない。
+     *   遷移までの一瞬もアプリ本体は見せない（hideApp してから replace）。
+     */
+    function goToLp() {
         hideApp();
-        renderGate();
+        location.replace(basePath() + 'lp/');
     }
 
     if (document.readyState === 'loading') {
