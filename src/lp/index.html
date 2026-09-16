@@ -20,11 +20,11 @@
     <!-- ye:favicon:end -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ゆっくりエクソソーム — ゆっくり3人組と毎日のセルフケア</title>
-    <meta name="description" content="ゆっくり3人組（りんく・こん太・たぬ姉）と毎日のセルフケアを積み上げる無料アプリ。肌・疲労チェック、サプリやクリニックの記録、写真の管理まで、すべて端末内で完結。登録も課金もありません。">
+    <title>ゆっくりエクソソーム — kimito.link アカウントで、ゆっくり3人組と毎日のセルフケア</title>
+    <meta name="description" content="kimito.link のアカウント（X または Apple）でログインするだけ。ゆっくり3人組（りんく・こん太・たぬ姉）と毎日のセルフケアを積み上げる無料アプリ。肌・疲労チェック、サプリやクリニックの記録、写真の管理まで。記録は機種変更でも引き継げ、同じアカウントで kimito.link の他のアプリも使えます。">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="ゆっくりエクソソーム — ゆっくり3人組と毎日のセルフケア">
-    <meta property="og:description" content="肌・疲労チェック、サプリやクリニックの記録、写真の管理まで端末内で完結。登録も課金もなし。">
+    <meta property="og:title" content="ゆっくりエクソソーム — kimito.link アカウントで、ゆっくり3人組と毎日のセルフケア">
+    <meta property="og:description" content="kimito.link のアカウントでログインするだけ。肌・疲労チェック、サプリやクリニックの記録を3人組と積み上げる無料アプリ。同じアカウントで他の kimito.link アプリも。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
@@ -40,11 +40,12 @@
         <!-- ヒーロー -->
         <section class="lp-hero">
             <div class="lp-hero__inner">
-                <p class="lp-hero__chip">無料・kimito.link アカウントで記録</p>
+                <p class="lp-hero__chip">無料・kimito.link アカウントでログイン</p>
                 <h1 class="lp-hero__title">ゆっくり3人組と、<br>毎日のセルフケア。</h1>
                 <p class="lp-hero__lead">
                     りんく・こん太・たぬ姉と一緒に、肌や疲れの記録を少しずつ積み上げていくアプリです。
-                    記録は端末のなかだけに保存されます。
+                    kimito.link のアカウント（X または Apple）でログインするだけ。
+                    記録は機種変更でも引き継げ、同じアカウントで kimito.link の他のアプリもそのまま使えます。
                 </p>
                 <div class="lp-hero__trio">
                     <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="eager">
@@ -52,9 +53,81 @@
                     <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager">
                 </div>
                 <div class="lp-hero__cta" id="lp-cta-top"></div>
-                <p class="lp-hero__note">
-                    <a href="../">ブラウザでそのまま使う →</a>
+                <p class="lp-hero__login">
+                    <a href="../" class="btn btn--primary lp-login-btn">kimito.link アカウントで<br class="lp-br-sp">ログインしてはじめる</a>
                 </p>
+                <p class="lp-hero__note">
+                    アプリでもブラウザでも、同じアカウント・同じ記録。
+                    <a href="#lp-account">kimito.link アカウントとは →</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- kimito.link アカウント（★このアプリの土台。色濃く見せる） -->
+        <section class="lp-section lp-account" id="lp-account">
+            <div class="lp-account__logo">
+                <a href="https://kimito.link/" target="_blank" rel="noopener" aria-label="kimito.link を開く">
+                    <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="240" height="180" alt="kimito.link ロゴ" fetchpriority="high">
+                </a>
+            </div>
+            <h2 class="lp-section__title lp-account__title">ひとつのアカウントで、<br>kimito.link のアプリぜんぶ。</h2>
+            <p class="lp-account__lead">
+                ゆっくりエクソソームは、<strong>kimito.link 共通アカウント</strong>で動きます。
+                いつもの X アカウント、または Apple でサインインするだけ。
+                パスワードをこちらで預かることはありません（認証の安全処理には Clerk を利用）。
+                一度ログインすれば、kimito.link ファミリーのどのアプリでも同じあなたです。
+            </p>
+
+            <ol class="lp-account__steps">
+                <li class="lp-account__step">
+                    <span class="lp-account__num">1</span>
+                    <h3>X または Apple でログイン</h3>
+                    <p>新しくパスワードを作る必要はありません。30秒で入れます。</p>
+                </li>
+                <li class="lp-account__step">
+                    <span class="lp-account__num">2</span>
+                    <h3>記録があなたのアカウントに</h3>
+                    <p>セルフケアの記録は端末に残しつつ、引き継ぎ用に kimito.link へ複製。機種変更でも、アプリとブラウザの間でも続きます。</p>
+                </li>
+                <li class="lp-account__step">
+                    <span class="lp-account__num">3</span>
+                    <h3>他のアプリも、そのまま</h3>
+                    <p>同じアカウントで kimito.link の別のアプリにも入れます。アプリが増えても、アカウントは増えません。</p>
+                </li>
+            </ol>
+
+            <h3 class="lp-account__subtitle">同じアカウントで使えるアプリ</h3>
+            <div class="lp-family">
+                <a class="lp-family__card lp-family__card--hub" href="https://kimito.link/" target="_blank" rel="noopener">
+                    <span class="lp-family__badge">アカウントの本拠地</span>
+                    <span class="lp-family__icon">🔗</span>
+                    <span class="lp-family__name">kimito.link</span>
+                    <span class="lp-family__desc">「クリエイターを大事にする人です」と示す、X プロフィール用のリンクまとめページ。アカウントの管理もここから。</span>
+                    <span class="lp-family__link">kimito.link を見る →</span>
+                </a>
+                <a class="lp-family__card" href="https://surechigai.kimito.link/" target="_blank" rel="noopener">
+                    <span class="lp-family__icon">📍</span>
+                    <span class="lp-family__name">君斗りんくのすれ違ひ通信</span>
+                    <span class="lp-family__desc">近くにいた人とすれ違える、位置情報の無料アプリ。キミの現在地を刻んで、あとからたどれる。</span>
+                    <span class="lp-family__link">すれ違ひ通信を見る →</span>
+                </a>
+                <div class="lp-family__card lp-family__card--this">
+                    <span class="lp-family__badge">このアプリ</span>
+                    <span class="lp-family__icon">🧬</span>
+                    <span class="lp-family__name">ゆっくりエクソソーム</span>
+                    <span class="lp-family__desc">ゆっくり3人組と、肌・疲れ・サプリ・点滴の記録を毎日少しずつ。</span>
+                    <span class="lp-family__link lp-family__link--muted">いまここ</span>
+                </div>
+                <div class="lp-family__card lp-family__card--next">
+                    <span class="lp-family__icon">✨</span>
+                    <span class="lp-family__name">これからのアプリも</span>
+                    <span class="lp-family__desc">kimito.link ファミリーに新しいアプリが増えても、ログインは同じアカウントのまま。</span>
+                </div>
+            </div>
+
+            <div class="lp-account__cta">
+                <a href="../" class="btn btn--primary lp-login-btn">ログインしてはじめる</a>
+                <a href="https://kimito.link/" target="_blank" rel="noopener" class="btn btn--secondary">kimito.link を見る</a>
             </div>
         </section>
 
@@ -144,14 +217,16 @@
             </div>
         </section>
 
-        <!-- プライバシー -->
+        <!-- アカウントと記録の扱い（★プライバシーポリシーの記述と一致させる） -->
         <section class="lp-section lp-section--tint">
-            <h2 class="lp-section__title">記録は、端末の外に出ません</h2>
+            <h2 class="lp-section__title">アカウントと記録の扱い</h2>
             <div class="lp-privacy">
                 <ul class="lp-privacy__list">
-                    <li><strong>アカウント登録なし。</strong>メールアドレスも名前も聞きません。</li>
+                    <li><strong>ログインは kimito.link 共通アカウント。</strong>X または Apple でサインイン。パスワードをこちらで預かることはありません。</li>
                     <li><strong>課金なし。</strong>すべての機能を無料で使えます。</li>
-                    <li><strong>記録は端末内のみ。</strong>肌の記録も写真も、サーバーへ送っていません。</li>
+                    <li><strong>記録は端末に保存し、引き継ぎ用に kimito.link へ複製。</strong>機種変更しても、同じアカウントでログインすれば続きから。</li>
+                    <li><strong>写真・メモ・端末ごとの設定は複製しません。</strong>端末の中だけに残ります。</li>
+                    <li><strong>アカウントの管理・削除は kimito.link で。</strong>アプリごとに別々の手続きはありません。</li>
                 </ul>
                 <p class="lp-privacy__note">
                     詳しくは<a href="../privacy/">プライバシーポリシー</a>をご覧ください。
@@ -162,10 +237,13 @@
         <!-- ダウンロード -->
         <section class="lp-section lp-cta-section">
             <h2 class="lp-section__title">はじめる</h2>
-            <p class="lp-cta-section__lead">アプリでも、ブラウザでも。どちらも同じように使えます。</p>
+            <p class="lp-cta-section__lead">kimito.link アカウントでログインするだけ。アプリでも、ブラウザでも、同じ記録が続きます。</p>
             <div id="lp-cta-bottom"></div>
+            <p class="lp-hero__login">
+                <a href="../" class="btn btn--primary lp-login-btn">kimito.link アカウントで<br class="lp-br-sp">ログインしてはじめる</a>
+            </p>
             <p class="lp-hero__note">
-                <a href="../">ブラウザでそのまま使う →</a>
+                アカウントがまだない方も、X か Apple があればその場で作れます。
             </p>
         </section>
 
