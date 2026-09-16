@@ -192,6 +192,51 @@
         }).catch(function () { return null; });
     }
 
+    /**
+     * Clerk 公式の UserButton を要素にマウントする（アカウント表示＋メニュー）。
+     * ★車輪の再発明をしない。すれ違ひ通信・kimito.link と同じ Clerk 標準の UserButton を使う。
+     *   アバターを押すと「アカウントの管理 / サインアウト / アカウントの追加」が Clerk 純正で出る。
+     *   自前でログアウト導線やメニューを作らない。
+     *   Vanilla JS なので React の <UserButton/> ではなく Clerk.mountUserButton(el, opts) を使う。
+     *
+     * @param {HTMLElement} el マウント先
+     * @returns {Promise<boolean>} マウントできたら true（未ログイン・失敗時 false）
+     */
+    function mountUserButton(el) {
+        if (!el) return Promise.resolve(false);
+        return loadClerk().then(function (Clerk) {
+            if (!Clerk || !Clerk.user || typeof Clerk.mountUserButton !== 'function') return false;
+            Clerk.mountUserButton(el, {
+                // 名前（@username）をアバターの横に出す＝「誰として入っているか」を常時表示。
+                showName: true,
+                // サインアウト後はトップへ。auth-gate が未ログインを検知して LP へ送る。
+                afterSignOutUrl: location.origin + '/',
+                // 別アカウントへ切り替えたらトップに着地（記録の取り違えを防ぐ）。
+                afterSwitchSessionUrl: location.origin + '/',
+                appearance: {
+                    elements: {
+                        // クリック領域を広げて共通ヘッダーの誤タップを防ぐ（surechigai と同じ発想）。
+                        userButtonTrigger: {
+                            minHeight: '40px',
+                            padding: '2px 6px 2px 10px',
+                            borderRadius: '999px',
+                            border: '1px solid #ebe0d0',
+                            background: '#fff'
+                        },
+                        userButtonBox: { flexDirection: 'row-reverse' },
+                        userButtonOuterIdentifier: {
+                            fontSize: '.74rem',
+                            fontWeight: '700',
+                            color: '#2e2622'
+                        },
+                        avatarBox: { width: '30px', height: '30px' }
+                    }
+                }
+            });
+            return true;
+        }).catch(function () { return false; });
+    }
+
     window.YEAuth = {
         isSignedIn: isSignedIn,
         ensureSession: ensureSession,
@@ -199,6 +244,7 @@
         signOut: signOut,
         getSyncToken: getSyncToken,
         getUser: getUser,
+        mountUserButton: mountUserButton,
         _loadClerk: loadClerk // フェーズ0.5の疎通検証で直接呼べるように公開
     };
 })();
