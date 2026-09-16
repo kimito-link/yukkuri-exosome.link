@@ -169,12 +169,33 @@
         });
     }
 
+    /**
+     * ログイン中のアカウント情報を取る（ヘッダーのアカウント表示用）。
+     * ★すれ違ひ通信と同じく「誰として入っているか」を常時見せるために使う。
+     *   Clerk を読み込んで user から表示名・ユーザー名・アイコンを取る。
+     *   未ログイン・読み込み失敗時は null（呼び出し側で出さない）。
+     * @returns {Promise<{name:string, username:string|null, imageUrl:string|null}|null>}
+     */
+    function getUser() {
+        if (!isSignedIn()) return Promise.resolve(null);
+        return loadClerk().then(function (Clerk) {
+            var u = Clerk && Clerk.user;
+            if (!u) return null;
+            return {
+                name: u.fullName || u.username || u.firstName || 'あなた',
+                username: u.username || null,
+                imageUrl: u.imageUrl || u.profileImageUrl || null
+            };
+        }).catch(function () { return null; });
+    }
+
     window.YEAuth = {
         isSignedIn: isSignedIn,
         ensureSession: ensureSession,
         openSignIn: openSignIn,
         signOut: signOut,
         getSyncToken: getSyncToken,
+        getUser: getUser,
         _loadClerk: loadClerk // フェーズ0.5の疎通検証で直接呼べるように公開
     };
 })();

@@ -270,6 +270,8 @@ function injectAppShell(activeTab = 'today', depth = 0) {
     const stageIcon = STAGE_ICONS[lv.stage];
 
     // ブランドヘッダー（最上部）
+    // ★右側に「ログイン中のアカウント」を常時表示する（すれ違ひ通信と同じ）。
+    //   「誰として入っているか」を一目で分かるようにし、タップで Me（アカウント/ログアウト）へ。
     const brandEl = document.createElement('header');
     brandEl.className = 'app-brand';
     brandEl.innerHTML = `
@@ -278,8 +280,31 @@ function injectAppShell(activeTab = 'today', depth = 0) {
             <span class="app-brand__combo-no">の</span>
             <span class="app-brand__combo-name">ゆっくりエクソソーム</span>
         </a>
+        <a href="${base}me/" class="app-brand__account" id="app-brand-account" aria-label="ログイン中のアカウント" hidden>
+            <span class="app-brand__account-text">
+                <span class="app-brand__account-status">ログイン中</span>
+                <span class="app-brand__account-name" id="app-brand-account-name"></span>
+            </span>
+            <span class="app-brand__account-avatar" id="app-brand-account-avatar" aria-hidden="true">👤</span>
+        </a>
     `;
     document.body.insertBefore(brandEl, document.body.firstChild);
+
+    // ログイン中のアカウントを右上に反映（Clerk から表示名・アイコンを取る）
+    if (typeof YEAuth !== 'undefined' && YEAuth.getUser) {
+        YEAuth.getUser().then((user) => {
+            if (!user) return;
+            const wrap = document.getElementById('app-brand-account');
+            const nameEl = document.getElementById('app-brand-account-name');
+            const avaEl = document.getElementById('app-brand-account-avatar');
+            if (!wrap) return;
+            nameEl.textContent = user.username ? '@' + user.username : user.name;
+            if (user.imageUrl) {
+                avaEl.innerHTML = `<img src="${user.imageUrl}" alt="" loading="lazy">`;
+            }
+            wrap.hidden = false;
+        }).catch(() => {});
+    }
 
     // ステータスバー
     const statusEl = document.createElement('div');
