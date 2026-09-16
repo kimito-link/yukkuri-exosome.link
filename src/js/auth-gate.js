@@ -10,8 +10,9 @@
  *
  * ★App Store Guideline 4.8 の遵守:
  *   X ログインを出す以上、Sign in with Apple も同列に出す義務がある。
- *   ボタン構成は Clerk Dashboard（共有インスタンス）が決めるので、
- *   ここでプロバイダを指定して直行させない。★Clerk 標準の openSignIn() だけを使う。
+ *   ボタン構成は kimito.link 本家のサインインページ（Clerk <SignIn/>、X 主役・Apple/Google 併記）
+ *   が決める。★2026-09-16: 自前の Clerk モーダルをやめ、本家のサインインページへ送る形にした
+ *   （kimito.link の LP と同じ体験。「りんくが鍵を開けています…」の演出も本家のもの）。
  *   surechigai-romi.link は build 524 で「SIWA は実装済みだが到達経路が1本しかなく、
  *   他11画面が X へ直行していた」ため 4.8 で却下された。同じ轍を踏まない。
  *
@@ -79,77 +80,20 @@
         if (g) g.remove();
     }
 
-    /** ログインを促す画面。★プロバイダを選ばせる（4.8） */
-    function renderGate() {
-        var el = document.createElement('div');
-        el.id = 'ye-auth-gate';
-        el.setAttribute('style', [
-            // ★z-index は Clerk のモーダル(backdrop z-index:10000、本番で実測)より下にする。
-            //   99999 にしていたときはモーダルがゲートの裏に隠れて「開かない」ように見えた。
-            'position:fixed', 'inset:0', 'z-index:9000',
-            'background:linear-gradient(160deg,#faf6f1,#f4ede4)',
-            'display:flex', 'flex-direction:column',
-            'align-items:center', 'justify-content:center',
-            'padding:32px 24px', 'text-align:center',
-            'font-family:"Noto Sans JP",sans-serif'
-        ].join(';'));
-
-        el.innerHTML = [
-            '<img src="' + basePath() + 'images/characters/link/link-yukkuri-smile-mouth-open.png"',
-            '     alt="" style="width:104px;height:auto;margin-bottom:18px;">',
-            '<h1 style="font-family:\'Noto Serif JP\',serif;font-size:1.25rem;font-weight:600;',
-            '           color:#2e2622;margin:0 0 10px;line-height:1.6;">',
-            'ゆっくりエクソソーム',
-            '</h1>',
-            '<p style="font-size:.86rem;line-height:1.9;color:#8a7d76;margin:0 0 26px;max-width:22em;">',
-            'kimito.link のアカウントでログインすると、<br>3人組といっしょに記録をはじめられます。',
-            '</p>',
-            '<button id="ye-auth-gate-btn" type="button" style="',
-            'background:linear-gradient(135deg,#c9899a,#c9a96e);color:#fff;border:none;',
-            'border-radius:999px;padding:15px 40px;font-size:.95rem;font-weight:700;',
-            'font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(46,38,34,.14);">',
-            'ログインしてはじめる',
-            '</button>',
-            '<p id="ye-auth-gate-msg" style="font-size:.76rem;color:#b3a79f;margin:18px 0 0;min-height:1.2em;"></p>',
-            '<p style="font-size:.72rem;color:#b3a79f;margin:22px 0 0;line-height:1.8;">',
-            '<a href="' + basePath() + 'privacy/" style="color:#8a7d76;">プライバシーポリシー</a>',
-            '</p>'
-        ].join('');
-
-        document.body.appendChild(el);
-
-        document.getElementById('ye-auth-gate-btn').addEventListener('click', function () {
-            var msg = document.getElementById('ye-auth-gate-msg');
-            msg.textContent = 'ログイン画面をひらいています…';
-            // ★provider を指定しない。Clerk 標準の選択画面を出す（4.8）。
-            YEAuth.openSignIn().then(function () {
-                // ★モーダルを閉じただけでは通さない。実セッションを確かめてから畳む。
-                watchForSession();
-            }).catch(function (e) {
-                msg.textContent = 'ひらけませんでした。通信環境を確認してもう一度お試しください。';
-                if (window.console) console.error('[auth-gate]', e);
-            });
-        });
-    }
-
     /**
-     * ログインが完了したらゲートを畳む。
-     * ★Clerk は同一ページ内でモーダルを閉じるので、リロードを待たずに反映する。
-     *   セッションが出来たかどうかだけを見る（何回押されても副作用が無い）。
+     * kimito.link のサインインから戻ってきた直後の処理。
+     * ★ローカルの軽いフラグはまだ立っていない（ログインは別サイトで成立した）ので、
+     *   Clerk を読み込んで実セッションを確かめる。.kimito.link の cookie 共有で見える。
+     *   成立していればフラグが立ち（ensureSession が立てる）、記録の引き継ぎを裏で走らせる。
      */
-    function watchForSession() {
-        var tries = 0;
-        var timer = setInterval(function () {
-            tries++;
-            if (window.Clerk && window.Clerk.session) {
-                clearInterval(timer);
-                showApp();
-                // 記録の引き継ぎを裏で走らせる（失敗しても画面には出さない）
-                if (window.YESync && YESync.sync) YESync.sync().catch(function () {});
-                return;
-            }
-            if (tries > 600) clearInterval(timer); // 5分で諦める
-        }, 500);
+    function finishReturnFromSignIn() {
+        hideApp();
+        YEAuth.ensureSession().then(function (ok) {
+            YEAuth.clearReturnMark();
+            if (!ok) { goToLp(); return; }
+            showApp();
+            if (window.YESync && YESync.sync) YESync.sync().catch(function () {});
+        });
     }
 
     /**
@@ -173,8 +117,13 @@
             // ★auth.js が読まれていない画面。素通しさせない（fail-closed）。
             //   配線漏れを「たまたま見えるページ」にして隠さない。
             if (window.console) console.error('[auth-gate] auth.js が読み込まれていません');
-            hideApp();
-            renderGate();
+            goToLp();
+            return;
+        }
+
+        // kimito.link のサインインから戻ってきた直後（?ye_auth=return）
+        if (YEAuth.isReturningFromSignIn()) {
+            finishReturnFromSignIn();
             return;
         }
 
@@ -194,8 +143,8 @@
      * ★未ログインは素のゲートを見せず、LP（/lp/）へ送る（2026-09-16）。
      *   素のゲートは「キャラ1人とボタン1つ」の固定画面で、裏に隠したアプリ本体の高さぶん
      *   スクロールできてしまい「動かしても同じ画面」になっていた（ユーザー指摘）。
-     *   LP はログインの入口として作ってあり（X ボタンでその場で Clerk が開く）、
-     *   ログインが成立すると / へ戻ってくる。/lp/ は PUBLIC_PATHS なのでループしない。
+     *   LP はログインの入口として作ってあり（X ボタンで kimito.link のサインインへ）、
+     *   ログインが成立すると ?ye_auth=return 付きで戻ってくる。/lp/ は PUBLIC_PATHS なのでループしない。
      *   遷移までの一瞬もアプリ本体は見せない（hideApp してから replace）。
      */
     function goToLp() {

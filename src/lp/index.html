@@ -62,19 +62,34 @@
                     <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="eager" fetchpriority="high" class="lp-hero__trio-main">
                     <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager" fetchpriority="high">
                 </div>
-                <h1 class="lp-hero__title">今日のケアを、<br>刻む。</h1>
-                <p class="lp-hero__sub">— キミのからだは今、どうなってる？ —</p>
-                <p class="lp-hero__lead">ゆっくり3人組と、肌・疲れ・サプリ・点滴の記録を、毎日すこしずつ。</p>
+                <p class="lp-hero__eyebrow">ゆっくりエクソソーム｜無料のセルフケア記録アプリ</p>
+                <h1 class="lp-hero__title">エクソソーム点滴・サプリ・肌の調子を、<br>ゆっくり3人組と<span class="lp-hero__em">毎日記録する</span>アプリ。</h1>
+                <p class="lp-hero__sub">kimito.link のアカウントでログインするだけ。記録は機種変更しても続きます。</p>
+
+                <!-- 実際の画面（何のアプリか、見れば分かるように） -->
+                <div class="lp-phone">
+                    <div class="lp-phone__callout">今日のケアが<strong>どこに効いているか</strong>見える</div>
+                    <div class="lp-phone__frame">
+                        <img src="../images/screens/1-today.jpg" width="540" height="1170" alt="アプリのToday画面：体内シグナルマップと今日の記録" loading="eager" fetchpriority="high">
+                    </div>
+                </div>
 
                 <div class="lp-xcta">
-                    <button type="button" class="lp-xbtn" data-lp-login>
+                    <button type="button" class="lp-xbtn" data-lp-login="x">
                         <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        <span class="lp-xbtn__label">X で、記録をはじめる</span>
+                        <span class="lp-xbtn__label">X で無料ではじめる</span>
                         <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
                     </button>
                     <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                    <p class="lp-xcta__alt">Apple のアカウントでも入れます。どちらも <a href="#lp-account">kimito.link のアカウント</a>になります。</p>
+                    <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google で入る</button>　どれを選んでも <a href="#lp-account">kimito.link のアカウント</a>になります。</p>
                     <p class="lp-xcta__note">30秒で完了。X のパスワードは保存しません（認証の安全処理に Clerk を利用）。</p>
+
+                    <!-- ★押した後に何が出るかを先に見せる。X の許可画面に「kimito.link」と出て戸惑わないように。 -->
+                    <ol class="lp-flow">
+                        <li><span class="lp-flow__num">1</span><span>ボタンを押すと <strong>kimito.link のログインページ</strong>に移り、「りんくが鍵を開けています…」のあと X の許可画面になります。</span></li>
+                        <li><span class="lp-flow__num">2</span><span>X の画面には「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
+                        <li><span class="lp-flow__num">3</span><span>そのまま記録がはじまります。<strong>ゆっくりエクソソームが X に投稿することはありません。</strong></span></li>
+                    </ol>
                 </div>
 
                 <a href="#lp-account" class="lp-hero__more" aria-label="下へ">
@@ -260,13 +275,14 @@
             <h2 class="lp-section__title">はじめる</h2>
             <p class="lp-cta-section__lead">kimito.link アカウントでログインするだけ。アプリでも、ブラウザでも、同じ記録が続きます。</p>
             <div class="lp-xcta">
-                <button type="button" class="lp-xbtn" data-lp-login>
+                <button type="button" class="lp-xbtn" data-lp-login="x">
                     <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    <span class="lp-xbtn__label">X で、記録をはじめる</span>
+                    <span class="lp-xbtn__label">X で無料ではじめる</span>
                     <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
                 </button>
                 <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                <p class="lp-xcta__note">アカウントがまだない方も、X か Apple があればその場で作れます。</p>
+                <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google で入る</button></p>
+                <p class="lp-xcta__note">アカウントがまだない方も、X か Apple・Google があればその場で作れます。</p>
             </div>
             <p class="lp-cta-section__apps">スマホにはアプリもあります（同じアカウントでログイン）</p>
             <div id="lp-cta-bottom"></div>
@@ -288,7 +304,7 @@
     <script src="../js/auth.js"></script>
     <script>
     /**
-     * ★LPの X ボタン = その場で kimito.link（Clerk）のログインを開く。
+     * ★LPの X ボタン = kimito.link 本家のサインインページへ送る（自前モーダルは出さない）。
      *   アプリ本体（/）へ飛ばしてもう一度ボタンを押させない（kimito.link / すれ違ひ通信LPと同じ型）。
      *   ログインが成立したらアプリ本体へ送る。すでにログイン済みなら最初からアプリへ送る。
      *   ★provider は指定しない。Clerk 標準の選択画面（X / Apple）を出す（App Store 4.8）。
@@ -304,26 +320,19 @@
 
         function goApp() { location.href = APP_ROOT; }
 
-        function watchForSession() {
-            var tries = 0;
-            var timer = setInterval(function () {
-                tries++;
-                if (window.Clerk && window.Clerk.session) { clearInterval(timer); goApp(); return; }
-                if (tries > 600) clearInterval(timer);
-            }, 500);
-        }
-
-        function onClick() {
+        /**
+         * ★kimito.link 本家のサインインページへ送る（kimito.link の LP と同じ体験）。
+         *   本家の演出（「りんくが鍵を開けています…」→ X の許可画面 → 戻る）をそのまま使う。
+         *   data-lp-login="x" は auto=x（X の許可画面へ直行）、無印は本家の標準画面
+         *   （X 主役・Apple / Google も選べる。App Store 4.8）。
+         *   ログイン後は /?ye_auth=return に戻り、auth-gate.js がセッションを確かめて開く。
+         */
+        function onClick(ev) {
             if (typeof YEAuth === 'undefined') { goApp(); return; }
             if (YEAuth.isSignedIn()) { goApp(); return; }
-            setMsg('ログイン画面をひらいています…');
-            YEAuth.openSignIn().then(function () {
-                setMsg('');
-                watchForSession();
-            }).catch(function (e) {
-                setMsg('ひらけませんでした。通信環境を確認してもう一度お試しください。');
-                if (window.console) console.error('[lp-login]', e);
-            });
+            var provider = ev.currentTarget.getAttribute('data-lp-login') === 'x' ? 'x' : undefined;
+            setMsg('kimito.link のログインへ移動しています…');
+            YEAuth.openSignIn({ provider: provider, returnTo: APP_ROOT + '?ye_auth=return' });
         }
 
         for (var i = 0; i < buttons.length; i++) buttons[i].addEventListener('click', onClick);

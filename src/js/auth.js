@@ -92,20 +92,53 @@
         return !!YEStorage.get(AUTH_STATE_KEY, false);
     }
 
-    /** サインインを開く。Clerk標準の openSignIn をそのまま使う（自前フォームを書かない）。 */
-    function openSignIn() {
-        return loadClerk().then(function (Clerk) {
-            Clerk.addListener(function (payload) {
-                var signedIn = !!(payload && payload.session);
-                YEStorage.set(AUTH_STATE_KEY, signedIn);
-            });
-            // ★afterSignInUrl / afterSignUpUrl は Clerk v5 で非推奨（console に警告が出る）。
-            //   fallbackRedirectUrl が後継。
-            Clerk.openSignIn({
-                signInFallbackRedirectUrl: location.href,
-                signUpFallbackRedirectUrl: location.href
-            });
-        });
+    // kimito.link 本家のサインインページ。ログイン体験（「りんくが鍵を開けています…」→
+    // X の許可画面 → 戻る）は本家に既にあるので、こちらでモーダルを自作しない。
+    var KIMITO_SIGN_IN = 'https://kimito.link/sign-in/';
+
+    // ログインから戻ってきたことを示す URL パラメータ（auth-gate.js / LP が読む）
+    var RETURN_PARAM = 'ye_auth';
+    var RETURN_VALUE = 'return';
+
+    /**
+     * サインインする = kimito.link のサインインページへ移動する。
+     * ★2026-09-16: Clerk の openSignIn() モーダル（英語の "Sign in to kimitolink-linktree"）を
+     *   自前で出していたのをやめた。kimito.link の LP と同じ体験にする（車輪の再発明をしない）。
+     *   戻り先は kimito.link 側の allowedRedirectOrigins に exosome.kimito.link を登録済み。
+     *
+     * @param {{provider?: 'x', returnTo?: string}} [opts]
+     *   provider 'x' なら本家の auto=x（説明画面を挟まず X の許可画面へ直行）。
+     *   省略時は本家の標準画面（X 主役・Apple / Google も選べる）。App Store 4.8 の
+     *   「他のログインと同列に Apple を出す」は本家の画面が満たす。
+     * @returns {Promise<void>} 互換のため Promise を返す（画面遷移するので resolve 後は何も起きない）
+     */
+    function openSignIn(opts) {
+        opts = opts || {};
+        var returnTo = opts.returnTo || markReturnUrl(location.href);
+        var url = KIMITO_SIGN_IN + '?redirect_url=' + encodeURIComponent(returnTo);
+        if (opts.provider === 'x') url += '&auto=x';
+        location.assign(url);
+        return Promise.resolve();
+    }
+
+    /** 戻り先 URL に「ログインから戻った」印を付ける */
+    function markReturnUrl(href) {
+        var u = new URL(href);
+        u.searchParams.set(RETURN_PARAM, RETURN_VALUE);
+        return u.href;
+    }
+
+    /** いま開いている URL が「ログインから戻った」直後か */
+    function isReturningFromSignIn() {
+        return new URL(location.href).searchParams.get(RETURN_PARAM) === RETURN_VALUE;
+    }
+
+    /** 印を URL から消す（履歴を汚さない） */
+    function clearReturnMark() {
+        var u = new URL(location.href);
+        if (!u.searchParams.has(RETURN_PARAM)) return;
+        u.searchParams.delete(RETURN_PARAM);
+        history.replaceState(history.state, '', u.pathname + u.search + u.hash);
     }
 
     /** サインアウト。 */
@@ -158,6 +191,8 @@
         isSignedIn: isSignedIn,
         ensureSession: ensureSession,
         openSignIn: openSignIn,
+        isReturningFromSignIn: isReturningFromSignIn,
+        clearReturnMark: clearReturnMark,
         signOut: signOut,
         getSyncToken: getSyncToken,
         _loadClerk: loadClerk // フェーズ0.5の疎通検証で直接呼べるように公開

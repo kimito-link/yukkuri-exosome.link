@@ -144,22 +144,132 @@
     z-index: 1;
 }
 
+.lp-hero__eyebrow {
+    display: inline-block;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, .7);
+    border: 1px solid var(--rink-border);
+    border-radius: var(--radius-pill);
+    padding: 5px 14px;
+    margin: 0 0 14px;
+}
+
+/* ★見出しは「何のアプリか」を言い切る。飾りの一句にしない。 */
 .lp-hero__title {
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 7vw, 3.2rem);
-    font-weight: 600;
-    line-height: 1.45;
-    letter-spacing: .12em;
+    font-size: clamp(1.3rem, 4.4vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.55;
+    letter-spacing: .04em;
     color: var(--color-text);
     margin: 0 0 12px;
 }
 
-.lp-hero__sub {
-    font-family: var(--font-serif);
-    font-size: clamp(.9rem, 2.6vw, 1.05rem);
-    letter-spacing: .14em;
+.lp-hero__em {
     color: var(--color-primary);
-    margin: 0 0 14px;
+}
+
+.lp-hero__sub {
+    font-size: clamp(.86rem, 2.4vw, .98rem);
+    font-weight: 700;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin: 0 0 22px;
+}
+
+/* ---- 実画面のスマホ枠（kimito.link LP の HeroPhoneMockup と同じ役割） ---- */
+.lp-phone {
+    position: relative;
+    width: clamp(200px, 56vw, 250px);
+    margin: 0 auto 28px;
+}
+
+.lp-phone__frame {
+    border: 8px solid #2e2622;
+    border-radius: 34px;
+    background: #2e2622;
+    box-shadow: 0 18px 40px rgba(46, 38, 34, .22);
+    overflow: hidden;
+}
+
+.lp-phone__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 26px;
+}
+
+.lp-phone__callout {
+    position: absolute;
+    right: -26%;
+    top: 22%;
+    z-index: 2;
+    max-width: 11em;
+    background: #fff;
+    border: 2px solid var(--konta-border);
+    border-radius: 12px;
+    padding: 8px 10px;
+    font-size: .74rem;
+    line-height: 1.55;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: left;
+    box-shadow: var(--shadow-md);
+}
+
+.lp-phone__callout strong { color: var(--konta-border); }
+
+.lp-phone__callout::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    bottom: -9px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid var(--konta-border);
+}
+
+/* ---- ログインの流れ（押した後に何が出るか） ---- */
+.lp-flow {
+    list-style: none;
+    padding: 14px 16px;
+    margin: 18px 0 0;
+    background: rgba(255, 255, 255, .75);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lp-flow li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: .8rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+}
+
+.lp-flow strong { color: var(--color-text); }
+
+.lp-flow__num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: .74rem;
+    font-weight: 700;
 }
 
 .lp-hero__lead {
@@ -229,6 +339,18 @@
     line-height: 1.8;
     color: var(--color-text);
     margin: 4px 0 0;
+}
+
+.lp-linkbtn {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    border-bottom: 1px solid currentColor;
+    padding: 0;
+    cursor: pointer;
 }
 
 .lp-xcta__alt a {
