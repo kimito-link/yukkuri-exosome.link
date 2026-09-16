@@ -162,7 +162,7 @@ function injectChrome(depth = 0) {
                             <li><a href="${base}about/">サイトについて</a></li>
                         </ul>
                     </nav>
-                    <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="site-header__sister" title="Kimito-Link へ">
+                    <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="site-header__sister" title="キミトリンクプロジェクト（ブランド）">
                         <img src="${base}images/kimito-link-logo/logo_kimito-link_RGB_maru_blue.png" alt="Kimito-Link" loading="lazy">
                     </a>
                 </div>

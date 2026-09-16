@@ -67,7 +67,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 80px 0 48px;
+    padding: 64px 0 32px;
     margin: 0 -20px;
     overflow: hidden;
     background:
@@ -126,11 +126,12 @@
     justify-content: center;
     align-items: flex-end;
     gap: 4px;
-    margin-bottom: 22px;
+    margin-bottom: 12px;
 }
 
+/* ★trio は縮小してファーストビューの縦を空け、主CTAを1画面目に入れる。 */
 .lp-hero__trio img {
-    width: clamp(78px, 20vw, 120px);
+    width: clamp(56px, 15vw, 88px);
     height: auto;
     filter: drop-shadow(0 8px 18px rgba(46, 38, 34, .14));
     animation: lp-float 7s ease-in-out infinite;
@@ -140,7 +141,7 @@
 .lp-hero__trio img:nth-child(3) { animation-delay: -3.5s; }
 
 .lp-hero__trio-main {
-    width: clamp(100px, 26vw, 150px) !important;
+    width: clamp(72px, 19vw, 108px) !important;
     z-index: 1;
 }
 
@@ -177,7 +178,7 @@
     font-weight: 700;
     line-height: 1.8;
     color: var(--color-text);
-    margin: 0 0 22px;
+    margin: 0 0 16px;
 }
 
 /* ---- 実画面のスマホ枠（kimito.link LP の HeroPhoneMockup と同じ役割） ---- */
@@ -284,6 +285,68 @@
 .lp-xcta {
     max-width: 440px;
     margin: 0 auto;
+}
+
+/* ---- 共通IDバッジ（FC2ID / Yahoo!ID 型の「アカウント種別」表示） ---- */
+.lp-idbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .76rem;
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, .7);
+    border: 1px solid var(--rink-border);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    margin: 0 auto 12px;
+}
+
+.lp-idbadge img { display: block; }
+.lp-idbadge strong { color: var(--color-primary); }
+
+/* ---- 押した後の流れ（折りたたみ）。既存 .lp-flow を再利用 ---- */
+.lp-flow-wrap {
+    max-width: 440px;
+    margin: 14px auto 0;
+    text-align: left;
+}
+
+.lp-flow-wrap > summary {
+    cursor: pointer;
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    list-style-position: inside;
+}
+
+.lp-flow-wrap .lp-flow {
+    margin-top: 10px;
+}
+
+/* ---- 社会的証明: 同じIDで使えるアプリ（ヒーロー内1行） ---- */
+.lp-hero__family {
+    font-size: .74rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin: 18px auto 0;
+    max-width: 30em;
+}
+
+.lp-hero__family a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+.lp-hero__family span {
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+/* 下段に移した実画面モックアップ */
+.lp-phone-section {
+    text-align: center;
 }
 
 .lp-xbtn {
@@ -604,7 +667,7 @@
 
 @media (max-width: 560px) {
     .lp { padding: 0 16px 48px; }
-    .lp-hero { padding: 72px 0 40px; margin: 0 -16px; }
+    .lp-hero { padding: 56px 0 28px; margin: 0 -16px; }
     .lp-hero__ring--1 { width: 300px; height: 300px; }
     .lp-hero__ring--2 { width: 480px; height: 480px; }
     .lp-hero__ring--3 { width: 680px; height: 680px; }

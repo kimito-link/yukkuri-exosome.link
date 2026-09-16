@@ -63,37 +63,46 @@
                     <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager" fetchpriority="high">
                 </div>
                 <p class="lp-hero__eyebrow">ゆっくりエクソソーム｜無料のセルフケア記録アプリ</p>
-                <h1 class="lp-hero__title">エクソソーム点滴・サプリ・肌の調子を、<br>ゆっくり3人組と<span class="lp-hero__em">毎日記録する</span>アプリ。</h1>
-                <p class="lp-hero__sub">kimito.link のアカウントでログインするだけ。記録は機種変更しても続きます。</p>
+                <h1 class="lp-hero__title">きょうのセルフケアを、<span class="lp-hero__em">ゆっくり3人組</span>と。</h1>
+                <p class="lp-hero__sub">kimito.link のアカウントで入るだけ。記録は機種を変えても続きます。</p>
 
-                <!-- 実際の画面（何のアプリか、見れば分かるように） -->
-                <div class="lp-phone">
-                    <div class="lp-phone__callout">今日のケアが<strong>どこに効いているか</strong>見える</div>
-                    <div class="lp-phone__frame">
-                        <img src="../images/screens/1-today.jpg" width="540" height="1170" alt="アプリのToday画面：体内シグナルマップと今日の記録" loading="eager" fetchpriority="high">
-                    </div>
-                </div>
-
+                <!-- ★主CTA=統一ログイン。見出し直後に置き、スマホ1画面目に必ず入れる。 -->
                 <div class="lp-xcta">
+                    <!-- 共通IDバッジ: FC2ID / Yahoo!ID 型の「アカウント種別」表示 -->
+                    <p class="lp-idbadge">
+                        <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="20" height="15" alt="">
+                        <span><strong>kimito.link アカウント</strong>で入ります</span>
+                    </p>
                     <button type="button" class="lp-xbtn" data-lp-login="x">
                         <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        <span class="lp-xbtn__label">X で無料ではじめる</span>
+                        <span class="lp-xbtn__label">X でかんたんログイン</span>
                         <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
                     </button>
                     <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                    <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google で入る</button>　どれを選んでも <a href="#lp-account">kimito.link のアカウント</a>になります。</p>
-                    <p class="lp-xcta__note">30秒で完了。X のパスワードは保存しません（認証の安全処理に Clerk を利用）。</p>
+                    <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google でログイン</button></p>
+                    <p class="lp-xcta__note">30秒・無料。X のパスワードは預かりません（認証は Clerk）。</p>
 
-                    <!-- ★押した後に何が出るかを先に見せる。X の許可画面に「kimito.link」と出て戸惑わないように。 -->
-                    <ol class="lp-flow">
-                        <li><span class="lp-flow__num">1</span><span>ボタンを押すと、この画面に <strong>kimito.link のログイン</strong>（Apple / Google / X）が開きます。</span></li>
-                        <li><span class="lp-flow__num">2</span><span>X を選ぶと、X の画面に「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
-                        <li><span class="lp-flow__num">3</span><span>そのまま記録がはじまります。<strong>ゆっくりエクソソームが X に投稿することはありません。</strong></span></li>
-                    </ol>
+                    <!-- ★押した後に何が出るかを先に見せる（折りたたみ）。X の許可画面に「kimito.link」と出て戸惑わないように。 -->
+                    <details class="lp-flow-wrap">
+                        <summary>押すと何が起きる？（Xの許可画面のこと）</summary>
+                        <ol class="lp-flow">
+                            <li><span class="lp-flow__num">1</span><span>ボタンを押すと、この画面に <strong>kimito.link のログイン</strong>（Apple / Google / X）が開きます。</span></li>
+                            <li><span class="lp-flow__num">2</span><span>X を選ぶと、X の画面に「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
+                            <li><span class="lp-flow__num">3</span><span>そのまま記録がはじまります。<strong>ゆっくりエクソソームが X に投稿することはありません。</strong></span></li>
+                        </ol>
+                    </details>
                 </div>
 
+                <!-- 社会的証明の早出し: 同じIDで使えるアプリを1行で -->
+                <p class="lp-hero__family">
+                    同じ kimito.link アカウントで：
+                    <a href="https://surechigai.kimito.link/" target="_blank" rel="noopener">すれ違ひ通信</a>・
+                    <a href="https://doin.kimito.link/" target="_blank" rel="noopener">動員チャレンジ</a>・
+                    <span>ゆっくりエクソソーム</span>
+                </p>
+
                 <a href="#lp-account" class="lp-hero__more" aria-label="下へ">
-                    <span>kimito.link アカウントとは</span>
+                    <span>アプリの中身と、kimito.link アカウントを見る</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
             </div>
@@ -164,6 +173,16 @@
             <div class="lp-account__cta">
                 <a href="../" class="btn btn--primary lp-login-btn">ログインしてはじめる</a>
                 <a href="https://kimito.link/" target="_blank" rel="noopener" class="btn btn--secondary">kimito.link を見る</a>
+            </div>
+        </section>
+
+        <!-- 実際の画面（何のアプリか、見れば分かるように）。ファーストビューは主CTA優先のため下段に移動。 -->
+        <section class="lp-section lp-phone-section">
+            <div class="lp-phone">
+                <div class="lp-phone__callout">今日のケアが<strong>どこに効いているか</strong>見える</div>
+                <div class="lp-phone__frame">
+                    <img src="../images/screens/1-today.jpg" width="540" height="1170" alt="アプリのToday画面：体内シグナルマップと今日の記録" loading="lazy">
+                </div>
             </div>
         </section>
 
@@ -275,13 +294,17 @@
             <h2 class="lp-section__title">はじめる</h2>
             <p class="lp-cta-section__lead">kimito.link アカウントでログインするだけ。アプリでも、ブラウザでも、同じ記録が続きます。</p>
             <div class="lp-xcta">
+                <p class="lp-idbadge">
+                    <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="20" height="15" alt="">
+                    <span><strong>kimito.link アカウント</strong>で入ります</span>
+                </p>
                 <button type="button" class="lp-xbtn" data-lp-login="x">
                     <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    <span class="lp-xbtn__label">X で無料ではじめる</span>
+                    <span class="lp-xbtn__label">X でかんたんログイン</span>
                     <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
                 </button>
                 <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google で入る</button></p>
+                <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google でログイン</button></p>
                 <p class="lp-xcta__note">アカウントがまだない方も、X か Apple・Google があればその場で作れます。</p>
             </div>
             <p class="lp-cta-section__apps">スマホにはアプリもあります（同じアカウントでログイン）</p>

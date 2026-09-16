@@ -93,11 +93,10 @@
                 </div>
             </div>
 
-            <!-- アカウント（kimito.link 共通アカウント・すみわけ）
-                 ★ログインは任意。ここを一切触らなくても、今まで通りアプリは
-                 フルに使える。ログインした人だけ、記録の端末間引き継ぎと
-                 他サービスへの導線が増える。premium.js のチケット検証・
-                 YEStorage の記録はログインの有無に関係なく動く。 -->
+            <!-- アカウント（kimito.link 共通アカウント）
+                 ★ログイン必須。この画面に来ている時点でログイン済み。
+                 ここではアカウントの確認・ログアウト・kimito.link での管理への
+                 導線を出す。premium.js のチケット検証・YEStorage の記録は従来どおり。 -->
             <h2 class="app-section-title">
                 <span class="app-section-title__emoji">🔗</span>
                 アカウント
@@ -105,12 +104,17 @@
             <div class="me-list">
                 <div class="me-list__item" id="account-row">
                     <div class="me-list__icon">👤</div>
-                    <div class="me-list__label" id="account-label">kimito.link でログイン</div>
+                    <div class="me-list__label" id="account-label">kimito.link アカウント</div>
                     <div class="me-list__arrow" id="account-arrow">→</div>
                 </div>
+                <a href="https://kimito.link/" target="_blank" rel="noopener" class="me-list__item">
+                    <div class="me-list__icon">⚙️</div>
+                    <div class="me-list__label">kimito.link でアカウント管理</div>
+                    <div class="me-list__arrow">↗</div>
+                </a>
             </div>
             <p style="font-size:.72rem; color:var(--color-text-muted); margin:6px 2px 0; line-height:1.6;">
-                ログインしなくても、このアプリは今まで通り使えます。ログインすると、記録の端末間引き継ぎと他サービスへの行き来ができるようになります。
+                このアプリは kimito.link の共通アカウントで動いています。同じIDで、すれ違ひ通信・動員チャレンジなど kimito.link のアプリにもそのまま入れます。
             </p>
 
             <!-- 詳しく知る -->
@@ -174,7 +178,7 @@
                 </a>
                 <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="me-list__item">
                     <div class="me-list__icon">🔗</div>
-                    <div class="me-list__label">Kimito-Link</div>
+                    <div class="me-list__label">Kimito-Link プロジェクト</div>
                     <div class="me-list__arrow">↗</div>
                 </a>
             </div>
@@ -198,7 +202,7 @@
         const accountLabel = document.getElementById('account-label');
         const accountArrow = document.getElementById('account-arrow');
         if (YEAuth.isSignedIn()) {
-            accountLabel.textContent = 'kimito.link でログイン中';
+            accountLabel.textContent = 'kimito.link でログイン中（タップでログアウト）';
             accountArrow.textContent = '';
         }
         document.getElementById('account-row').addEventListener('click', () => {
