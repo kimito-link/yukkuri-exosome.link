@@ -86,8 +86,8 @@
 
                     <!-- ★押した後に何が出るかを先に見せる。X の許可画面に「kimito.link」と出て戸惑わないように。 -->
                     <ol class="lp-flow">
-                        <li><span class="lp-flow__num">1</span><span>ボタンを押すと <strong>kimito.link のログインページ</strong>に移り、「りんくが鍵を開けています…」のあと X の許可画面になります。</span></li>
-                        <li><span class="lp-flow__num">2</span><span>X の画面には「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
+                        <li><span class="lp-flow__num">1</span><span>ボタンを押すと、この画面に <strong>kimito.link のログイン</strong>（Apple / Google / X）が開きます。</span></li>
+                        <li><span class="lp-flow__num">2</span><span>X を選ぶと、X の画面に「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
                         <li><span class="lp-flow__num">3</span><span>そのまま記録がはじまります。<strong>ゆっくりエクソソームが X に投稿することはありません。</strong></span></li>
                     </ol>
                 </div>
@@ -304,10 +304,12 @@
     <script src="../js/auth.js"></script>
     <script>
     /**
-     * ★LPの X ボタン = kimito.link 本家のサインインページへ送る（自前モーダルは出さない）。
-     *   アプリ本体（/）へ飛ばしてもう一度ボタンを押させない（kimito.link / すれ違ひ通信LPと同じ型）。
-     *   ログインが成立したらアプリ本体へ送る。すでにログイン済みなら最初からアプリへ送る。
-     *   ★provider は指定しない。Clerk 標準の選択画面（X / Apple）を出す（App Store 4.8）。
+     * ★LPのログインボタン = この画面のまま Clerk のログインモーダルを開く（自ドメイン完結）。
+     *   すれ違ひ通信と同じく、本家 kimito.link へは飛ばさない（飛ばすと FORCE リダイレクトで
+     *   kimito.link の dashboard に着地して exosome へ戻れない）。satellite なしで
+     *   .kimito.link の cookie が共有され、同じアカウントでログインできる。
+     *   ログインが成立したらアプリ本体（/）へ送る。すでにログイン済みなら最初からアプリへ。
+     *   ★provider は指定しない。Clerk 標準の選択画面（X 主役・Apple / Google）を出す（4.8）。
      */
     (function () {
         var APP_ROOT = new URL('../', location.href).href;
@@ -320,19 +322,27 @@
 
         function goApp() { location.href = APP_ROOT; }
 
-        /**
-         * ★kimito.link 本家のサインインページへ送る（kimito.link の LP と同じ体験）。
-         *   本家の演出（「りんくが鍵を開けています…」→ X の許可画面 → 戻る）をそのまま使う。
-         *   data-lp-login="x" は auto=x（X の許可画面へ直行）、無印は本家の標準画面
-         *   （X 主役・Apple / Google も選べる。App Store 4.8）。
-         *   ログイン後は /?ye_auth=return に戻り、auth-gate.js がセッションを確かめて開く。
-         */
-        function onClick(ev) {
+        // ログインが成立したらアプリ本体へ（モーダルを閉じただけでは通さない）
+        function watchForSession() {
+            var tries = 0;
+            var timer = setInterval(function () {
+                tries++;
+                if (window.Clerk && window.Clerk.session) { clearInterval(timer); goApp(); return; }
+                if (tries > 600) clearInterval(timer); // 5分で諦める
+            }, 500);
+        }
+
+        function onClick() {
             if (typeof YEAuth === 'undefined') { goApp(); return; }
             if (YEAuth.isSignedIn()) { goApp(); return; }
-            var provider = ev.currentTarget.getAttribute('data-lp-login') === 'x' ? 'x' : undefined;
-            setMsg('kimito.link のログインへ移動しています…');
-            YEAuth.openSignIn({ provider: provider, returnTo: APP_ROOT + '?ye_auth=return' });
+            setMsg('ログイン画面をひらいています…');
+            YEAuth.openSignIn().then(function () {
+                setMsg('');
+                watchForSession();
+            }).catch(function (e) {
+                setMsg('ひらけませんでした。通信環境を確認してもう一度お試しください。');
+                if (window.console) console.error('[lp-login]', e);
+            });
         }
 
         for (var i = 0; i < buttons.length; i++) buttons[i].addEventListener('click', onClick);

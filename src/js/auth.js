@@ -92,53 +92,35 @@
         return !!YEStorage.get(AUTH_STATE_KEY, false);
     }
 
-    // kimito.link 本家のサインインページ。ログイン体験（「りんくが鍵を開けています…」→
-    // X の許可画面 → 戻る）は本家に既にあるので、こちらでモーダルを自作しない。
-    var KIMITO_SIGN_IN = 'https://kimito.link/sign-in/';
-
-    // ログインから戻ってきたことを示す URL パラメータ（auth-gate.js / LP が読む）
-    var RETURN_PARAM = 'ye_auth';
-    var RETURN_VALUE = 'return';
-
     /**
-     * サインインする = kimito.link のサインインページへ移動する。
-     * ★2026-09-16: Clerk の openSignIn() モーダル（英語の "Sign in to kimitolink-linktree"）を
-     *   自前で出していたのをやめた。kimito.link の LP と同じ体験にする（車輪の再発明をしない）。
-     *   戻り先は kimito.link 側の allowedRedirectOrigins に exosome.kimito.link を登録済み。
+     * サインインする = この画面のまま Clerk のログインモーダルを開く。
      *
-     * @param {{provider?: 'x', returnTo?: string}} [opts]
-     *   provider 'x' なら本家の auto=x（説明画面を挟まず X の許可画面へ直行）。
-     *   省略時は本家の標準画面（X 主役・Apple / Google も選べる）。App Store 4.8 の
-     *   「他のログインと同列に Apple を出す」は本家の画面が満たす。
-     * @returns {Promise<void>} 互換のため Promise を返す（画面遷移するので resolve 後は何も起きない）
+     * ★2026-09-16: 本家 kimito.link/sign-in へ飛ばす方式は使えない（実測で確定）。
+     *   本家は signInForceRedirectUrl="/dashboard/" を指定していて、redirect_url より
+     *   強い FORCE リダイレクトが効くため、ログイン後に必ず kimito.link の dashboard へ
+     *   着地してしまい exosome へ戻れなかった。すれ違ひ通信も本家へ飛ばさず、
+     *   自分のドメインで Clerk のサインインを完結させている（surechigai.kimito.link/sign-in/）。
+     *   exosome は静的サイトなので Next の <SignIn/> は使えず、Clerk 標準の openSignIn()
+     *   モーダルを自ドメインで開く。satellite なしで .kimito.link cookie 共有が効く。
+     *
+     * ★provider は指定しない。Clerk 標準の選択画面（X 主役・Apple / Google 併記）を出す。
+     *   App Store 4.8 の「Apple を他のログインと同列に出す」はこの標準画面が満たす。
+     *
+     * @returns {Promise<void>} モーダルを開いたら resolve。ログイン成立の監視は呼び出し側。
      */
-    function openSignIn(opts) {
-        opts = opts || {};
-        var returnTo = opts.returnTo || markReturnUrl(location.href);
-        var url = KIMITO_SIGN_IN + '?redirect_url=' + encodeURIComponent(returnTo);
-        if (opts.provider === 'x') url += '&auto=x';
-        location.assign(url);
-        return Promise.resolve();
-    }
-
-    /** 戻り先 URL に「ログインから戻った」印を付ける */
-    function markReturnUrl(href) {
-        var u = new URL(href);
-        u.searchParams.set(RETURN_PARAM, RETURN_VALUE);
-        return u.href;
-    }
-
-    /** いま開いている URL が「ログインから戻った」直後か */
-    function isReturningFromSignIn() {
-        return new URL(location.href).searchParams.get(RETURN_PARAM) === RETURN_VALUE;
-    }
-
-    /** 印を URL から消す（履歴を汚さない） */
-    function clearReturnMark() {
-        var u = new URL(location.href);
-        if (!u.searchParams.has(RETURN_PARAM)) return;
-        u.searchParams.delete(RETURN_PARAM);
-        history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+    function openSignIn() {
+        return loadClerk().then(function (Clerk) {
+            Clerk.addListener(function (payload) {
+                var signedIn = !!(payload && payload.session);
+                YEStorage.set(AUTH_STATE_KEY, signedIn);
+            });
+            // signInFallbackRedirectUrl は「モーダルではなくページ遷移でログインした場合」の
+            // 戻り先。モーダル運用では基本使われないが、念のため今の画面を指定する。
+            Clerk.openSignIn({
+                signInFallbackRedirectUrl: location.href,
+                signUpFallbackRedirectUrl: location.href
+            });
+        });
     }
 
     /** サインアウト。 */
@@ -191,8 +173,6 @@
         isSignedIn: isSignedIn,
         ensureSession: ensureSession,
         openSignIn: openSignIn,
-        isReturningFromSignIn: isReturningFromSignIn,
-        clearReturnMark: clearReturnMark,
         signOut: signOut,
         getSyncToken: getSyncToken,
         _loadClerk: loadClerk // フェーズ0.5の疎通検証で直接呼べるように公開

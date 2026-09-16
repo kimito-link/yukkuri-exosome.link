@@ -81,22 +81,6 @@
     }
 
     /**
-     * kimito.link のサインインから戻ってきた直後の処理。
-     * ★ローカルの軽いフラグはまだ立っていない（ログインは別サイトで成立した）ので、
-     *   Clerk を読み込んで実セッションを確かめる。.kimito.link の cookie 共有で見える。
-     *   成立していればフラグが立ち（ensureSession が立てる）、記録の引き継ぎを裏で走らせる。
-     */
-    function finishReturnFromSignIn() {
-        hideApp();
-        YEAuth.ensureSession().then(function (ok) {
-            YEAuth.clearReturnMark();
-            if (!ok) { goToLp(); return; }
-            showApp();
-            if (window.YESync && YESync.sync) YESync.sync().catch(function () {});
-        });
-    }
-
-    /**
      * ルートまでの相対パスを URL から出す。
      * ★data-depth 属性に頼らない。7画面が未指定で、頼ると画像パスが壊れる。
      *   /            -> ''
@@ -121,12 +105,6 @@
             return;
         }
 
-        // kimito.link のサインインから戻ってきた直後（?ye_auth=return）
-        if (YEAuth.isReturningFromSignIn()) {
-            finishReturnFromSignIn();
-            return;
-        }
-
         // ローカルの軽いフラグで即判定（Clerk の読み込みを待たない）
         if (YEAuth.isSignedIn()) {
             // Clerk 側の実セッションを裏で確かめ、切れていたら LP（ログインの入口）へ
@@ -143,8 +121,8 @@
      * ★未ログインは素のゲートを見せず、LP（/lp/）へ送る（2026-09-16）。
      *   素のゲートは「キャラ1人とボタン1つ」の固定画面で、裏に隠したアプリ本体の高さぶん
      *   スクロールできてしまい「動かしても同じ画面」になっていた（ユーザー指摘）。
-     *   LP はログインの入口として作ってあり（X ボタンで kimito.link のサインインへ）、
-     *   ログインが成立すると ?ye_auth=return 付きで戻ってくる。/lp/ は PUBLIC_PATHS なのでループしない。
+     *   LP はログインの入口として作ってあり（X ボタンで自ドメインの Clerk モーダルを開く）、
+     *   ログインが成立すると LP 側がアプリ本体（/）へ送る。/lp/ は PUBLIC_PATHS なのでループしない。
      *   遷移までの一瞬もアプリ本体は見せない（hideApp してから replace）。
      */
     function goToLp() {
