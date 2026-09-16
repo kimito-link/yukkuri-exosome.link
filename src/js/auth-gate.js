@@ -114,7 +114,37 @@
             return;
         }
 
+        // ★ローカルフラグが無くても、Clerk の実セッションが生きていれば締め出さない。
+        //   フラグは「モーダルでログインしたタブ」にしか立たないので、別タブ・別端末・
+        //   ストレージ削除後・ticket ログイン（E2E）では、Clerk cookie は生きているのに
+        //   フラグだけ無い状態が起きる。ここで即 LP に飛ばすと「ログイン済みなのに入口に
+        //   戻される」ことになる（2026-09-16 E2E で検出）。
+        //   判定は Clerk の認証 cookie __client_uat の直接シグナル（値が 0 以外＝ログイン済み）。
+        //   中間状態が無いので偽陽性が出ない（KB clerk-x-oauth-e2e §1）。
+        if (hasLiveClerkCookie()) {
+            hideApp(); // 実セッション確認までの一瞬もアプリ本体を見せない
+            YEAuth.ensureSession().then(function (ok) {
+                if (ok) {
+                    showApp();
+                    if (window.YESync && YESync.sync) YESync.sync().catch(function () {});
+                } else {
+                    goToLp();
+                }
+            });
+            return;
+        }
+
         goToLp();
+    }
+
+    /**
+     * Clerk の認証 cookie __client_uat が「ログイン済み」を示すか。
+     * 値は Unix 秒。'0' はゲスト、'0' 以外はログイン済み（中間状態なし）。
+     * ★HttpOnly ではないので document.cookie から読める（実測）。
+     */
+    function hasLiveClerkCookie() {
+        var m = document.cookie.match(/(?:^|;\s*)__client_uat[^=]*=([^;]*)/);
+        return !!(m && m[1] && m[1] !== '0');
     }
 
     /**
