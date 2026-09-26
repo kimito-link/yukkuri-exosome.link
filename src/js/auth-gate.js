@@ -127,6 +127,9 @@
                 if (ok) {
                     showApp();
                     if (window.YESync && YESync.sync) YESync.sync().catch(function () {});
+                    // kimito.link のダッシュボードに出す利用サマリ（パスポート）を送る。
+                    // ★待たない・失敗しても画面に出さない。本業（記録）を巻き添えにしない。
+                    if (window.YESync && YESync.pushHubSummary) YESync.pushHubSummary().catch(function () {});
                 } else {
                     goToLp();
                 }

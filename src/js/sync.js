@@ -143,9 +143,110 @@
         });
     }
 
+    /* ───────────────────────────────────────────────────────────────────
+     * kimito.link ハブへの利用サマリ送信
+     *
+     * 「1ログインで全サービス」の共通アカウント基盤で、各サービスの利用状況を
+     * kimito.link のダッシュボードに横断表示する（＝パスポートカード）。
+     *
+     * 受け口: kimitolink-linktree/app/api/hub/summary/route.ts
+     * 契約:   kimitolink-linktree/docs/KIMITO-LINK-HUB-STRATEGY-DESIGN.md
+     *
+     * ★このファイルの原則をそのまま守る:
+     *   未ログインなら何もしない / 失敗しても画面に出さない / 記録本体を巻き添えにしない。
+     * ─────────────────────────────────────────────────────────────────── */
+
+    var HUB_SUMMARY_URL = 'https://kimito.link/api/hub/summary';
+    var HUB_APP_KEY = 'exosome';
+    var HUB_LAST_SENT_KEY = 'hub_last_sent';
+    var HUB_TIMEOUT_MS = 5000;
+
+    /**
+     * ★受け口が黙って捨てる値を、送る前に弾く。
+     *
+     *   kimito.link 側 lib/hub-metadata.ts は、送った項目が**全部**濾されると
+     *   既存サマリを空 {} で上書きし、しかも {ok:true} を返す。
+     *   ＝ 200 を見ても「保存された」とは限らない。
+     *
+     *   count : 数値のみ・負値と非有限は捨てる・小数は切り捨て
+     *   label : 1〜40文字・★半角スペースと制御文字を1つでも含むと捨てる
+     */
+    function hubSendableCount(v) {
+        return typeof v === 'number' && isFinite(v) && v >= 0;
+    }
+
+    function hubSendableLabel(v) {
+        if (typeof v !== 'string' || v.length < 1 || v.length > 40) return false;
+        for (var i = 0; i < v.length; i++) {
+            var c = v.charCodeAt(i);
+            if (c <= 0x20 || c === 0x7f) return false;
+        }
+        return true;
+    }
+
+    /**
+     * 利用サマリをハブへ送る（best-effort）。
+     *
+     * ★呼ぶ側は待たないこと（記録の保存を遅らせない）。
+     * ★★app_total_days は使わない。書き込みが src/index.html:91 の1箇所だけで、
+     *   トップページを開いた日しか加算されない既存バグがあるため
+     *   （garden.js のバッジと me.js の表示が実態より少なく出る）。
+     *   記録から数えた collectLocalDays() の日数が正しい。
+     */
+    function pushHubSummary() {
+        try {
+            if (typeof YEAuth === 'undefined' || !YEAuth.isSignedIn()) return Promise.resolve({ skipped: true });
+
+            var days = Object.keys(collectLocalDays()).length;
+            var streak = YEStorage.get('app_streak', 0);
+            if (!hubSendableCount(days) || !hubSendableCount(streak)) return Promise.resolve({ skipped: true });
+            if (!hubSendableLabel('記録日数') || !hubSendableLabel('連続')) return Promise.resolve({ skipped: true });
+
+            var summary = {
+                count: Math.floor(days),
+                label: '記録日数',
+                count2: Math.floor(streak),
+                label2: '連続'
+            };
+
+            // ★同じ内容を続けて送らない（受け口は毎回 Clerk API を2回叩く）。
+            var fingerprint = summary.count + '/' + summary.count2;
+            if (YEStorage.get(HUB_LAST_SENT_KEY, null) === fingerprint) {
+                return Promise.resolve({ skipped: true });
+            }
+
+            return YEAuth.getSyncToken().then(function (token) {
+                if (!token) return { skipped: true }; // 未ログイン。何もしない。
+                var opts = {
+                    method: 'POST',
+                    // ★Cookie は送らない。受け口は credentials を許可していない。
+                    //   独自ヘッダも足さない（許可は Authorization と Content-Type のみ）。
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ appKey: HUB_APP_KEY, summary: summary })
+                };
+                if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
+                    opts.signal = AbortSignal.timeout(HUB_TIMEOUT_MS);
+                }
+                return fetch(HUB_SUMMARY_URL, opts).then(function (res) {
+                    // ★リトライしない。次の記録で上書きされる。
+                    if (res.ok) YEStorage.set(HUB_LAST_SENT_KEY, fingerprint);
+                    return { sent: res.ok };
+                });
+            }).catch(function () {
+                return { failed: true }; // 黙って諦める。記録は端末にある。
+            });
+        } catch (e) {
+            return Promise.resolve({ failed: true });
+        }
+    }
+
     window.YESync = {
         sync: sync,
         pushToday: pushToday,
+        pushHubSummary: pushHubSummary,
         _collectLocalDays: collectLocalDays // 検証用
     };
 })();
