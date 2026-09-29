@@ -38,7 +38,8 @@
     "play:set-listing": "node scripts/play-set-listing.mjs",
     "play:set-app-content": "node scripts/play-set-app-content.mjs",
     "setup": "node scripts/setup-new-app.mjs",
-    "generate:privacy": "node scripts/generate-privacy-page.mjs"
+    "generate:privacy": "node scripts/generate-privacy-page.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "devDependencies": {
     "@bubblewrap/cli": "^1.24.1",
