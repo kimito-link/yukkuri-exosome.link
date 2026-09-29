@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <script>(function(){var m=document.cookie.match(/(?:^|;\s*)__client_uat[^=]*=([^;]*)/);document.documentElement.setAttribute('data-auth',(m&&m[1]&&m[1]!=='0')?'member':'guest');})();</script>
+    <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>体内時計ダイヤル | ゆっくりエクソソーム</title>

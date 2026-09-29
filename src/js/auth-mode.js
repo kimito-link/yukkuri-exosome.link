@@ -39,10 +39,21 @@
      * ★HttpOnly ではないので document.cookie から読める（実測）。
      * ★各ページ <head> 先頭のインラインスクリプトと同じ判定ロジック。
      *   両者がドリフトしないことは check-auth-head-snippet.mjs で機械検査する。
+     *
+     * ★2026-09-29実損修正（surechigai本番で発覚）: Clerk はドメイン接尾辞付き
+     *   `__client_uat_<suffix>` を `__client_uat`（接尾辞無し）と併置することがある
+     *   （本番実測: `__client_uat_ZGVu8CMk=0; __client_uat=1234567890`）。
+     *   .match()は最初の1件しか返さないため、接尾辞付きの'0'が先に出現すると
+     *   実際はログイン済みでもゲスト誤判定していた。グローバルフラグ+execループで
+     *   全件を見て、いずれか1つでも'0'以外ならログイン済みとする。
      */
     function hasLiveClerkCookie() {
-        var m = document.cookie.match(/(?:^|;\s*)__client_uat[^=]*=([^;]*)/);
-        return !!(m && m[1] && m[1] !== '0');
+        var re = /(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;
+        var m;
+        while ((m = re.exec(document.cookie))) {
+            if (m[1] && m[1] !== '0') return true;
+        }
+        return false;
     }
 
     function getMode() {
