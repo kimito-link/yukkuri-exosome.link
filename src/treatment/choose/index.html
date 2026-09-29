@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <script>(function(){var m=document.cookie.match(/(?:^|;\s*)__client_uat[^=]*=([^;]*)/);document.documentElement.setAttribute('data-auth',(m&&m[1]&&m[1]!=='0')?'member':'guest');})();</script>
+    <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../../icons/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="../../icons/favicon-16.png">
