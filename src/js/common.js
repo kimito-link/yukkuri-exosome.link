@@ -95,6 +95,24 @@ function formatDateJp(date = new Date()) {
 }
 
 /**
+ * ★ゲストのまま書いてよいキー（記録・個人データではないもの）。
+ *   これ以外のキーはゲストでは書けず、ログインを求める（fail-closed）。
+ *   設計書 DESIGN-kimito-family-prepaint-auth-mode-2026-09-29.md の関所（C-4）実装。
+ *   - auth_signed_in: auth.js が持つ認証フラグ自体。書けないとログインが成立しない。
+ *   - onboarding_done_v1: オンボーディング既読フラグ（onboarding.js の ONB_KEY）。
+ *   - ref_partner: 紹介コード（refpartner.js）。記録ではなく流入元トラッキング。
+ */
+const YE_GUEST_ALLOWED_KEYS = ['auth_signed_in', 'onboarding_done_v1', 'ref_partner'];
+
+/**
+ * 今の認証モードが member か（<html data-auth="member"> かどうか）。
+ * auth-mode.js 読込前でも安全に呼べるよう、DOM 属性を直接見る。
+ */
+function yeIsMemberMode() {
+    return document.documentElement.getAttribute('data-auth') === 'member';
+}
+
+/**
  * LocalStorage ヘルパー
  */
 const YEStorage = {
@@ -106,7 +124,16 @@ const YEStorage = {
             return defaultValue;
         }
     },
+    /**
+     * ★関所: ゲストは YE_GUEST_ALLOWED_KEYS 以外のキーを書けない。
+     *   書こうとしたら YEAuth.openSignIn() を呼び、保存はしない（false を返す）。
+     *   新しいモジュールがキーを追加しても、ここを通る限り自動的に守られる。
+     */
     set(key, value) {
+        if (!yeIsMemberMode() && YE_GUEST_ALLOWED_KEYS.indexOf(key) === -1) {
+            if (typeof YEAuth !== 'undefined' && YEAuth.openSignIn) YEAuth.openSignIn();
+            return false;
+        }
         try {
             localStorage.setItem(`ye_${key}`, JSON.stringify(value));
             return true;

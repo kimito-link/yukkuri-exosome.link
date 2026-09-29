@@ -3,7 +3,9 @@
  *
  * ★2026-09-09 にログイン前提へ切り替えた（利用者0人の時点で決断）。
  *   以前は「すみわけ」＝未ログインでも全機能が使える設計だった。
- *   ゲート本体は auth-gate.js。このファイルは Clerk との接続だけを持つ。
+ *   ★2026-09-29: 「未ログインでは何も見せない」実装は auth-mode.js に置き換えた
+ *   （中身は見せ、記録操作の直前だけログインを求める2段構成。関所は common.js の
+ *   YEStorage.set）。このファイルは Clerk との接続だけを持つ点は変わらない。
  *   premium.js のチケット検証と YEStorage の記録形式は変更していない。
  *
  * ★Clerk SDK は「サインイン」がタップされるまでネットワークに出さない。
@@ -146,7 +148,7 @@
      *
      * ★isSignedIn() はローカルの軽いフラグを見るだけなので、
      *   Clerk 側でセッションが切れていても true を返しうる。
-     *   ログイン必須ゲート（auth-gate.js）はそれを信じて通してしまうので、
+     *   認証モード確認係（auth-mode.js）はそれを信じて通してしまうので、
      *   裏で実セッションを確かめてフラグを正す。
      *
      * @returns {Promise<boolean>} 本物のセッションがあれば true
@@ -209,7 +211,7 @@
             Clerk.mountUserButton(el, {
                 // 名前（@username）をアバターの横に出す＝「誰として入っているか」を常時表示。
                 showName: true,
-                // サインアウト後はトップへ。auth-gate が未ログインを検知して LP へ送る。
+                // サインアウト後はトップへ。トップは未ログインでも中身が見える（auth-mode.js）。
                 afterSignOutUrl: location.origin + '/',
                 // 別アカウントへ切り替えたらトップに着地（記録の取り違えを防ぐ）。
                 afterSwitchSessionUrl: location.origin + '/',
