@@ -3,11 +3,12 @@
 // ★document の無い環境で読むと、自動マウントはせず window.KimitoLegalFooter（純関数）だけが生える。
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import vm from 'node:vm';
 
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // ← サイトごとに直す（このリポの kimito-legal-footer.js の場所）
 const FOOTER_JS = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'js', 'kimito-legal-footer.js');
 
@@ -52,11 +53,45 @@ test('サービス名の HTML は無害化される', () => {
   assert.ok(!html.includes('<img') && html.includes('&lt;img'));
 });
 
-test('LP が部品を読み込み、実在する法務ページだけを渡している（exosome は利用規約ページが無い）', () => {
-  const html = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'lp', 'index.html'), 'utf8');
-  assert.match(html, /<script src="\.\.\/js\/kimito-legal-footer\.js"[^>]*data-privacy="\/privacy\/"/);
-  assert.match(html, /data-service-name="ゆっくりエクソソーム"/);
-  assert.doesNotMatch(html, /kimito-legal-footer\.js"[^>]*data-terms=/);
+test('情報ページの共通フッター（injectChrome）が部品を出す。マウント先を持ち、注入後に mountLegalFooter を呼ぶ', () => {
+  const common = readFileSync(join(ROOT, 'src', 'js', 'common.js'), 'utf8');
+  assert.match(common, /function mountLegalFooter\(depth = 0\)/);
+  assert.match(common, /<div id="kimito-legal-footer"><\/div>/);
+  const start = common.indexOf('function injectChrome');
+  const body = common.slice(start, start + 6000);
+  assert.ok(body.indexOf('mountLegalFooter(depth)') > body.indexOf('footer.innerHTML'), 'フッター注入の後に mountLegalFooter(depth) がありません');
+  // 渡す法務ページは実在するものだけ（利用規約ページは未作成。作ったら terms を足す）
+  assert.match(common, /privacy: '\/privacy\/'/);
+  assert.doesNotMatch(common, /opts = \{[^}]*terms:/);
+});
+
+test('data-footer を持つ全ページが common.js を読み込む（＝新しい情報ページも自動で共通フッターが付く）', () => {
+  const pages = [];
+  (function walk(dir) {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const f = join(dir, e.name);
+      if (e.isDirectory()) walk(f);
+      else if (e.name === 'index.html') pages.push(f);
+    }
+  })(join(ROOT, 'src'));
+  const withFooter = pages.filter((f) => readFileSync(f, 'utf8').includes('data-footer'));
+  assert.ok(withFooter.length >= 10, `data-footer を持つページが少なすぎます(${withFooter.length})`);
+  for (const f of withFooter) {
+    assert.match(readFileSync(f, 'utf8'), /js\/common\.js/, `${f} が common.js を読み込んでいません`);
+  }
+});
+
+test('Me 画面（アプリ内の入口）にも共通フッターのマウント先があり、描画後に mountLegalFooter を呼ぶ', () => {
+  const me = readFileSync(join(ROOT, 'src', 'js', 'me.js'), 'utf8');
+  assert.match(me, /<div id="kimito-legal-footer"/);
+  assert.ok(me.indexOf('mountLegalFooter(1)') > me.indexOf("getElementById('me-screen').innerHTML = html"));
+});
+
+test('アプリ画面の各タブには出さない（タブバーと競合するため。Me だけ）', () => {
+  for (const tab of ['advice', 'boost', 'garden', 'quiz', 'selfcare']) {
+    const html = readFileSync(join(ROOT, 'src', tab, 'index.html'), 'utf8');
+    assert.doesNotMatch(html, /kimito-legal-footer/, `${tab} に共通フッターが入っています`);
+  }
 });
 
 test('色の差し替え口（--klf-fg / --klf-bg）があり、既定は継承・透明', () => {
