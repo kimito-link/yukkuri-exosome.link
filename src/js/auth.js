@@ -76,11 +76,42 @@
         });
     }
 
+    /** 同じ js/ にあるスクリプトを読み込む。失敗しても resolve する（fail-safe）。 */
+    function loadSiblingScript(name) {
+        return new Promise(function (resolve) {
+            if (!SELF_SRC) { resolve(); return; }
+            var s = document.createElement('script');
+            s.async = false;
+            s.src = SELF_SRC.replace(/auth\.js(\?.*)?$/, name);
+            s.onload = function () { resolve(); };
+            s.onerror = function () { resolve(); };
+            document.head.appendChild(s);
+        });
+    }
+
+    /**
+     * ログイン画面の日本語化＋見た目の設定を用意する。Clerk SDK と並行して読み込む。
+     * ★共有 Clerk の見出し「Sign in to kimitolink-linktree」を直すため。設計・出典は
+     *   js/clerk-ui-options.js（kit の templates/web/clerk-ja/ の無改変コピー）。
+     *   読み込めなければ {}（標準の英語画面のまま・ログインは動く）。
+     */
+    function loadUiOptions() {
+        window.KimitoClerkUiConfig = { serviceName: 'ゆっくりエクソソーム' };
+        return loadSiblingScript('clerk-ja-JP.generated.js')
+            .then(function () { return loadSiblingScript('clerk-ui-options.js'); })
+            .then(function () {
+                try {
+                    return window.KimitoClerkUiOptions ? window.KimitoClerkUiOptions.buildClerkLoadOptions() : {};
+                } catch (e) { return {}; }
+            });
+    }
+
     /** Clerk SDK を <script> タグで動的に読み込む。呼ばれるまでネットワークに出ない。 */
     function loadClerk() {
         if (clerkLoadPromise) return clerkLoadPromise;
         clerkLoadPromise = new Promise(function (resolve, reject) {
             if (window.Clerk) { resolve(window.Clerk); return; }
+            var uiOptionsPromise = loadUiOptions();
             var script = document.createElement('script');
             script.async = true;
             script.crossOrigin = 'anonymous';
@@ -102,7 +133,9 @@
                 var loadOpts = IS_SATELLITE
                     ? { isSatellite: true, domain: CLERK_FRONTEND_API }
                     : {};
-                window.Clerk.load(loadOpts).then(function () {
+                uiOptionsPromise.then(function (uiOptions) {
+                    return window.Clerk.load(Object.assign({}, loadOpts, uiOptions));
+                }).then(function () {
                     resolve(window.Clerk);
                 }).catch(reject);
             };
