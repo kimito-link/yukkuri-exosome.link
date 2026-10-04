@@ -135,6 +135,14 @@
      * @returns {Promise<void>} モーダルを開いたら resolve。ログイン成立の監視は呼び出し側。
      */
     function openSignIn() {
+        // ★ワンタップXは「人がタップした呼び出し」のときだけ使う（2026-10-04 実損から追加）。
+        //   関所（common.js の YEStorage.set）はゲストの書き込みで openSignIn() を自動で呼ぶ。
+        //   advice.js のようにページ読み込み時に書くページでは、タップしていないのに
+        //   X の認可画面へ強制遷移してしまう（以前は閉じられるモーダルが出るだけだった）。
+        //   transient activation（直近のタップ・クリック）が無ければ通常の選択モーダルのまま。
+        //   ★非同期処理の前に同期で判定する（activation は約5秒で切れ、Clerk 読込がそれを超えうる）。
+        //   userActivation 非対応のブラウザは「タップ扱いにしない」側に倒す（fail-safe）。
+        var viaTap = !!(navigator.userActivation && navigator.userActivation.isActive);
         return Promise.all([loadClerk(), loadOneTap()]).then(function (results) {
             var Clerk = results[0];
             Clerk.addListener(function (payload) {
@@ -150,7 +158,7 @@
             // ★kimito.link 本体と同じ「Xワンタップ」: モーダルに出たXボタンへ本物のclickを
             //   1回送るだけ（Clerk の認証フロー自体には触れない。CLERK_X_LOGIN_PLAYBOOK §4.1）。
             //   部品が無い・ネイティブ・Xボタンが見つからない場合は、通常の選択モーダルのまま。
-            if (window.KimitoXOneTapSignIn) window.KimitoXOneTapSignIn.triggerAutoXClick();
+            if (viaTap && window.KimitoXOneTapSignIn) window.KimitoXOneTapSignIn.triggerAutoXClick();
         });
     }
 
