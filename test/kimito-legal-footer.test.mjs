@@ -64,3 +64,8 @@ test('色の差し替え口（--klf-fg / --klf-bg）があり、既定は継承�
   assert.match(src, /color:var\(--klf-fg,inherit\)/);
   assert.match(src, /background:var\(--klf-bg,transparent\)/);
 });
+
+test('重なり順（position:relative + --klf-z）を持つ', () => {
+  const src = readFileSync(FOOTER_JS, 'utf8');
+  assert.match(src, /position:relative;z-index:var\(--klf-z,1\)/);
+});
