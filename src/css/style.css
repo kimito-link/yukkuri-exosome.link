@@ -955,6 +955,12 @@ img {
     color: var(--color-text-muted);
 }
 
+/* 共通の運営表記＋法務リンク（kimito-legal-footer.js）。フッターの中では枠線と余白を詰める */
+.site-footer #kimito-legal-footer {
+    border-top: 0;
+    padding: 4px 0 16px;
+}
+
 /* ============================================
    アニメーション
    ============================================ */

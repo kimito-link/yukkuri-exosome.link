@@ -188,6 +188,9 @@
                 ⚠️ アプリのデータをリセットする
             </div>
 
+            <!-- 運営表記＋法務リンク（共通部品。common.js の mountLegalFooter） -->
+            <div id="kimito-legal-footer" style="margin-top: 24px;"></div>
+
             <div style="text-align:center; padding: 24px 0 8px; color: var(--color-text-muted); font-size: 0.75rem;">
                 exosome.kimito.link<br>
                 v0.1.0 — 2026年5月
@@ -196,6 +199,7 @@
     `;
 
     document.getElementById('me-screen').innerHTML = html;
+    mountLegalFooter(1);
 
     // アカウント（kimito.link ログイン・すみわけ）
     if (typeof YEAuth !== 'undefined') {

@@ -168,6 +168,33 @@ function shuffle(arr) {
 }
 
 /**
+ * kimito.link 系サービス共通の「運営表記＋法務リンク」（kimito-legal-footer.js）を出す。
+ * ★部品は web-ios-android/templates/web/legal-footer/ の無改変コピー（kit の check-drift で同期を見張る）。
+ *   サービス固有の値はここの opts だけ。利用規約ページは未作成なので privacy だけ渡す
+ *   （ページを作ったら terms を足す。存在しないページへのリンクは出さない）。
+ * ★出す場所は2つだけ: injectChrome のフッター（情報ページ全部）と、Me 画面（アプリ内の入口）。
+ *   アプリ画面の全タブの下に出すとタブバーと競合するため、各タブには出さない。
+ * ★何度呼んでも1つだけ（部品が冪等）。読み込みに失敗してもページ本体は壊さない。
+ */
+function mountLegalFooter(depth = 0) {
+    const opts = { serviceName: 'ゆっくりエクソソーム', privacy: '/privacy/' };
+    if (window.KimitoLegalFooter) {
+        window.KimitoLegalFooter.mount(opts);
+        return;
+    }
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = getBasePath(depth) + 'js/kimito-legal-footer.js';
+    s.dataset.serviceName = opts.serviceName;
+    s.dataset.privacy = opts.privacy;
+    // currentScript が取れない環境の保険。mount は冪等。
+    s.onload = () => {
+        if (window.KimitoLegalFooter) window.KimitoLegalFooter.mount(opts);
+    };
+    document.head.appendChild(s);
+}
+
+/**
  * ヘッダー/フッターを挿入
  */
 function injectChrome(depth = 0) {
@@ -217,6 +244,7 @@ function injectChrome(depth = 0) {
                         <a href="${base}about/">サイトについて</a>
                         <a href="${base}glossary/">用語集</a>
                     </nav>
+                    <div id="kimito-legal-footer"></div>
                     <div class="site-footer__copyright">
                         © exosome.kimito.link — ゆっくり3人組と学ぶエクソソーム<br>
                         <small>キャラクター提供：<a href="https://kimito-link.com/" target="_blank" rel="noopener">Kimito-Link</a></small>
@@ -224,6 +252,7 @@ function injectChrome(depth = 0) {
                 </div>
             </footer>
         `;
+        mountLegalFooter(depth);
     }
 }
 
