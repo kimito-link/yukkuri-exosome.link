@@ -21,7 +21,7 @@ test('部品ファイルが src/js/ に存在し、window.KimitoXOneTapSignIn �
 test('openSignIn() が Clerk.openSignIn の直後に triggerAutoXClick を呼んでいる', () => {
   const start = auth.indexOf('function openSignIn');
   assert.notEqual(start, -1, 'openSignIn関数が見つかりません');
-  const body = auth.slice(start, start + 1600);
+  const body = auth.slice(start, start + 2800);
   const open = body.indexOf('Clerk.openSignIn(');
   const fire = body.indexOf('triggerAutoXClick');
   assert.ok(open !== -1 && fire > open, 'Clerk.openSignIn の後に triggerAutoXClick がありません');
@@ -42,4 +42,13 @@ test('部品の読み込みはネイティブ（Capacitor）では行わず、�
 test('部品の場所は自分自身の src から導いている（ページ階層が違っても壊れない）', () => {
   assert.match(auth, /document\.currentScript/);
   assert.match(auth, /replace\(\/auth\\\.js/);
+});
+
+test('ワンタップは「人がタップした呼び出し」のときだけ（読み込み時の関所経由で強制遷移させない）', () => {
+  const start = auth.indexOf('function openSignIn');
+  const body = auth.slice(start, start + 2800);
+  assert.match(body, /var viaTap\s*=\s*!!\(navigator\.userActivation && navigator\.userActivation\.isActive\)/);
+  assert.match(body, /if \(viaTap && window\.KimitoXOneTapSignIn\)/);
+  // 判定は非同期処理（Promise.all）より前に同期で行う（activation は約5秒で切れる）
+  assert.ok(body.indexOf('var viaTap') < body.indexOf('Promise.all'), 'viaTap の判定が非同期処理より後にあります');
 });
