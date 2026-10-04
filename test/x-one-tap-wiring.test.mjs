@@ -52,3 +52,12 @@ test('ワンタップは「人がタップした呼び出し」のときだけ�
   // 判定は非同期処理（Promise.all）より前に同期で行う（activation は約5秒で切れる）
   assert.ok(body.indexOf('var viaTap') < body.indexOf('Promise.all'), 'viaTap の判定が非同期処理より後にあります');
 });
+
+test('部品のフォールバック検索は Clerk の UI の中だけ（ページ自身の「X でログイン」ボタンを拾って再入しない）', () => {
+  const src = readFileSync(part, 'utf8');
+  assert.match(src, /var scope = document\.querySelector\('\.cl-rootBox, \.cl-modalBackdrop, \.cl-signIn-root'\)/);
+  assert.match(src, /if \(!scope\) return null;/);
+  assert.match(src, /scope\.querySelectorAll\('button, a, \[role="button"\]'\)/);
+  // ページ全体の総当たりに戻っていない
+  assert.doesNotMatch(src, /document\.querySelectorAll\('button, a, \[role="button"\]'\)/);
+});
