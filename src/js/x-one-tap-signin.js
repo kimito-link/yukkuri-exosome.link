@@ -92,7 +92,13 @@
             if (direct) return direct;
         }
 
-        var candidates = document.querySelectorAll('button, a, [role="button"]');
+        // ★検索範囲は Clerk の UI の中だけ（2026-10-04 exosome の本番で実損）。ページ全体を総当たりすると、
+        //   モーダルが描画される前に、ページ自身の「X でログイン」ボタン等（例: exosome の LP の
+        //   `.lp-xbtn`）を拾って合成クリックしてしまい、openSignIn() に再入して、本来の X ボタンへ
+        //   進めなくなる。Clerk の UI がまだ無ければ何も返さず、次のポーリングを待つ。
+        var scope = document.querySelector('.cl-rootBox, .cl-modalBackdrop, .cl-signIn-root');
+        if (!scope) return null;
+        var candidates = scope.querySelectorAll('button, a, [role="button"]');
         for (var i = 0; i < candidates.length; i++) {
             var target = resolveClickableTarget(candidates[i]);
             if (!target) continue;
