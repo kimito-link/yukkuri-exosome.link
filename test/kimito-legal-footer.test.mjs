@@ -58,3 +58,9 @@ test('LP が部品を読み込み、実在する法務ページだけを渡し�
   assert.match(html, /data-service-name="ゆっくりエクソソーム"/);
   assert.doesNotMatch(html, /kimito-legal-footer\.js"[^>]*data-terms=/);
 });
+
+test('色の差し替え口（--klf-fg / --klf-bg）があり、既定は継承・透明', () => {
+  const src = readFileSync(FOOTER_JS, 'utf8');
+  assert.match(src, /color:var\(--klf-fg,inherit\)/);
+  assert.match(src, /background:var\(--klf-bg,transparent\)/);
+});
