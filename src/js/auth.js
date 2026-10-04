@@ -52,6 +52,30 @@
 
     var clerkLoadPromise = null;
 
+    // ワンタップXログイン部品（x-one-tap-signin.js）はこのファイルと同じ js/ にある。
+    // ページごとに相対パスが違う（../js/ ・ ../../js/）ので、自分自身の src から導く。
+    // ★document.currentScript は同期実行中しか取れないので、ここで掴んでおく。
+    var SELF_SRC = (document.currentScript && document.currentScript.src) || '';
+
+    /**
+     * ワンタップXログイン部品を遅延読み込みする。失敗しても resolve する（fail-safe）。
+     * ★ネイティブアプリ内では読まない。部品自身も自動clickを発火しないが、
+     *   App Store 4.8（Apple を他のログインと同列に出す）対策として通信自体を省く。
+     */
+    function loadOneTap() {
+        return new Promise(function (resolve) {
+            if (window.KimitoXOneTapSignIn || !SELF_SRC) { resolve(); return; }
+            var c = window.Capacitor;
+            if (c && typeof c.isNativePlatform === 'function' && c.isNativePlatform()) { resolve(); return; }
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = SELF_SRC.replace(/auth\.js(\?.*)?$/, 'x-one-tap-signin.js');
+            s.onload = function () { resolve(); };
+            s.onerror = function () { resolve(); };
+            document.head.appendChild(s);
+        });
+    }
+
     /** Clerk SDK を <script> タグで動的に読み込む。呼ばれるまでネットワークに出ない。 */
     function loadClerk() {
         if (clerkLoadPromise) return clerkLoadPromise;
@@ -111,7 +135,8 @@
      * @returns {Promise<void>} モーダルを開いたら resolve。ログイン成立の監視は呼び出し側。
      */
     function openSignIn() {
-        return loadClerk().then(function (Clerk) {
+        return Promise.all([loadClerk(), loadOneTap()]).then(function (results) {
+            var Clerk = results[0];
             Clerk.addListener(function (payload) {
                 var signedIn = !!(payload && payload.session);
                 YEStorage.set(AUTH_STATE_KEY, signedIn);
@@ -122,6 +147,10 @@
                 signInFallbackRedirectUrl: location.href,
                 signUpFallbackRedirectUrl: location.href
             });
+            // ★kimito.link 本体と同じ「Xワンタップ」: モーダルに出たXボタンへ本物のclickを
+            //   1回送るだけ（Clerk の認証フロー自体には触れない。CLERK_X_LOGIN_PLAYBOOK §4.1）。
+            //   部品が無い・ネイティブ・Xボタンが見つからない場合は、通常の選択モーダルのまま。
+            if (window.KimitoXOneTapSignIn) window.KimitoXOneTapSignIn.triggerAutoXClick();
         });
     }
 
