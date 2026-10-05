@@ -49,7 +49,7 @@ function buildHtml(cfg) {
     <link rel="icon" type="image/png" sizes="48x48" href="../icons/favicon-48.png">
     <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
     <link rel="manifest" href="../manifest.webmanifest">
-    <meta name="theme-color" content="#c9899a">
+    <meta name="theme-color" content="#FFFAF3">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">

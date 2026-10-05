@@ -208,6 +208,10 @@ const today = new Date().toLocaleDateString('ja-JP', {
   day: 'numeric',
 });
 
+// 本体の地色（src/css/style.css の --color-bg）。manifest.background_color / theme_color /
+// 各ページの <meta name="theme-color"> はすべてこの1色（test/pwa-launch-baseline.test.mjs が見張る）。
+const BASE_COLOR = '#FFFAF3';
+
 const privacyHtml = `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -216,7 +220,7 @@ const privacyHtml = `<!DOCTYPE html>
     <title>プライバシーポリシー | ${displayName}</title>
     <meta name="description" content="${displayName}のプライバシーポリシー。個人情報の取り扱いについて説明します。">
     <link rel="manifest" href="../manifest.webmanifest">
-    <meta name="theme-color" content="${config.brand.primaryColor}">
+    <meta name="theme-color" content="${BASE_COLOR}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -441,8 +445,11 @@ if (!fs.existsSync(manifestPath)) {
 
   const wantedName = displayName;
   const wantedShortName = shortName;
-  const wantedThemeColor = config.brand.primaryColor;
-  const wantedBgColor = '#fffaf3';
+  // theme_color（Android WebAPK の起動画面・ステータスバー色）は本体の地色に揃える。
+  // ブランド色(primaryColor)にすると、OS 起動画面→Chrome 窓→ページの meta で色が往復して見える
+  // （2026-10-05 Android 実機で観察）。test/pwa-launch-baseline.test.mjs が1色であることを見張る。
+  const wantedBgColor = BASE_COLOR;
+  const wantedThemeColor = BASE_COLOR;
 
   if (manifest.name !== wantedName) {
     manifest.name = wantedName;
