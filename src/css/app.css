@@ -60,6 +60,34 @@ body.app-mode {
     min-height: 40px;
 }
 
+/* ---- 本家マイページ（kimito.link/dashboard/）への導線。js/kimito-dashboard-link.js が
+        ログイン中だけ <a> を描く。コンテナは member-only（style.css）で未ログイン時は非表示 ---- */
+.app-brand__dashboard-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.app-brand__dashboard-link-anchor {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid #ebe0d0;
+    background: #fff;
+    color: #2e2622;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.app-brand__dashboard-link-anchor:hover {
+    opacity: 0.85;
+}
+
 .app-brand__combo:hover {
     opacity: 0.85;
 }

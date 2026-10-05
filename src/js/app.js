@@ -273,6 +273,10 @@ function injectAppShell(activeTab = 'today', depth = 0) {
     // ★右側に Clerk 公式の UserButton をマウントする（すれ違ひ通信・kimito.link と同じ）。
     //   アバターを押すと「アカウントの管理 / サインアウト / アカウントの追加」が Clerk 純正で出る。
     //   自前のメニューやログアウト導線は作らない（車輪の再発明をしない）。
+    // ★UserButton の左に、本家マイページ（https://kimito.link/dashboard/）への導線を置く。
+    //   描くのは js/kimito-dashboard-link.js（kit templates/web/auth-mode/ のバイト一致コピー）。
+    //   ログイン中だけ <a> を描き、未ログインは空のまま。member-only は <head> の
+    //   data-auth 確定スニペット＋ style.css の規約でペイント前から隠れる。
     const brandEl = document.createElement('header');
     brandEl.className = 'app-brand';
     brandEl.innerHTML = `
@@ -281,9 +285,23 @@ function injectAppShell(activeTab = 'today', depth = 0) {
             <span class="app-brand__combo-no">の</span>
             <span class="app-brand__combo-name">ゆっくりエクソソーム</span>
         </a>
+        <span class="member-only app-brand__dashboard-link" data-kimito-dashboard-link
+              data-kimito-dashboard-label="マイページ"
+              data-kimito-dashboard-class="app-brand__dashboard-link-anchor"></span>
         <div class="app-brand__account" id="app-brand-account"></div>
     `;
     document.body.insertBefore(brandEl, document.body.firstChild);
+
+    // 本家マイページ導線の部品を読み込む（window.Clerk を自分で待って attach する）。
+    // ★全9ページの <script> に1行ずつ足す代わりに、共通ヘッダーを描くここで1回だけ読む
+    //   （ページ階層は base で吸収。読み込めなくても導線が出ないだけで本線は止まらない）。
+    if (!document.querySelector('script[data-kimito-dashboard-link-script]')) {
+        const dashLinkScript = document.createElement('script');
+        dashLinkScript.src = `${base}js/kimito-dashboard-link.js`;
+        dashLinkScript.async = true;
+        dashLinkScript.setAttribute('data-kimito-dashboard-link-script', '');
+        document.head.appendChild(dashLinkScript);
+    }
 
     // Clerk 公式 UserButton をマウント（ログイン中のアカウント＋メニュー）
     if (typeof YEAuth !== 'undefined' && YEAuth.mountUserButton) {

@@ -107,9 +107,9 @@
                     <div class="me-list__label" id="account-label">kimito.link アカウント</div>
                     <div class="me-list__arrow" id="account-arrow">→</div>
                 </div>
-                <a href="https://kimito.link/" target="_blank" rel="noopener" class="me-list__item">
+                <a href="https://kimito.link/dashboard/" target="_blank" rel="noopener" class="me-list__item">
                     <div class="me-list__icon">⚙️</div>
-                    <div class="me-list__label">kimito.link でアカウント管理</div>
+                    <div class="me-list__label">kimito.link マイページでアカウント管理</div>
                     <div class="me-list__arrow">↗</div>
                 </a>
             </div>
