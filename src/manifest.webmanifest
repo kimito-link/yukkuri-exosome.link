@@ -9,6 +9,7 @@
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#c9899a",
+  "background_color": "#FFFAF3",
   "lang": "ja",
   "dir": "ltr",
   "icons": [
