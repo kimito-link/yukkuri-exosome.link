@@ -38,16 +38,16 @@ test('capacitor.config.ts の backgroundColor（RGB部分）が地色と一致',
 
 test('共通CSSで html と body の背景が地色になる（変数の値も #FFFAF3）', () => {
   const css = read(join(SRC, 'css', 'style.css'));
-  const v = css.match(/--color-launch-bg:\s*(#[0-9a-fA-F]{6})/);
-  assert.ok(v, '--color-launch-bg が無い');
+  const v = css.match(/--color-bg:\s*(#[0-9a-fA-F]{6})/);
+  assert.ok(v, '--color-bg が無い');
   assert.equal(v[1].toUpperCase(), BASE);
   const rule = (sel) => {
     const m = css.match(new RegExp('(?:^|\\n)' + sel + '\\s*\\{([^}]*)\\}'));
     assert.ok(m, `${sel} ルールが無い`);
     return m[1];
   };
-  assert.match(rule('html'), /background-color:\s*var\(--color-launch-bg\)/);
-  assert.match(rule('body'), /background-color:\s*var\(--color-launch-bg\)/);
+  assert.match(rule('html'), /background-color:\s*var\(--color-bg\)/);
+  assert.match(rule('body'), /background-color:\s*var\(--color-bg\)/);
 });
 
 test('全ページで theme-color の静的 meta は高々1つ', () => {

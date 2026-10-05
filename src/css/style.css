@@ -9,10 +9,8 @@
     --color-tertiary: #a78a6b;       /* モカブラウン（たぬ姉系） */
     --color-accent: #8eb4c7;         /* スモークブルー */
 
-    /* 起動画面の地色。manifest.background_color・起動画像・Capacitor の backgroundColor と同じ1色 */
-    --color-launch-bg: #FFFAF3;
-
-    --color-bg: #faf6f1;             /* オフホワイト */
+    /* ページ全体の地色＝起動画面の地色。manifest.background_color・起動画像・Capacitor の backgroundColor と同じ1色 */
+    --color-bg: #FFFAF3;
     --color-bg-card: #ffffff;
     --color-bg-section: #f4ede4;     /* 上品なベージュ */
 
@@ -62,7 +60,7 @@
 }
 
 html {
-    background-color: var(--color-launch-bg); /* CSS が当たる前〜overscroll でも白を出さない */
+    background-color: var(--color-bg); /* CSS が当たる前〜overscroll でも白を出さない */
     scroll-behavior: smooth;
 }
 
@@ -71,7 +69,7 @@ body {
     font-size: var(--font-size-base);
     line-height: var(--line-height);
     color: var(--color-text);
-    background-color: var(--color-launch-bg);
+    background-color: var(--color-bg);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(255, 143, 163, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(126, 200, 227, 0.05) 0%, transparent 40%);
