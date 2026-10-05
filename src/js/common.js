@@ -300,7 +300,7 @@ function injectHeadMeta(depth = 0) {
         // PWA manifest
         `<link rel="manifest" href="${base}manifest.webmanifest">`,
         // テーマカラー
-        `<meta name="theme-color" content="#c9899a">`,
+        `<meta name="theme-color" content="#FFFAF3">`,
         // iOS PWA
         `<meta name="apple-mobile-web-app-capable" content="yes">`,
         `<meta name="apple-mobile-web-app-status-bar-style" content="default">`,

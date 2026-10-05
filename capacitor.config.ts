@@ -10,7 +10,9 @@ import type { CapacitorConfig } from '@capacitor/cli';
  *
  * 配色は「上品ベージュ × くすみローズ」のブランドに合わせる:
  *   - backgroundColor #FFFAF3FF（クリーム背景＝白フラッシュ防止）
- *   - theme        #C9899A（くすみローズ＝ステータスバー/スプラッシュ）
+ *   - theme_color（PWA manifest / meta theme-color）も同じ #FFFAF3 に揃える。
+ *     くすみローズ #C9899A はブランド色としてボタン等に使うが、ステータスバー色には使わない
+ *     （起動画面→本体で色が往復して見えるため。2026-10-05 Android 実機で観察）
  *
  * iOS の App-Bound Domains 制限まわりの許可設定（allowNavigation /
  * limitsNavigationsToAppBoundDomains / iosScheme）も fujisan-cleanに合わせて

@@ -1,7 +1,12 @@
 // PWA 起動画面の「地色1色」契約テスト（node:test・依存ゼロ）。
-// 地色 #FFFAF3 を次の5か所でそろえる:
-//   manifest.background_color / Capacitor backgroundColor / 共通CSSの html・body / 起動画像(PNG)の四隅
+// 地色 #FFFAF3 を次の6か所でそろえる:
+//   manifest.background_color / manifest.theme_color（＋全ページの meta theme-color）/
+//   Capacitor backgroundColor / 共通CSSの html・body / 起動画像(PNG)の四隅
 // あわせて、全ページで <meta name="theme-color"> の静的記述が高々1つであること。
+// ★theme_color も地色にする理由: Android(WebAPK) は OS の起動画面のステータスバーを
+//   manifest.theme_color で塗り、Chrome の窓に切り替わった瞬間に一度明色になり、ページの
+//   <meta name="theme-color"> が効いてから戻る往復が見える（2026-10-05 実機）。ブランド色
+//   (#c9899a) をここに置くと、この往復が毎回の起動で目に入る。
 // 設計: web-ios-android/_docs/DESIGN-pwa-launch-screen-2026-10-05.md
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -59,15 +64,30 @@ test('全ページで theme-color の静的 meta は高々1つ', () => {
   assert.deepEqual(bad, []);
 });
 
-test('theme-color の値は manifest と common.js で同じ色（#c9899a）', () => {
+test('theme-color ＝ manifest.background_color ＝ --color-bg の1色（manifest / common.js / 全ページ）', () => {
   const m = JSON.parse(read(join(SRC, 'manifest.webmanifest')));
-  const themed = new Set([m.theme_color.toLowerCase()]);
+  const css = read(join(SRC, 'css', 'style.css'));
+  const cssBg = css.match(/--color-bg:\s*(#[0-9a-fA-F]{6})/);
+  assert.ok(cssBg, '--color-bg が無い');
+  assert.equal(String(m.background_color).toUpperCase(), BASE);
+  assert.equal(cssBg[1].toUpperCase(), BASE);
+
+  const themed = new Map(); // 色 -> 出どころ（赤のときに場所が分かるように）
+  const add = (color, where) => {
+    const k = color.toUpperCase();
+    if (!themed.has(k)) themed.set(k, []);
+    themed.get(k).push(where);
+  };
+  assert.ok(m.theme_color, 'manifest.theme_color が無い');
+  add(m.theme_color, 'manifest.theme_color');
   const js = read(join(SRC, 'js', 'common.js'));
-  for (const x of js.matchAll(/name="theme-color" content="(#[0-9a-fA-F]{6})"/g)) themed.add(x[1].toLowerCase());
+  const jsHits = [...js.matchAll(/name="theme-color" content="(#[0-9a-fA-F]{6})"/g)];
+  assert.ok(jsHits.length > 0, 'common.js の injectHeadMeta に theme-color が無い（測れなかった）');
+  for (const x of jsHits) add(x[1], 'src/js/common.js');
   for (const f of walk(SRC).filter((p) => p.endsWith('.html'))) {
-    for (const x of read(f).matchAll(/<meta\s+name="theme-color"\s+content="(#[0-9a-fA-F]{6})"/g)) themed.add(x[1].toLowerCase());
+    for (const x of read(f).matchAll(/<meta\s+name="theme-color"\s+content="(#[0-9a-fA-F]{6})"/g)) add(x[1], relative(ROOT, f));
   }
-  assert.deepEqual([...themed], ['#c9899a']);
+  assert.deepEqual([...themed.keys()], [BASE], `theme-color が1色でない: ${JSON.stringify([...themed])}`);
 });
 
 // 最小の PNG 読み取り（8bit・RGB・非インターレースのみ）。四隅の画素だけ取り出す。
