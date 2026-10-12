@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
+    <!-- ye:favicon:start -->
+    <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/favicon-48.png">
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#FFFAF3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
+    <meta property="og:image" content="../icons/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="../icons/og-image.jpg">
+    <!-- ye:favicon:end -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エクソソームを、LINEで気軽に聞ける | ゆっくりエクソソーム</title>
+    <meta name="description" content="エクソソーム・培養上清のことを、ゆっくり3人組「たぬ姉」がLINEでやさしく解説。友だち追加だけで、一般的な知識を会話形式で学べます。効果の断定や勧誘はしません。">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="エクソソームを、LINEで気軽に聞ける | ゆっくりエクソソーム">
+    <meta property="og:description" content="エクソソーム・培養上清のことを、ゆっくり3人組「たぬ姉」がLINEでやさしく解説。友だち追加だけで会話形式で学べます。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* このページ専用の軽い装飾。既存の .article / .btn を土台に最小限だけ足す。 */
+        .line-hero {
+            text-align: center;
+            padding: 32px 20px 8px;
+            background: linear-gradient(160deg, #f3f9f0 0%, #fffaf3 70%);
+            border-radius: 22px;
+            margin-bottom: 28px;
+            border: 1px solid #e4efdd;
+        }
+        .line-hero__char {
+            width: 132px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+        .line-hero__eyebrow {
+            display: inline-block;
+            font-size: .72rem;
+            letter-spacing: .12em;
+            color: #5a8f4e;
+            background: #e4f2dd;
+            border-radius: 999px;
+            padding: 4px 14px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .line-hero__title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            color: #2e2622;
+            margin: 0 0 10px;
+        }
+        .line-hero__title em { color: #4f9a40; font-style: normal; }
+        .line-hero__sub {
+            font-size: .92rem;
+            color: #6a5f58;
+            line-height: 1.8;
+            margin: 0 auto 18px;
+            max-width: 32em;
+        }
+        /* LINE 公式の緑の友だち追加ボタン */
+        .line-add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #06c755;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: .04em;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(6,199,85,.32);
+            transition: transform .12s ease, box-shadow .12s ease;
+        }
+        .line-add-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(6,199,85,.4); }
+        .line-add-btn__icon { width: 24px; height: 24px; fill: #fff; }
+        .line-hero__note { font-size: .74rem; color: #8a7d76; margin: 12px 0 4px; }
+        .line-qr-block { margin-top: 16px; }
+        .line-qr-block__img {
+            width: 124px; height: 124px;
+            border-radius: 12px;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 2px 10px rgba(46,38,34,.08);
+        }
+        .line-qr-block__note { font-size: .7rem; color: #8a7d76; margin: 8px 0 0; }
+        .line-steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+        .line-steps li {
+            position: relative;
+            padding: 14px 16px 14px 56px;
+            margin-bottom: 10px;
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            line-height: 1.7;
+        }
+        .line-steps li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 14px; top: 50%; transform: translateY(-50%);
+            width: 30px; height: 30px;
+            background: #06c755; color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .95rem;
+        }
+        .line-sample {
+            background: #7494c0;
+            background: linear-gradient(180deg, #8aa6cd, #7a97c2);
+            border-radius: 18px;
+            padding: 18px 16px;
+            margin: 8px 0 4px;
+        }
+        .line-bubble {
+            max-width: 82%;
+            padding: 11px 14px;
+            border-radius: 16px;
+            font-size: .9rem;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.08);
+        }
+        .line-bubble--me {
+            margin-left: auto;
+            background: #8de055;
+            color: #1e2a16;
+            border-bottom-right-radius: 4px;
+        }
+        .line-bubble--bot {
+            background: #fff;
+            color: #2e2622;
+            border-bottom-left-radius: 4px;
+        }
+        .line-bubble__who { display:block; font-size:.68rem; color:#5a8f4e; font-weight:700; margin-bottom:3px; }
+    </style>
+</head>
+<body data-depth="1">
+    <div data-header></div>
+
+    <nav class="breadcrumb">
+        <a href="../">ホーム</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>LINEで聞く</span>
+    </nav>
+
+    <main>
+        <article class="article">
+            <div class="container container--narrow">
+
+                <!-- ヒーロー -->
+                <section class="line-hero">
+                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" class="line-hero__char" loading="eager">
+                    <p class="line-hero__eyebrow">LINE公式アカウント</p>
+                    <h1 class="line-hero__title">エクソソームのこと、<br><em>LINEで気軽に</em>聞いてみませんか？</h1>
+                    <p class="line-hero__sub">
+                        「ちゃんと調べると、こうなのよ」が口ぐせの<strong>たぬ姉</strong>が、
+                        エクソソーム・培養上清の一般的な知識を、会話形式でやさしく解説します。
+                        むずかしい論文の話も、ひとこと添えてかみ砕いてくれます。
+                    </p>
+                    <a href="https://lin.ee/u1sFh3Vm" target="_blank" rel="noopener" class="line-add-btn">
+                        <svg class="line-add-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.73 2 10.3c0 4.1 3.58 7.53 8.42 8.17.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.26-.2 1.02.9.56 1.1-.46 5.9-3.48 8.05-5.95C21.64 13.6 22 12 22 10.3 22 5.73 17.52 2 12 2z"/></svg>
+                        <span>友だち追加して聞いてみる</span>
+                    </a>
+                    <p class="line-hero__note">友だち追加は無料・登録不要です</p>
+                    <div class="line-qr-block">
+                        <img src="../images/line/line-qr.png" alt="LINE公式アカウント「ゆっくりエクソソーム」友だち追加QRコード" class="line-qr-block__img" loading="lazy">
+                        <p class="line-qr-block__note">PCでご覧の方は、スマホのLINEでこのQRコードを読み取ってください</p>
+                    </div>
+                </section>
+
+                <!-- 会話サンプル -->
+                <section class="article__section">
+                    <h2 class="article__h2">💬 こんな感じで話せます</h2>
+                    <div class="line-sample">
+                        <div class="line-bubble line-bubble--me">エクソソームって、そもそも何ですか？</div>
+                        <div class="line-bubble line-bubble--bot">
+                            <span class="line-bubble__who">たぬ姉</span>
+                            いい質問ね。エクソソームは「情報の入った封筒」みたいなものと言われているのよ。
+                            細胞が、他の細胞に"お手紙"を届けるための小さな袋なの。
+                        </div>
+                        <div class="line-bubble line-bubble--me">サプリと点滴、どっちがいいの？</div>
+                        <div class="line-bubble line-bubble--bot">
+                            <span class="line-bubble__who">たぬ姉</span>
+                            どちらが合うかは、体質や目的で変わるの。実際に受けるかどうかは、
+                            必ずお医者さんと相談してちょうだいね。わたしは一般的な知識をお伝えする係よ。
+                        </div>
+                    </div>
+                    <p style="font-size:.78rem; color:var(--color-text-muted); margin-top:8px;">
+                        ※ 返答はイメージです。たぬ姉は一般的な情報の紹介に徹し、効果の断定や特定の施術・商品の勧誘はしません。
+                    </p>
+                </section>
+
+                <!-- 使い方 -->
+                <section class="article__section">
+                    <h2 class="article__h2">📱 使い方はかんたん</h2>
+                    <ol class="line-steps">
+                        <li>上の <strong>「友だち追加」</strong> ボタンをタップ（LINEアプリが開きます）</li>
+                        <li>そのまま <strong>トークに質問を送るだけ</strong>。たぬ姉がやさしく答えます</li>
+                        <li>もっと記録したくなったら、アプリ <strong>「ゆっくりエクソソーム」</strong> もどうぞ</li>
+                    </ol>
+                </section>
+
+                <!-- できること / できないこと（誠実に） -->
+                <section class="article__section">
+                    <h2 class="article__h2">🌿 できること・できないこと</h2>
+                    <p>たぬ姉が得意なのは、<strong>一般的な知識をやさしく伝えること</strong>です。</p>
+                    <ul>
+                        <li>エクソソーム・培養上清・幹細胞まわりの<strong>基礎知識</strong>の解説</li>
+                        <li>本や研究で<strong>「どう紹介されているか」</strong>を、出典ベースでかみ砕く</li>
+                        <li>長く健康に過ごすための<strong>生活習慣（ロンジェビティ）</strong>の話題</li>
+                    </ul>
+                    <p style="margin-top:16px;">いっぽうで、次のことは<strong>しません</strong>（医療広告ガイドラインに配慮しています）。</p>
+                    <ul>
+                        <li>個別の症状に「効く」「治る」と<strong>効果を断定すること</strong></li>
+                        <li>特定のクリニック・医師・施術・商品の<strong>名指しの推奨や勧誘</strong></li>
+                        <li>診断・治療方針の提案（これは<strong>お医者さんの役割</strong>です）</li>
+                    </ul>
+                    <div class="article__note" style="margin-top:16px;">
+                        施術や治療、ご自身の体調に関する個別のご相談は、必ず医師など医療従事者にご相談ください。
+                    </div>
+                </section>
+
+                <!-- アプリ導線 -->
+                <section class="article__section">
+                    <h2 class="article__h2">🏠 毎日の記録は、アプリで</h2>
+                    <p>
+                        「もっと続けたい」「自分の体内シグナルを眺めたい」と思ったら、無料アプリ
+                        <strong>「ゆっくりエクソソーム」</strong>へ。睡眠・食事・運動・ファスティング、
+                        サプリやクリニックの記録まで、3人組といっしょに積み上げられます。
+                    </p>
+                    <p style="text-align:center; margin: 22px 0 6px;">
+                        <a href="https://exosome.kimito.link/?ref_partner=otani" target="_blank" rel="noopener" class="btn btn--secondary" style="display:inline-flex; align-items:center; gap:8px;">
+                            アプリ「ゆっくりエクソソーム」を見る →
+                        </a>
+                    </p>
+                </section>
+
+                <!-- 友だち追加（再掲） -->
+                <section class="line-hero" style="margin-top:28px; margin-bottom:8px;">
+                    <h2 class="line-hero__title" style="font-size:1.25rem;">まずは友だち追加から</h2>
+                    <p class="line-hero__sub">気になったことを、そのまま聞いてみてください。</p>
+                    <a href="https://lin.ee/u1sFh3Vm" target="_blank" rel="noopener" class="line-add-btn">
+                        <svg class="line-add-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.73 2 10.3c0 4.1 3.58 7.53 8.42 8.17.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.26-.2 1.02.9.56 1.1-.46 5.9-3.48 8.05-5.95C21.64 13.6 22 12 22 10.3 22 5.73 17.52 2 12 2z"/></svg>
+                        <span>友だち追加して聞いてみる</span>
+                    </a>
+                    <p class="line-hero__note">友だち追加は無料・登録不要です</p>
+                </section>
+
+                <!-- 免責 -->
+                <section class="article__section">
+                    <p class="line-hero__note" style="text-align:left; line-height:1.7; color:#8a7d76;">
+                        本アカウントは、エクソソームに関する一般的な情報の紹介を目的としたものです。
+                        医療機関ではなく、診断や治療を提供するものではありません。食事や生活習慣を大きく
+                        変えるとき、持病や服薬があるとき、施術を検討するときは、必ず医療機関で医師に
+                        ご相談ください。
+                    </p>
+                </section>
+
+            </div>
+        </article>
+    </main>
+
+    <div data-footer></div>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/auth-mode.js"></script>
+</body>
+</html>
