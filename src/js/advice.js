@@ -3,17 +3,18 @@
  */
 
 const ADVICE_LIST = [
-    // === りんく（食事・生活） ===
-    { char: 'rink', expression: 'smileOpen', category: '食事', text: '夜食のカップ麺、たまにはOKなのだ！でも毎日は控えるのだ。バランスが大事なのだ。' },
-    { char: 'rink', expression: 'smile', category: '食事', text: '野菜は彩りで選ぶといいのだ！赤・黄・緑が揃うと栄養バランスも整うのだ。' },
-    { char: 'rink', expression: 'normal', category: '生活', text: '寝る前のスマホは控えめにするのだ。脳が休まらないと、肌にも影響するのだ。' },
-    { char: 'rink', expression: 'half', category: '食事', text: 'お菓子の食べ過ぎ、ばれてるのだ…たまにはご褒美もいいけど、ほどほどなのだ。' },
-    { char: 'rink', expression: 'smile', category: '生活', text: 'お風呂はシャワーじゃなくて湯船派なのだ！血流が良くなって、リラックスできるのだ。' },
-    { char: 'rink', expression: 'smileOpen', category: '食事', text: 'タンパク質は毎食意識するのだ！細胞の材料は、ちゃんと食べるのが一番なのだ。' },
-    { char: 'rink', expression: 'normal', category: '食事', text: '甘いものが欲しいときは、フルーツやヨーグルトもいいのだ。お菓子だけじゃなくて。' },
-    { char: 'rink', expression: 'smile', category: '生活', text: '朝起きたらまずコップ一杯の水なのだ。眠ってる間に失った水分を補給するのだ！' },
-    { char: 'rink', expression: 'half', category: '生活', text: '徹夜は美容の敵なのだ…1日6〜7時間は寝るのだ。ボクからのお願いなのだ。' },
-    { char: 'rink', expression: 'smileOpen', category: '食事', text: '魚も食べるのだ！特に青魚は、いい脂が入ってるって聞いたのだ。' },
+    // === りんく（食事・生活）。工房の主・一人称「りんく」・語尾「〜でしょ/じゃん/しよっ」・勢いのツッコミ役。
+    //     ★一番できてない当事者として語る（自分も夜食・徹夜しがち）。効能は断定しない。 ===
+    { char: 'rink', expression: 'smileOpen', category: '食事', text: '夜食のカップ麺、たまにはアリでしょ！りんくも好きだもん。でも毎日はナシ、バランス大事でしょ。' },
+    { char: 'rink', expression: 'smile', category: '食事', text: '野菜は彩りで選ぶといいでしょ！赤・黄・緑がそろうと、見た目も気分も上がるじゃん。' },
+    { char: 'rink', expression: 'normal', category: '生活', text: 'ちょい待ち、寝る前のスマホ見すぎでしょ？りんくも人のこと言えないけど…一緒に控えよっ。' },
+    { char: 'rink', expression: 'half', category: '食事', text: 'お菓子の食べすぎ、バレてるでしょ…まあ、たまのご褒美はアリ。ほどほどにしよっ。' },
+    { char: 'rink', expression: 'smile', category: '生活', text: 'お風呂はシャワーより湯船派でしょ！あったまると、なんかリセットされるじゃん。' },
+    { char: 'rink', expression: 'smileOpen', category: '食事', text: 'タンパク質、毎食ちゃんと摂ろっ！からだの材料でしょ、ケチっちゃダメじゃん。' },
+    { char: 'rink', expression: 'normal', category: '食事', text: '甘いもの欲しいときは、フルーツやヨーグルトもアリでしょ。お菓子一択じゃなくてさ。' },
+    { char: 'rink', expression: 'smile', category: '生活', text: '朝いちはコップ一杯の水でしょ！寝てる間にカラカラだもん、まず水、だよ。' },
+    { char: 'rink', expression: 'half', category: '生活', text: '徹夜はナシ！…って、りんくが言うのもアレだけど。6〜7時間は寝よっ、お願いでしょ。' },
+    { char: 'rink', expression: 'smileOpen', category: '食事', text: '魚も食べよっ！青魚、いい脂が入ってるって聞いたでしょ。たまには焼き魚もアリじゃん。' },
 
     // === こん太（運動・健康） ===
     { char: 'konta', expression: 'smileOpen', category: '運動', text: 'エクソソームは運動でも増えるって報告があるんだよ！20分歩くだけでも違うよ。' },
