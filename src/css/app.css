@@ -909,7 +909,7 @@ body.app-mode [data-footer] {
 
 .top-trio__member--rink .top-trio__name { color: #ff8fa3; }
 .top-trio__member--konta .top-trio__name { color: #ffb347; }
-.top-trio__member--tanunee .top-trio__name { color: #c19a6b; }
+.top-trio__member--tanunee .top-trio__name { color: #3E9B6A; }
 
 @media (max-width: 380px) {
     .top-trio__member img {
