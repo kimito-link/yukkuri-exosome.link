@@ -50,9 +50,27 @@ test('全ページの<head>先頭スニペットが、グローバルフラグ�
   assert.deepEqual(missing, [], `exec-loopでない旧ロジックのページ: ${missing.join(', ')}`);
 });
 
-test('全ページで__client_uatスニペットが存在する（21ページ全て、privacy/lp含む）', () => {
+test('★全ページに__client_uatスニペットがある（漏れたページを名指しする）', () => {
+  // ★以前は「21ページあること」と**数を固定**していたが、これは2つの意味で弱かった:
+  //   1. ページが増えるたびに人間が数字を直す必要があり、**実際に放置されて赤いまま**だった
+  //      （21→22に増えた時点で失敗し続けていた）
+  //   2. ★数が合っていても**どのページが漏れたか分からない**。
+  //      仮に1ページ追加・1ページ漏れが同時に起きたら、数は合うので**素通りする**
+  // → 「どのページに無いか」を名指しする形にした。人間が数を直す作業も消える。
   const files = listHtmlFiles(join(ROOT, 'src'));
-  const withSnippet = files.filter((f) => readFileSync(f, 'utf8').includes('__client_uat'));
-  // 2026-09-29時点で21ページ。ページが増減したらこの数も更新すること。
-  assert.equal(withSnippet.length, 21, `__client_uatスニペットを持つページ数が想定と違う: ${withSnippet.length}件`);
+  const missing = files
+    .filter((f) => !readFileSync(f, 'utf8').includes('__client_uat'))
+    .map((f) => f.replace(ROOT, ''));
+  assert.deepEqual(
+    missing,
+    [],
+    `__client_uatスニペットが無いページ: ${missing.join(', ')}（ログイン状態を判定できず、ちらつきが出る）`,
+  );
+});
+
+test('★ページが1枚も見つからない状態を「合格」にしない', () => {
+  // ★listHtmlFiles が壊れて空配列を返すと、上のテストは「漏れゼロ」で緑になる。
+  //   件数0を緑にしないための歯止め。
+  const files = listHtmlFiles(join(ROOT, 'src'));
+  assert.ok(files.length >= 20, `HTMLページが ${files.length} 件しか見つからない。走査が壊れている可能性`);
 });
