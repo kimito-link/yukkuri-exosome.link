@@ -7,9 +7,17 @@
     {
       "source": "/(.*)",
       "has": [
+        { "type": "host", "value": "yukkuri-exosome.link" }
+      ],
+      "destination": "https://exosome.kimito.link/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
         { "type": "host", "value": "www.yukkuri-exosome.link" }
       ],
-      "destination": "https://yukkuri-exosome.link/$1",
+      "destination": "https://exosome.kimito.link/$1",
       "permanent": true
     }
   ],
