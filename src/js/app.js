@@ -48,6 +48,24 @@ const EP_REWARDS = {
 };
 
 // アプリ状態
+/**
+ * ★ゲストかどうか（2026-10-16 の実損で追加）。
+ *
+ *   EP・連続日数・記録は【個人のデータ】なので関所(YEStorage.set)の対象で、
+ *   ゲストが書くとログインモーダルが開く。ところが checkIn() は
+ *   injectAppShell()（全ページ共通の外枠）から呼ばれるため、
+ *   【どのページでも開いた瞬間に】ログインを求める状態になっていた。
+ *   トップページ(LP)も含む8ページが該当した。
+ *
+ *   ★個別のページに if を足す方式は漏れる（advice.js だけ直して再発した）。
+ *     記録の入口（addEP / checkIn）でまとめて止める。
+ *   ★許可リストにキーを足して回避しない。common.js の方針は
+ *     「ゲストが書いてよいのは記録・個人データでないものだけ」。
+ */
+function yeIsGuest() {
+    return document.documentElement.getAttribute('data-auth') !== 'member';
+}
+
 const App = {
     /** 現在のEPを取得 */
     getEP() {
@@ -56,6 +74,8 @@ const App = {
 
     /** EPを追加（レベルアップ検知あり） */
     addEP(amount, source = '') {
+        // ★ゲストは記録しない（関所に当たってログインモーダルが開くのを防ぐ）。
+        if (yeIsGuest()) return null;
         if (amount <= 0) return null;
         const before = this.getEP();
         const after = before + amount;
@@ -121,6 +141,9 @@ const App = {
 
     /** チェックイン処理（1日1回） */
     checkIn() {
+        // ★ゲストは記録しない。ここは injectAppShell から全ページで呼ばれるので、
+        //   止めないと「開いた瞬間にログインを求められる」ことになる。
+        if (yeIsGuest()) return { newDay: false };
         const today = getTodayKey();
         const last = YEStorage.get('app_last_active', null);
         if (last === today) return { newDay: false };
