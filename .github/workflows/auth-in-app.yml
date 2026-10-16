@@ -1,0 +1,65 @@
+# ★ログインがアプリの外へ出ないことを見張る。
+#
+# なぜ要るか（2026-10-16 の実損）:
+#   capacitor.config の server.allowNavigation に無いドメインへ遷移すると、
+#   iOS は WebView の外（外部 Safari）を開く。ログインは認証プロバイダの
+#   ドメインへ遷移するので、そこが欠けていると
+#   「ログインを押した瞬間にアプリの外へ出る」。
+#   外に出ると Origin が付かず Clerk は Unauthorized request を返すため、
+#   利用者には「ログインしているのに弾かれる」ように見える。
+#
+#   ★これは App Store Guideline 4（#4）の却下理由そのもの。
+#     kimito.link は 2026-06-30 に実際に却下されている。
+#
+# ★この検査が判定しないこと: ログインが成功するかは見ない。
+#   外部ブラウザへ出ない「設定」かだけを見る。
+name: ログインがアプリ内で完結するか
+
+on:
+  pull_request:
+    paths:
+      - "capacitor.config.ts"
+      - "src/**"
+      - "scripts/check-auth-domains-allowed.mjs"
+      - ".github/workflows/auth-in-app.yml"
+  push:
+    branches: [main]
+    paths:
+      - "capacitor.config.ts"
+      - "src/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auth-in-app:
+    name: 認証ドメインの許可
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # ★検査器が壊れていないことを先に確かめる（常に緑を返す状態がいちばん危ない）。
+      #   selftest には「2026-10-16 の実損を再現して赤くなるか」も入っている。
+      - name: selftest（検知器が効いているか）
+        run: node scripts/check-auth-domains-allowed.mjs --selftest
+
+      # ★3値で返る（0=合格 / 1=測れた赤 / 2=測れなかった）。2 は緑ではない。
+      - name: 認証ドメインが許可されているか
+        run: |
+          set +e
+          node scripts/check-auth-domains-allowed.mjs --config capacitor.config.ts --scan src
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "✅ ログインはアプリ内で完結します" ;;
+            2) echo "::warning::🟡 測れませんでした。緑ではありません。"
+               echo "🟡 認証ドメイン: 測れず" >> "$GITHUB_STEP_SUMMARY"
+               exit 1 ;;
+            *) echo "::error::🔴 ログインがアプリの外へ出ます（App Store Guideline 4 の却下理由）"
+               exit 1 ;;
+          esac

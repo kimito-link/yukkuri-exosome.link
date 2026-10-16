@@ -49,9 +49,31 @@ const config: CapacitorConfig = {
     hostname: 'exosome.kimito.link',
     androidScheme: 'https',
     iosScheme: 'https',
+    // ★ログインをアプリ内で完結させるための許可リスト（2026-10-16 の実損で追加）。
+    //   allowNavigation に【無い】ドメインへ遷移すると iOS は外部 Safari を開く。
+    //   ログインは認証プロバイダのドメインへ遷移するので、ここが欠けていると
+    //   「ログインを押した瞬間にアプリの外へ出る」。外に出ると Origin が付かず、
+    //   Clerk は {"errors":[{"message":"Unauthorized request"}]} を返す。
+    //   ⟹ 利用者には「ログインしているのに弾かれる」「ウェブとアプリがごっちゃ」に見える。
+    //
+    //   ★これは App Store Guideline 4（#4 ログインで外部ブラウザに飛ぶ）の却下理由。
+    //     kimito.link は 2026-06-30 に実際に却下され、許可リストを増やして直した。
+    //   ★Google(accounts.google.com) は足さない。Google 側が埋め込み WebView からの
+    //     OAuth を disallowed_useragent でブロックするため、足しても成立しない。
+    //   検査: node scripts/check-auth-domains-allowed.mjs
     allowNavigation: [
       'exosome.kimito.link',
       '*.exosome.kimito.link',
+      'kimito.link',
+      '*.kimito.link',        // ← clerk.kimito.link（Clerk Frontend API）を含む
+      'x.com',
+      '*.x.com',
+      'twitter.com',
+      '*.twitter.com',
+      'api.twitter.com',
+      '*.clerk.accounts.dev',
+      'appleid.apple.com',
+      '*.apple.com',
     ],
   },
 };

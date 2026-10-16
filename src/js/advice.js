@@ -93,7 +93,22 @@ function shareAdvice(advice) {
     }
 }
 
+/**
+ * アドバイスを受け取った回数を記録する。
+ *
+ * ★ゲストのときは【記録しない】（2026-10-16 の実損で追加）。
+ *   advice_count は個人の記録なので関所(YEStorage.set)の対象で、ゲストが書くと
+ *   ログインモーダルが開く。この関数は初回表示でも呼ばれるため、以前は
+ *   【ページを開いた瞬間にログインを促される】状態だった（タップしていないのに）。
+ *   コンテンツを見る前にログインを求めるのは体験として良くないので、
+ *   ゲストには黙って見せ、記録はログイン後から始める。
+ *   ★許可リストに足して回避しない。common.js の方針は
+ *     「ゲストが書いてよいのは記録・個人データでないものだけ」。
+ */
 function incrementCounter() {
+    // ★ゲストは記録しない（関所に当たってログインモーダルが開くのを防ぐ）。
+    if (document.documentElement.getAttribute('data-auth') !== 'member') return;
+
     const count = YEStorage.get('advice_count', 0) + 1;
     YEStorage.set('advice_count', count);
     const el = document.getElementById('advice-counter');
