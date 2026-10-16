@@ -17,7 +17,13 @@
 name: ios-appstore-release
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      submit_for_review:
+        description: "審査提出までするか（false = TestFlight まで。実機確認だけしたいときは false）"
+        type: boolean
+        default: true
+        required: false
   push:
     branches:
       - main
@@ -546,8 +552,11 @@ jobs:
           path: ${{ steps.export_ipa.outputs.ipa-path }}
           if-no-files-found: error
 
+      # ★手動実行で submit_for_review=false のときは提出しない（TestFlight まで）。
+      #   実機確認だけしたいときに、審査へ出さずにビルドを配れるようにするため。
+      #   push で動いたとき（inputs が空）は従来どおり提出する。
       - name: Submit App Store version for review
-        if: ${{ success() }}
+        if: ${{ success() && inputs.submit_for_review != false }}
         env:
           APPSTORE_CONNECT_KEY_ID: ${{ env.ASC_KEY_ID }}
           APPSTORE_CONNECT_ISSUER_ID: ${{ env.ASC_ISSUER_ID }}
