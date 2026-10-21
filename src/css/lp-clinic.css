@@ -1,0 +1,63 @@
+/* Clinic presentation additions. Existing LP, app and character assets remain the base. */
+.lp-clinic-page { color: #2e2622; }
+.lp-clinic-page .lp-hero { min-height: auto; padding: 104px 0 56px; }
+.lp-clinic-page .lp-hero__inner { padding: 0 20px; box-sizing: border-box; }
+.lp-clinic-page .lp-hero__trio { margin-bottom: 24px; }
+.lp-clinic-page .lp-hero__title { font-size: clamp(1.55rem, 4.3vw, 3rem); }
+.lp-clinic-page .lp-top { position: relative; max-width: 1180px; margin: 0 auto; min-height: 72px; }
+.lp-clinic-page .lp-top__brand { font-size: .9rem; }
+.lp-clinic-page .lp-top__login { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; color: #623b47; }
+.clinic-skip { position: absolute; top: -100px; left: 16px; z-index: 20; background: #fff; padding: 12px; color: #2e2622; }
+.clinic-skip:focus { top: 8px; }
+.clinic-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin: 28px 0 16px; }
+.clinic-button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 48px; padding: 13px 22px; border: 1px solid #603b48; border-radius: 999px; background: #603b48; color: #fff; font: inherit; font-weight: 700; font-size: .93rem; text-decoration: none; text-align: center; cursor: pointer; }
+.clinic-button:hover { background: #4c2f39; color: #fff; }
+.clinic-button--secondary { background: transparent; color: #603b48; }
+.clinic-button--secondary:hover { background: #f3e4e6; color: #4c2f39; }
+.clinic-button:focus-visible, .clinic-nav a:focus-visible, .clinic-faq summary:focus-visible { outline: 3px solid #603b48; outline-offset: 4px; }
+.clinic-note { margin: 20px auto 0; max-width: 58em; color: #62534f; font-size: .8rem; line-height: 1.9; text-align: center; }
+.clinic-note a { color: #603b48; text-decoration: underline; text-underline-offset: 3px; }
+.clinic-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; border-block: 1px solid #e6d8d0; padding: 12px 0; }
+.clinic-nav a { display: inline-flex; align-items: center; min-height: 44px; color: #603b48; font-size: .88rem; font-weight: 700; text-decoration: none; }
+.lp-clinic-page section[id] { scroll-margin-top: 24px; }
+.clinic-kicker { margin: 0 0 14px; color: #734853; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-align: center; }
+.clinic-lead { max-width: 48em; margin: 0 auto 28px; color: #62534f; font-size: .95rem; line-height: 2; text-align: center; }
+.clinic-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding: 0; margin: 30px 0; list-style: none; }
+.clinic-steps > li { border-top: 2px solid #d6b0b7; padding-top: 18px; }
+.clinic-step-number { display: block; margin-bottom: 12px; color: #734853; font-size: .78rem; font-weight: 700; }
+.clinic-steps h3, .clinic-steps h4 { margin: 0 0 10px; font-size: 1.03rem; color: #2e2622; }
+.clinic-steps p { margin: 0; color: #62534f; font-size: .87rem; line-height: 1.9; }
+.lp-clinic-page .lp-feature__desc, .lp-clinic-page .lp-trio__card p { color: #62534f; }
+.lp-clinic-page .lp-feature__title { color: #2e2622; }
+.lp-clinic-page .lp-shot figcaption { color: #62534f; line-height: 1.6; }
+.clinic-facts { margin: 28px 0 0; }
+.clinic-facts > div { display: grid; grid-template-columns: minmax(140px, .8fr) 2fr; gap: 24px; border-top: 1px solid #e6d8d0; padding: 22px 0; }
+.clinic-facts dt { font-weight: 700; color: #2e2622; font-size: .95rem; }
+.clinic-facts dd { margin: 0; color: #62534f; font-size: .9rem; line-height: 1.9; }
+.clinic-partner { border-block: 1px solid #dfc9c1; }
+.clinic-partner-terms { margin-top: 36px; padding-top: 28px; border-top: 1px solid #dfc9c1; }
+.clinic-partner-terms > h3 { font-family: var(--font-serif); font-size: 1.3rem; text-align: center; }
+.clinic-checks { max-width: 46em; margin: 24px auto; padding-left: 1.3em; color: #62534f; line-height: 2; font-size: .93rem; }
+.clinic-faq { max-width: 760px; margin: 0 auto; }
+.clinic-faq details { border-bottom: 1px solid #e6d8d0; padding: 10px 0; }
+.clinic-faq summary { min-height: 48px; padding: 12px 0; font-size: .95rem; font-weight: 700; cursor: pointer; }
+.clinic-faq details p { margin: 0 0 18px; color: #62534f; font-size: .9rem; line-height: 1.9; }
+[data-lp-web-only][hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .lp-clinic-page .lp-hero { padding: 40px 0 36px; }
+  .lp-clinic-page .lp-top { padding: 12px 16px; }
+  .lp-clinic-page .lp-top__brand { max-width: 65%; font-size: .77rem; gap: 5px; }
+  .lp-clinic-page .lp-top__brand img { width: 32px; }
+  .lp-clinic-page .lp-top__login { font-size: .75rem; padding: 8px 12px; }
+  .clinic-actions { flex-direction: column; align-items: stretch; }
+  .clinic-button { width: 100%; box-sizing: border-box; font-size: .87rem; padding-inline: 14px; }
+  .clinic-steps { grid-template-columns: 1fr; gap: 22px; }
+  .clinic-facts > div { grid-template-columns: 1fr; gap: 10px; }
+  .clinic-lead { text-align: left; font-size: .9rem; }
+  .clinic-note { text-align: left; }
+  .clinic-nav { justify-content: flex-start; gap: 4px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-clinic-page *, .lp-clinic-page *::before, .lp-clinic-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.lp-clinic-page .lp-hero__em { display: inline-block; color: #96566c; white-space: nowrap; }
+.lp-clinic-page .lp-hero__eyebrow { color: #734853; }

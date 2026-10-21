@@ -13,353 +13,122 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
-    <meta property="og:image" content="../icons/og-image.jpg">
+    <meta property="og:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="../icons/og-image.jpg">
+    <meta name="twitter:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <!-- ye:favicon:end -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ゆっくりエクソソーム — kimito.link アカウントで、ゆっくり3人組と毎日のセルフケア</title>
-    <meta name="description" content="kimito.link のアカウント（X または Apple）でログインするだけ。ゆっくり3人組（りんく・こん太・たぬ姉）と毎日のセルフケアを積み上げる無料アプリ。肌・疲労チェック、サプリやクリニックの記録、写真の管理まで。記録は機種変更でも引き継げ、同じアカウントで kimito.link の他のアプリも使えます。">
+    <title>ゆっくりエクソソーム｜毎日のセルフケアを記録・振り返る</title>
+    <meta name="description" content="ゆっくり3人組と、肌・疲れ・睡眠や日々のセルフケアを記録。サプリ・受診メモ・写真も自分の端末で振り返る基本無料のアプリです。クリニック向けの紹介制度もご案内。">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="ゆっくりエクソソーム — kimito.link アカウントで、ゆっくり3人組と毎日のセルフケア">
-    <meta property="og:description" content="kimito.link のアカウントでログインするだけ。肌・疲労チェック、サプリやクリニックの記録を3人組と積み上げる無料アプリ。同じアカウントで他の kimito.link アプリも。">
+    <meta property="og:title" content="ゆっくりエクソソーム｜毎日のセルフケアを記録・振り返る">
+    <meta property="og:description" content="知る・記録する・振り返る。ゆっくり3人組と続ける、基本無料のセルフケア記録アプリ。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/lp.css">
+    <link rel="canonical" href="https://exosome.kimito.link/lp/">
+    <meta property="og:url" content="https://exosome.kimito.link/lp/">
+    <link rel="stylesheet" href="../css/lp-clinic.css">
 </head>
-<body data-depth="1" class="lp-page">
-    <!-- ★LPは「ログインの入口」。共通ヘッダーは出さず、最小の帯だけ（kimito.link / すれ違ひ通信LPと同じ型） -->
+<body data-depth="1" class="lp-page lp-clinic-page">
+    <a class="clinic-skip" href="#lp-main">本文へ</a>
     <header class="lp-top">
-        <a href="https://kimito.link/" target="_blank" rel="noopener" class="lp-top__brand" aria-label="kimito.link">
-            <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="44" height="33" alt="">
-            <span>kimito.link</span>
-        </a>
-        <button type="button" class="lp-top__login" data-lp-login>ログイン</button>
+        <a href="/lp/" class="lp-top__brand"><img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="44" height="33" alt=""><span>ゆっくりエクソソーム</span></a>
+        <a href="../" class="lp-top__login" data-ref-link>アプリを開く</a>
     </header>
-
-    <main class="lp">
-
-        <!-- ヒーロー: 1画面完結。キャラ → 見出し → X ボタン1つ → 注記。 -->
-        <section class="lp-hero" id="top">
-            <div class="lp-hero__bg" aria-hidden="true">
-                <span class="lp-hero__orb lp-hero__orb--1"></span>
-                <span class="lp-hero__orb lp-hero__orb--2"></span>
-                <span class="lp-hero__orb lp-hero__orb--3"></span>
-                <span class="lp-hero__orb lp-hero__orb--4"></span>
-                <span class="lp-hero__orb lp-hero__orb--5"></span>
-                <span class="lp-hero__ring lp-hero__ring--1"></span>
-                <span class="lp-hero__ring lp-hero__ring--2"></span>
-                <span class="lp-hero__ring lp-hero__ring--3"></span>
-            </div>
+    <main id="lp-main" class="lp">
+        <section class="lp-hero" id="top" aria-labelledby="lp-title">
+            <div class="lp-hero__bg" aria-hidden="true"><span class="lp-hero__orb lp-hero__orb--1"></span><span class="lp-hero__orb lp-hero__orb--2"></span><span class="lp-hero__ring lp-hero__ring--1"></span></div>
             <div class="lp-hero__inner">
                 <div class="lp-hero__trio">
-                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" loading="eager" fetchpriority="high">
-                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="eager" fetchpriority="high" class="lp-hero__trio-main">
-                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="eager" fetchpriority="high">
+                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" width="180" height="180" alt="こん太" fetchpriority="high">
+                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" width="180" height="180" alt="りんく" class="lp-hero__trio-main" fetchpriority="high">
+                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" width="180" height="180" alt="たぬ姉" fetchpriority="high">
                 </div>
-                <p class="lp-hero__eyebrow">ゆっくりエクソソーム｜無料のセルフケア記録アプリ</p>
-                <h1 class="lp-hero__title">きょうのセルフケアを、<span class="lp-hero__em">ゆっくり3人組</span>と。</h1>
-                <p class="lp-hero__sub">kimito.link のアカウントで入るだけ。記録は機種を変えても続きます。</p>
-
-                <!-- ★主CTA=統一ログイン。見出し直後に置き、スマホ1画面目に必ず入れる。 -->
-                <div class="lp-xcta">
-                    <!-- 共通IDバッジ: FC2ID / Yahoo!ID 型の「アカウント種別」表示 -->
-                    <p class="lp-idbadge">
-                        <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="20" height="15" alt="">
-                        <span><strong>kimito.link アカウント</strong>で入ります</span>
-                    </p>
-                    <button type="button" class="lp-xbtn" data-lp-login="x">
-                        <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        <span class="lp-xbtn__label">X でかんたんログイン</span>
-                        <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
-                    </button>
-                    <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                    <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google でログイン</button></p>
-                    <p class="lp-xcta__note">30秒・無料。X のパスワードは預かりません（認証は Clerk）。</p>
-
-                    <!-- ★押した後に何が出るかを先に見せる（折りたたみ）。X の許可画面に「kimito.link」と出て戸惑わないように。 -->
-                    <details class="lp-flow-wrap">
-                        <summary>押すと何が起きる？（Xの許可画面のこと）</summary>
-                        <ol class="lp-flow">
-                            <li><span class="lp-flow__num">1</span><span>ボタンを押すと、この画面に <strong>kimito.link のログイン</strong>（Apple / Google / X）が開きます。</span></li>
-                            <li><span class="lp-flow__num">2</span><span>X を選ぶと、X の画面に「<strong>kimito.link があなたのアカウントの権限へのアクセスを求めています</strong>」と出ます。アカウントが kimito.link 共通なので、この名前で出ます。「アプリにアクセスを許可」で戻ってきます。</span></li>
-                            <li><span class="lp-flow__num">3</span><span>そのまま記録がはじまります。<strong>ゆっくりエクソソームが X に投稿することはありません。</strong></span></li>
-                        </ol>
-                    </details>
-                </div>
-
-                <!-- 社会的証明の早出し: 同じIDで使えるアプリを1行で -->
-                <p class="lp-hero__family">
-                    同じ kimito.link アカウントで：
-                    <a href="https://surechigai.kimito.link/" target="_blank" rel="noopener">すれ違ひ通信</a>・
-                    <a href="https://doin.kimito.link/" target="_blank" rel="noopener">動員チャレンジ</a>・
-                    <span>ゆっくりエクソソーム</span>
-                </p>
-
-                <a href="#lp-account" class="lp-hero__more" aria-label="下へ">
-                    <span>アプリの中身と、kimito.link アカウントを見る</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
+                <p class="lp-hero__eyebrow">知る・記録する・振り返る</p>
+                <h1 id="lp-title" class="lp-hero__title">きょうのセルフケアを、<br><span class="lp-hero__em">ゆっくり3人組</span>と。</h1>
+                <p class="lp-hero__sub">肌や疲れの手ごたえ、眠った時間、続けたケア。<br>毎日の小さな記録を、自分のペースで残せます。</p>
+                <div class="clinic-actions"><a href="../" class="clinic-button" data-ref-link>ブラウザで使ってみる <span aria-hidden="true">→</span></a><a href="#clinic-partner" class="clinic-button clinic-button--secondary">クリニック・紹介パートナーの方へ</a></div>
+                <p class="clinic-note">基本の記録は無料。アプリの説明はログインせずに読めます。<br>診断や治療ではなく、毎日のセルフケアを振り返るためのアプリです。</p>
             </div>
         </section>
-
-        <!-- kimito.link アカウント（★このアプリの土台。色濃く見せる） -->
-        <section class="lp-section lp-account" id="lp-account">
-            <div class="lp-account__logo">
-                <a href="https://kimito.link/" target="_blank" rel="noopener" aria-label="kimito.link を開く">
-                    <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="240" height="180" alt="kimito.link ロゴ" fetchpriority="high">
-                </a>
-            </div>
-            <h2 class="lp-section__title lp-account__title">ひとつのアカウントで、<br>kimito.link のアプリぜんぶ。</h2>
-            <p class="lp-account__lead">
-                ゆっくりエクソソームは、<strong>kimito.link 共通アカウント</strong>で動きます。
-                いつもの X アカウント、または Apple でサインインするだけ。
-                パスワードをこちらで預かることはありません（認証の安全処理には Clerk を利用）。
-                一度ログインすれば、kimito.link ファミリーのどのアプリでも同じあなたです。
-            </p>
-
-            <ol class="lp-account__steps">
-                <li class="lp-account__step">
-                    <span class="lp-account__num">1</span>
-                    <h3>X または Apple でログイン</h3>
-                    <p>新しくパスワードを作る必要はありません。30秒で入れます。</p>
-                </li>
-                <li class="lp-account__step">
-                    <span class="lp-account__num">2</span>
-                    <h3>記録があなたのアカウントに</h3>
-                    <p>セルフケアの記録は端末に残しつつ、引き継ぎ用に kimito.link へ複製。機種変更でも、アプリとブラウザの間でも続きます。</p>
-                </li>
-                <li class="lp-account__step">
-                    <span class="lp-account__num">3</span>
-                    <h3>他のアプリも、そのまま</h3>
-                    <p>同じアカウントで kimito.link の別のアプリにも入れます。アプリが増えても、アカウントは増えません。</p>
-                </li>
-            </ol>
-
-            <h3 class="lp-account__subtitle">同じアカウントで使えるアプリ</h3>
-            <div class="lp-family">
-                <a class="lp-family__card lp-family__card--hub" href="https://kimito.link/" target="_blank" rel="noopener">
-                    <span class="lp-family__badge">アカウントの本拠地</span>
-                    <span class="lp-family__icon">🔗</span>
-                    <span class="lp-family__name">kimito.link</span>
-                    <span class="lp-family__desc">「クリエイターを大事にする人です」と示す、X プロフィール用のリンクまとめページ。アカウントの管理もここから。</span>
-                    <span class="lp-family__link">kimito.link を見る →</span>
-                </a>
-                <a class="lp-family__card" href="https://surechigai.kimito.link/" target="_blank" rel="noopener">
-                    <span class="lp-family__icon">📍</span>
-                    <span class="lp-family__name">君斗りんくのすれ違ひ通信</span>
-                    <span class="lp-family__desc">近くにいた人とすれ違える、位置情報の無料アプリ。キミの現在地を刻んで、あとからたどれる。</span>
-                    <span class="lp-family__link">すれ違ひ通信を見る →</span>
-                </a>
-                <div class="lp-family__card lp-family__card--this">
-                    <span class="lp-family__badge">このアプリ</span>
-                    <span class="lp-family__icon">🧬</span>
-                    <span class="lp-family__name">ゆっくりエクソソーム</span>
-                    <span class="lp-family__desc">ゆっくり3人組と、肌・疲れ・サプリ・点滴の記録を毎日少しずつ。</span>
-                    <span class="lp-family__link lp-family__link--muted">いまここ</span>
-                </div>
-                <div class="lp-family__card lp-family__card--next">
-                    <span class="lp-family__icon">✨</span>
-                    <span class="lp-family__name">これからのアプリも</span>
-                    <span class="lp-family__desc">kimito.link ファミリーに新しいアプリが増えても、ログインは同じアカウントのまま。</span>
-                </div>
-            </div>
-
-            <div class="lp-account__cta">
-                <a href="../" class="btn btn--primary lp-login-btn">ログインしてはじめる</a>
-                <a href="https://kimito.link/" target="_blank" rel="noopener" class="btn btn--secondary">kimito.link を見る</a>
-            </div>
+        <nav class="clinic-nav" aria-label="このページの目次"><a href="#lp-use">使い方</a><a href="#lp-features">できること</a><a href="#lp-screens">画面を見る</a><a href="#lp-privacy">記録と料金</a><a href="#clinic-partner">クリニック向け</a><a href="#lp-faq">よくある質問</a></nav>
+        <section class="lp-section" id="lp-use" aria-labelledby="lp-use-title">
+            <p class="clinic-kicker">毎日の使い方</p><h2 id="lp-use-title" class="lp-section__title">「どうだった？」を、あとで話せる記録に。</h2>
+            <ol class="clinic-steps"><li><span class="clinic-step-number">01</span><h3>今日の手ごたえを残す</h3><p>肌・疲れのセルフチェックや、睡眠・ケアの記録。できた項目だけでも大丈夫です。</p></li><li><span class="clinic-step-number">02</span><h3>続けたことを眺める</h3><p>記録に応じたシグナルマップや、3人と育てる画面で、自分の積み重ねを振り返ります。</p></li><li><span class="clinic-step-number">03</span><h3>聞きたいことをメモする</h3><p>次の受診で聞きたいことを、個人用メモへ。画面を見せるかどうかも、自分で選べます。</p></li></ol>
+            <p class="clinic-note">数値やマップの光は、入力した記録を表す演出です。身体の測定値や、施術の効果を示すものではありません。</p>
         </section>
-
-        <!-- 世界観: からだの中で起きていること（issue #6 = 機能実装より先に世界観を反映）
-             ★longevity スキル §1-§5 準拠。エクソソームは C 段（動物・細胞レベル）＝断定禁止。
-               「若返る/寿命/効く」は使わない。語尾は「考えられている段階」。 -->
-        <section class="lp-section lp-section--tint lp-world">
-            <h2 class="lp-section__title">からだの中で、起きていること</h2>
-            <div class="lp-world__body">
-                <p class="lp-world__lead">
-                    わたしたちのからだは、今日も少しずつ<strong>つくり変えられて</strong>います。
-                    古くなった部品は片づけられ、新しく入れ替わっていく。
-                    その営みを、ゆっくり3人組といっしょに<strong>眺めて記録する</strong>アプリです。
-                </p>
-                <div class="lp-world__cards">
-                    <div class="lp-world__card">
-                        <span class="lp-world__icon">🔬</span>
-                        <h3>細胞は、入れ替わっている</h3>
-                        <p>からだは同じ姿に見えても、中身は日々つくり変えられています。「増やす」より「入れ替える」。その様子は<a href="../cinema/">細胞シアター</a>で眺められます。</p>
-                    </div>
-                    <div class="lp-world__card">
-                        <span class="lp-world__icon">✉️</span>
-                        <h3>エクソソームは、伝令役</h3>
-                        <p>細胞どうしは、エクソソームという小さな袋で情報を運びあっていると考えられています。受け取った細胞のふるまいに影響すると<strong>研究が進められている段階</strong>です。</p>
-                    </div>
-                    <div class="lp-world__card">
-                        <span class="lp-world__icon">🌙</span>
-                        <h3>毎日の積み重ねを、味方に</h3>
-                        <p>睡眠・食事・運動といった生活の習慣は、からだの土台です。競うのではなく、整った日をひとつずつ数えていきます。</p>
-                    </div>
-                </div>
-                <p class="lp-world__note">
-                    ここで紹介するのは一般的な情報です。エクソソームや培養上清の作用は研究が進められている段階で、効果や若返りを約束するものではありません。
-                </p>
-            </div>
-        </section>
-
-        <!-- 実際の画面（何のアプリか、見れば分かるように）。ファーストビューは主CTA優先のため下段に移動。 -->
-        <section class="lp-section lp-phone-section">
-            <div class="lp-phone">
-                <div class="lp-phone__callout">今日のケアが<strong>からだのどこに向いているか</strong>を眺める</div>
-                <div class="lp-phone__frame">
-                    <img src="../images/screens/1-today.jpg" width="540" height="1170" alt="アプリのToday画面：体内シグナルマップと今日の記録" loading="lazy">
-                </div>
-            </div>
-        </section>
-
-        <!-- できること -->
-        <section class="lp-section">
-            <h2 class="lp-section__title">できること</h2>
+        <section class="lp-section lp-section--tint" id="lp-features" aria-labelledby="lp-features-title">
+            <p class="clinic-kicker">アプリでできること</p><h2 id="lp-features-title" class="lp-section__title">自分に合う記録から、ひとつずつ。</h2>
             <div class="lp-features">
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">🧬</div>
-                    <h3 class="lp-feature__title">体内シグナルマップ</h3>
-                    <p class="lp-feature__desc">髪・美肌・目元・循環・腸内・筋肉の6部位。今日のケアが、からだのどこに向いているかを眺められます。</p>
-                </div>
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">🌿</div>
-                    <h3 class="lp-feature__title">肌と疲れのセルフチェック</h3>
-                    <p class="lp-feature__desc">10段階の具体的なガイド付き。数字を競うのではなく、その日の手ごたえを残していきます。</p>
-                </div>
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">💉</div>
-                    <h3 class="lp-feature__title">サプリ・点滴の記録</h3>
-                    <p class="lp-feature__desc">NMN・ビタミンCなど16種類を1タップで。前回からの経過日数も自動で出ます。</p>
-                </div>
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">📸</div>
-                    <h3 class="lp-feature__title">写真とメモ</h3>
-                    <p class="lp-feature__desc">変化の記録と、次の受診で聞きたいこと。どちらも端末の外には出ません。</p>
-                </div>
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">🌱</div>
-                    <h3 class="lp-feature__title">続けるほど育つ</h3>
-                    <p class="lp-feature__desc">たまごから銀河まで。失う怖さではなく、明日の1枚を楽しみに続けられる形にしています。</p>
-                </div>
-                <div class="lp-feature">
-                    <div class="lp-feature__icon">🔬</div>
-                    <h3 class="lp-feature__title">からだを眺める</h3>
-                    <p class="lp-feature__desc">細胞シアター・入れ替わりリング・体内時計。記録とは別に、ただ眺めるための3画面。</p>
-                </div>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">🌿</span><h3 class="lp-feature__title">肌・疲れのセルフチェック</h3><p class="lp-feature__desc">具体例のガイドを見ながら、その日の主観的な手ごたえを記録します。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">🌙</span><h3 class="lp-feature__title">睡眠・心と社会のケア</h3><p class="lp-feature__desc">睡眠や日々の行動を、自分の記録として積み重ねられます。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">📝</span><h3 class="lp-feature__title">サプリ・受けたケアのメモ</h3><p class="lp-feature__desc">サプリや点滴など、利用したものと日付を残せます。特定の施術や商品を勧める機能ではありません。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">📅</span><h3 class="lp-feature__title">予定・リマインダー</h3><p class="lp-feature__desc">自分で決めた次の予定や、記録するきっかけを管理。通知は対応端末と許可設定によります。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">📸</span><h3 class="lp-feature__title">写真・先生への質問メモ</h3><p class="lp-feature__desc">自分用の写真と、受診時に聞きたいことを端末内で管理します。自動でクリニックへ送る機能ではありません。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">🧬</span><h3 class="lp-feature__title">体内シグナルマップ・スコア</h3><p class="lp-feature__desc">入力したケアの記録を、光やスコアで表現。医学的な検査や診断の数値とは異なります。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">🌱</span><h3 class="lp-feature__title">育成・連続記録・クエスト</h3><p class="lp-feature__desc">記録を続ける楽しみを、3人と一緒に。続いた日や、自分の積み重ねを振り返れます。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">📖</span><h3 class="lp-feature__title">知識・クイズ・眺める画面</h3><p class="lp-feature__desc">読みものやクイズ、細胞シアター・入れ替わりリング・体内時計へ。一般的な情報を楽しめます。</p></article>
+                <article class="lp-feature"><span class="lp-feature__icon" aria-hidden="true">📈</span><h3 class="lp-feature__title">記録の長期振り返り</h3><p class="lp-feature__desc">セルフケアスコアの30日・90日の推移や変化率は、追加の利用条件がある機能です。基本の記録は無料のままです。</p></article>
             </div>
         </section>
-
-        <!-- 画面 -->
-        <section class="lp-section lp-section--tint">
-            <h2 class="lp-section__title">画面を見る</h2>
+        <section class="lp-section" id="lp-screens" aria-labelledby="lp-screens-title">
+            <p class="clinic-kicker">画面のイメージ</p><h2 id="lp-screens-title" class="lp-section__title">毎日開く場所を、少しだけ。</h2>
+            <p class="clinic-lead">説明用の表示イメージです。実際の画面・項目は更新によって異なります。実ユーザーの記録や、効果の実績ではありません。</p>
             <div class="lp-shots">
-                <figure class="lp-shot">
-                    <img src="../images/screens/1-today.jpg" width="540" height="1170" alt="Today画面：体内シグナルマップと今日の記録" loading="lazy">
-                    <figcaption>Today</figcaption>
-                </figure>
-                <figure class="lp-shot">
-                    <img src="../images/screens/2-care.jpg" width="540" height="1170" alt="Care画面：6つのセルフケア項目" loading="lazy">
-                    <figcaption>Care</figcaption>
-                </figure>
-                <figure class="lp-shot">
-                    <img src="../images/screens/3-boost.jpg" width="540" height="1170" alt="Boost画面：サプリ・点滴の記録" loading="lazy">
-                    <figcaption>Boost</figcaption>
-                </figure>
-                <figure class="lp-shot">
-                    <img src="../images/screens/4-garden.jpg" width="540" height="1170" alt="Garden画面：育成と成長の記録" loading="lazy">
-                    <figcaption>Garden</figcaption>
-                </figure>
-                <figure class="lp-shot">
-                    <img src="../images/screens/5-me.jpg" width="540" height="1170" alt="Me画面：統計と設定" loading="lazy">
-                    <figcaption>Me</figcaption>
-                </figure>
+                <figure class="lp-shot"><img src="../images/screens/1-today.jpg" width="540" height="1170" alt="Todayの表示イメージ：マップと記録への入口" loading="lazy"><figcaption>Today｜今日の記録</figcaption></figure>
+                <figure class="lp-shot"><img src="../images/screens/2-care.jpg" width="540" height="1170" alt="Careの表示イメージ：セルフケアの記録" loading="lazy"><figcaption>Care｜続けたケア</figcaption></figure>
+                <figure class="lp-shot"><img src="../images/screens/3-boost.jpg" width="540" height="1170" alt="Boostの表示イメージ：利用したケアの記録" loading="lazy"><figcaption>Boost｜受けたケア</figcaption></figure>
+                <figure class="lp-shot"><img src="../images/screens/4-garden.jpg" width="540" height="1170" alt="Gardenの表示イメージ：育成画面" loading="lazy"><figcaption>Garden｜育てる楽しみ</figcaption></figure>
+                <figure class="lp-shot"><img src="../images/screens/5-me.jpg" width="540" height="1170" alt="Meの表示イメージ：振り返りと設定" loading="lazy"><figcaption>Me｜振り返り・設定</figcaption></figure>
             </div>
         </section>
-
-        <!-- 3人組 -->
-        <section class="lp-section">
-            <h2 class="lp-section__title">3人が付き合ってくれます</h2>
+        <section class="lp-section lp-section--tint" aria-labelledby="lp-trio-title">
+            <h2 id="lp-trio-title" class="lp-section__title">3人と、自分のペースで。</h2>
             <div class="lp-trio">
-                <div class="lp-trio__card lp-trio__card--rink">
-                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" loading="lazy">
-                    <h3>りんく</h3>
-                    <p>食事・生活担当。今日のひとことをくれます。</p>
-                </div>
-                <div class="lp-trio__card lp-trio__card--konta">
-                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" loading="lazy">
-                    <h3>こん太</h3>
-                    <p>ミニ知識担当。クイズで少しずつ詳しくなれます。</p>
-                </div>
-                <div class="lp-trio__card lp-trio__card--tanunee">
-                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" loading="lazy">
-                    <h3>たぬ姉</h3>
-                    <p>おちついた解説担当。難しい話をやさしくほどきます。</p>
-                </div>
+                <article class="lp-trio__card lp-trio__card--rink"><img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" width="160" height="160" alt="りんく" loading="lazy"><h3>りんく</h3><p>つくる人。毎日の「つなご！」を一緒に。</p></article>
+                <article class="lp-trio__card lp-trio__card--konta"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" width="160" height="160" alt="こん太" loading="lazy"><h3>こん太</h3><p>やってみる係。今日の小さな一歩を応援。</p></article>
+                <article class="lp-trio__card lp-trio__card--tanunee"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" width="160" height="160" alt="たぬ姉" loading="lazy"><h3>たぬ姉</h3><p>調べ係。知ることも、ゆっくり一緒に。</p></article>
             </div>
         </section>
-
-        <!-- アカウントと記録の扱い（★プライバシーポリシーの記述と一致させる） -->
-        <section class="lp-section lp-section--tint">
-            <h2 class="lp-section__title">アカウントと記録の扱い</h2>
-            <div class="lp-privacy">
-                <ul class="lp-privacy__list">
-                    <li><strong>ログインは kimito.link 共通アカウント。</strong>X または Apple でサインイン。パスワードをこちらで預かることはありません。</li>
-                    <li><strong>課金なし。</strong>すべての機能を無料で使えます。</li>
-                    <li><strong>記録は端末に保存し、引き継ぎ用に kimito.link へ複製。</strong>機種変更しても、同じアカウントでログインすれば続きから。</li>
-                    <li><strong>写真・メモ・端末ごとの設定は複製しません。</strong>端末の中だけに残ります。</li>
-                    <li><strong>アカウントの管理・削除は kimito.link で。</strong>アプリごとに別々の手続きはありません。</li>
-                </ul>
-                <p class="lp-privacy__note">
-                    詳しくは<a href="../privacy/">プライバシーポリシー</a>をご覧ください。
-                </p>
+        <section class="lp-section" id="lp-privacy" aria-labelledby="lp-privacy-title">
+            <p class="clinic-kicker">使う前に知っておきたいこと</p><h2 id="lp-privacy-title" class="lp-section__title">記録の置き場所と、利用条件。</h2>
+            <dl class="clinic-facts"><div><dt>基本の記録は無料</dt><dd>セルフチェック・ケア・写真・質問メモなどの基本機能を使えます。長期グラフには追加の利用条件があります。</dd></div><div><dt>記録は使っている端末・ブラウザに保存</dt><dd>機種やブラウザを変えたときに、自動で記録が移るとは限りません。端末の変更やデータ削除の前に、保存している内容を確認してください。</dd></div><div><dt>ログインと記録の保存は別のもの</dt><dd>アカウントが必要な場面では、ログイン画面に表示される方法で進めます。ログインしただけで、写真や記録が他のアプリへ同期されるわけではありません。</dd></div><div><dt>クリニックへの自動送信はしません</dt><dd>質問メモなどを見せたいときは、本人が自分の画面を見せられます。本人の画面を見ながら話すための、個人用記録です。</dd></div></dl>
+            <p class="clinic-note"><a href="../privacy/">プライバシーポリシー</a>・<a href="../about/">運営・お問い合わせ</a></p>
+        </section>
+        <section class="lp-section clinic-partner" id="clinic-partner" aria-labelledby="clinic-partner-title">
+            <p class="clinic-kicker">クリニック・紹介パートナーの方へ</p><h2 id="clinic-partner-title" class="lp-section__title">日々の記録を、話すきっかけに。</h2>
+            <p class="clinic-lead">患者さんや利用者さんが、自分のケアや質問を振り返るためのアプリとしてご案内いただけます。生活の記録アプリとして、無料の範囲と記録の扱いを添えてご案内ください。</p>
+            <ul class="clinic-checks"><li>院内の案内やSNSに、アプリの説明と専用リンク・QRを掲載</li><li>本人が選んだ記録・メモを、受診時の会話のきっかけに</li><li>導入前に、無料範囲・記録の保存先・紹介条件を確認</li></ul>
+            <div data-lp-web-only hidden class="clinic-partner-terms">
+                <h3>紹介制度は、提携条件を確認してから。</h3>
+                <ol class="clinic-steps"><li><span class="clinic-step-number">01</span><h4>専用の紹介リンクを案内</h4><p>紹介パートナーとしての受付後、コードの発行・有効化を確認します。</p></li><li><span class="clinic-step-number">02</span><h4>対象の利用・お支払いを確認</h4><p>紹介先が対象の有料サービスを利用した場合に、運営が成果を確認します。</p></li><li><span class="clinic-step-number">03</span><h4>契約条件に沿って紹介料を計上</h4><p>料率・対象売上・確認方法・支払時期は提携時に確認します。リンクを開いただけで報酬が発生するものではありません。</p></li></ol>
+                <p class="clinic-note">ご案内・成果確認・支払いの案内は運営窓口で行います。紹介料の対象は、提携条件で定めるアプリ・サービスの利用料です。</p>
+                <div class="clinic-actions"><a href="https://kimito.link/partner/" class="clinic-button" data-ref-link>紹介制度・提携条件を確認する →</a><a href="https://kimito.link/dashboard/longevity/" class="clinic-button clinic-button--secondary" data-ref-link>追加機能の案内を確認する</a></div>
             </div>
+            <p class="clinic-note">写真や健康記録を、紹介料の成果判定のために送る必要はありません。紹介するアプリの運営・対象条件も、利用者に明示してください。</p>
         </section>
-
-        <!-- ダウンロード -->
-        <section class="lp-section lp-cta-section">
-            <h2 class="lp-section__title">はじめる</h2>
-            <p class="lp-cta-section__lead">kimito.link アカウントでログインするだけ。アプリでも、ブラウザでも、同じ記録が続きます。</p>
-            <div class="lp-xcta">
-                <p class="lp-idbadge">
-                    <img src="../images/kimito-link-logo/logo_kimito-link_RGB_ginga_color.png" width="20" height="15" alt="">
-                    <span><strong>kimito.link アカウント</strong>で入ります</span>
-                </p>
-                <button type="button" class="lp-xbtn" data-lp-login="x">
-                    <svg class="lp-xbtn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    <span class="lp-xbtn__label">X でかんたんログイン</span>
-                    <span class="lp-xbtn__arrow" aria-hidden="true">›</span>
-                </button>
-                <p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p>
-                <p class="lp-xcta__alt"><button type="button" class="lp-linkbtn" data-lp-login>Apple・Google でログイン</button></p>
-                <p class="lp-xcta__note">アカウントがまだない方も、X か Apple・Google があればその場で作れます。</p>
-            </div>
-            <p class="lp-cta-section__apps">スマホにはアプリもあります（同じアカウントでログイン）</p>
-            <div id="lp-cta-bottom"></div>
-        </section>
-
-        <!-- 免責 -->
-        <section class="lp-section">
-            <p class="lp-disclaimer">
-                このアプリは一般的な情報の紹介と、生活の記録のためのものです。診断や治療を目的としたものではありません。
-                食事や生活習慣を大きく変えるとき、持病や服薬があるとき、施術を検討するときは、必ず医療機関で医師にご相談ください。
-            </p>
-        </section>
-
+        <section class="lp-section" id="lp-faq" aria-labelledby="lp-faq-title"><h2 id="lp-faq-title" class="lp-section__title">よくある質問</h2><div class="clinic-faq">
+            <details><summary>アプリの説明を見るだけでもログインが必要ですか？</summary><p>このLPはログインなしで読めます。アプリでアカウントが必要になった場合は、その画面の案内に従ってください。</p></details>
+            <details><summary>体の状態や、点滴の効果が分かりますか？</summary><p>医学的な測定・診断・効果判定は行いません。スコアやマップは、入力した記録を振り返るための表現です。個別の体調や治療については医師にご相談ください。</p></details>
+            <details><summary>クリニックに記録が共有されますか？</summary><p>自動では共有しません。本人が選んで画面を見せる使い方ができます。</p></details>
+            <details><summary>新しいスマホへ自動で引き継げますか？</summary><p>記録は端末・ブラウザごとに保存されます。自動同期を前提にせず、端末やブラウザを変える前に記録の保管方法をご確認ください。</p></details>
+            <details data-lp-web-only hidden><summary>紹介すると、すぐに報酬が入りますか？</summary><p>いいえ。専用コードの確認、対象の利用・支払いの確認、契約に沿った成果の計上が必要です。料率・対象条件・支払時期は運営窓口で事前にご確認ください。</p></details>
+        </div></section>
+        <section class="lp-section lp-cta-section"><h2 class="lp-section__title">まずは、今日のひとつから。</h2><p class="lp-cta-section__lead">3人と一緒に、毎日の記録を自分のペースで。</p><div class="clinic-actions"><a href="../" class="clinic-button" data-ref-link>ブラウザで使ってみる →</a><button type="button" class="clinic-button clinic-button--secondary" data-lp-login>アカウントでログイン</button></div><p class="lp-xcta__msg" data-lp-login-msg aria-live="polite"></p><p class="clinic-note">ログインは、表示される認証サービスの画面で本人が行います。</p><div id="lp-cta-bottom"></div></section>
+        <section class="lp-section"><p class="lp-disclaimer">このアプリは一般的な情報の紹介と、生活の記録のためのものです。診断や治療を目的としたものではありません。持病・服薬・体調や施術に関する個別の判断は、医療機関で医師にご相談ください。</p></section>
     </main>
-
     <div data-footer></div>
-
     <script src="../js/common.js"></script>
     <script src="../js/auth.js"></script>
+    <script src="../js/refpartner.js"></script>
+    <script src="../js/lp-clinic.js"></script>
     <script>
     /**
      * ★LPのログインボタン = この画面のまま Clerk のログインモーダルを開く（自ドメイン完結）。
@@ -378,7 +147,7 @@
             for (var i = 0; i < msgs.length; i++) msgs[i].textContent = text;
         }
 
-        function goApp() { location.href = APP_ROOT; }
+        function goApp() { location.href = window.RefPartner ? window.RefPartner.getKimitoUrlWithRef(APP_ROOT) : APP_ROOT; }
 
         // ログインが成立したらアプリ本体へ（モーダルを閉じただけでは通さない）
         function watchForSession() {
