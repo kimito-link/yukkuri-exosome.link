@@ -61,3 +61,7 @@
 
 .lp-clinic-page .lp-hero__em { display: inline-block; color: #96566c; white-space: nowrap; }
 .lp-clinic-page .lp-hero__eyebrow { color: #734853; }
+
+/* 紹介動画（縦型 1080x1920）。スマホでは画面幅いっぱい、PCでは縦長を抑えて中央に置く。 */
+.lp-movie { margin: 0 auto 24px; max-width: 360px; }
+.lp-movie__video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; border-radius: 18px; background: #0e101a; box-shadow: 0 10px 30px rgba(60, 40, 50, .18); }
