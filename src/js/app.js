@@ -304,7 +304,7 @@ function injectAppShell(activeTab = 'today', depth = 0) {
     brandEl.className = 'app-brand';
     brandEl.innerHTML = `
         <a href="${base}" class="app-brand__combo">
-            <img src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="app-brand__combo-logo">
+            <img src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="app-brand__combo-logo" width="48" height="36">
             <span class="app-brand__combo-no">の</span>
             <span class="app-brand__combo-name">ゆっくりエクソソーム</span>
         </a>

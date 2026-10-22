@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
@@ -19,13 +20,12 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="../icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Boost | ゆっくりエクソソーム</title>
     <meta name="description" content="点滴・サプリの記録機能。NMNやエクソソーム点滴を記録して、体内マップに反映。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/bodymap.css">
@@ -34,14 +34,14 @@
 <body>
     <main id="boost-screen" class="app-screen"></main>
 
-    <script src="../js/common.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/auth-mode.js"></script>
-    <script src="../js/app.js"></script>
-    <script src="../js/bodymap.js"></script>
-    <script src="../js/boost.js"></script>
+    <script defer src="../js/common.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script defer src="../js/auth-mode.js"></script>
+    <script defer src="../js/app.js"></script>
+    <script defer src="../js/bodymap.js"></script>
+    <script defer src="../js/boost.js"></script>
     <script>
-        (function() {
+        document.addEventListener('DOMContentLoaded', function () {
             let currentCat = 'all';
 
             function getCareData() {
@@ -73,7 +73,7 @@
                     <div class="boost-hero">
                         <div class="boost-hero__chip">Treatments &amp; Supplements</div>
                         <div class="boost-hero__title">今日のブースト</div>
-                        <div class="boost-hero__sub">クリニックで受けた点滴やサプリを記録して、<br>体内マップを活性化させましょう</div>
+                        <div class="boost-hero__sub">クリニックで受けた点滴やサプリを記録して、<br>マップの光をあとから見返せます（測定値ではありません）</div>
                     </div>
 
                     <!-- 体内マップ（Boost反映） -->
@@ -129,6 +129,7 @@
 
                     <div class="article__note" style="margin-top: 24px; font-size: 0.75rem; line-height: 1.7;">
                         <strong>📌 ご注意</strong><br>
+                        エクソソーム・培養上清等の施術は公的保険適用外の自由診療で、国内で承認された医薬品ではないものを含みます。費用・リスク・副作用は必ず受診先で説明を受けてください。<br>
                         この記録はあなた個人のメモであり、医療記録や効能の証明ではありません。
                         体内エクソソームの「+◯粒」表記は分かりやすさのためのイメージで、実測値ではありません。
                         実際の施術内容や効果については、必ずクリニックの医師の指示・説明に従ってください。
@@ -210,7 +211,7 @@
 
             render();
             injectAppShell('boost', 1);
-        })();
+        });
     </script>
 </body>
 </html>

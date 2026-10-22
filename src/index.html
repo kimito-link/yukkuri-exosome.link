@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
@@ -25,14 +26,14 @@
     <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
     <!-- iOS Safari 純正スマートアプリバナー（Safari以外は無視。Capacitorアプリ内では作用しない） -->
     <meta name="apple-itunes-app" content="app-id=6775201794, app-argument=https://exosome.kimito.link/">
-    <meta property="og:image" content="icons/og-image.jpg">
+    <meta property="og:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="icons/og-image.jpg">
+    <meta name="twitter:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="preload" as="image" type="image/webp" href="images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp" fetchpriority="high">
     <title>Kimito-Linkのゆっくりエクソソーム — 3人組と毎日セルフケア</title>
     <meta name="description" content="Kimito-Linkのゆっくりエクソソーム。ゆっくり3人組「りんく・こん太・たぬ姉」と毎日のセルフケアを積み上げるアプリ。レベル・ストリーク・育成で、習慣化が楽しくなる。">
     <meta property="og:type" content="website">
@@ -44,7 +45,7 @@
     <meta name="twitter:description" content="ゆっくり3人組と毎日ちょっとずつ、セルフケア">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/onboarding.css">
@@ -54,27 +55,27 @@
 <body>
     <main id="today-screen"></main>
 
-    <script src="js/common.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/auth-mode.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/onboarding.js"></script>
-    <script src="js/bodymap.js"></script>
-    <script src="js/boost.js"></script>
-    <script src="js/ueda-quotes.js"></script>
-    <script src="js/skincheck.js"></script>
-    <script src="js/doctormemo.js"></script>
-    <script src="js/reminder.js"></script>
-    <script src="js/photolog.js"></script>
-    <script src="js/fatigue.js"></script>
-    <script src="js/sleep.js"></script>
-    <script src="js/refpartner.js"></script>
-    <script src="js/premium.js"></script>
-    <script src="js/mindcare.js"></script>
-    <script src="js/longevity.js"></script>
+    <script defer src="js/common.js"></script>
+    <script defer src="js/auth.js"></script>
+    <script defer src="js/auth-mode.js"></script>
+    <script defer src="js/app.js"></script>
+    <script defer src="js/onboarding.js"></script>
+    <script defer src="js/bodymap.js"></script>
+    <script defer src="js/boost.js"></script>
+    <script defer src="js/ueda-quotes.js"></script>
+    <script defer src="js/skincheck.js"></script>
+    <script defer src="js/doctormemo.js"></script>
+    <script defer src="js/reminder.js"></script>
+    <script defer src="js/photolog.js"></script>
+    <script defer src="js/fatigue.js"></script>
+    <script defer src="js/sleep.js"></script>
+    <script defer src="js/refpartner.js"></script>
+    <script defer src="js/premium.js"></script>
+    <script defer src="js/mindcare.js"></script>
+    <script defer src="js/longevity.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
         // Today画面を構築
-        (function() {
             const lv = App.getLevel();
             const streak = App.getStreak();
             const quests = App.getTodayQuests();
@@ -115,13 +116,13 @@
                     <!-- ブランドヒーロー（エディトリアル） -->
                     <div class="brand-hero">
                         <!-- 背景にキャラ控えめ -->
-                        <img src="images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--rink">
-                        <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--konta">
-                        <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="" class="brand-hero__char-bg brand-hero__char-bg--tanunee">
+                        <picture class="ye-pic"><source type="image/webp" srcset="images/characters/link/link-yukkuri-smile-mouth-closed-360.webp 360w, images/characters/link/link-yukkuri-smile-mouth-closed-720.webp 720w" sizes="80px"><img src="images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="" width="80" height="80" class="brand-hero__char-bg brand-hero__char-bg--rink" decoding="async"></picture>
+                        <picture class="ye-pic"><source type="image/webp" srcset="images/characters/konta/kitsune-yukkuri-smile-mouth-closed-360.webp 360w, images/characters/konta/kitsune-yukkuri-smile-mouth-closed-720.webp 720w" sizes="80px"><img src="images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="" width="80" height="80" class="brand-hero__char-bg brand-hero__char-bg--konta" decoding="async"></picture>
+                        <picture class="ye-pic"><source type="image/webp" srcset="images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed-360.webp 360w, images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed-720.webp 720w" sizes="80px"><img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="" width="80" height="80" class="brand-hero__char-bg brand-hero__char-bg--tanunee" decoding="async"></picture>
 
                         <div class="brand-hero__top">
                             <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="brand-hero__logo-link">
-                                <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="brand-hero__logo">
+                                <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" class="brand-hero__logo" width="75" height="56">
                             </a>
                             <div class="brand-hero__divider"></div>
                             <div class="brand-hero__sub">
@@ -143,15 +144,15 @@
                     <!-- 3人組ヒーロー -->
                     <div class="top-trio">
                         <a href="characters/" class="top-trio__member top-trio__member--rink">
-                            <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                            <picture class="ye-pic"><source type="image/webp" srcset="images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="90px"><img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="90" height="90" decoding="async"></picture>
                             <span class="top-trio__name">りんく</span>
                         </a>
                         <a href="characters/" class="top-trio__member top-trio__member--konta">
-                            <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                            <picture class="ye-pic"><source type="image/webp" srcset="images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="90px"><img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="90" height="90" decoding="async"></picture>
                             <span class="top-trio__name">こん太</span>
                         </a>
                         <a href="characters/" class="top-trio__member top-trio__member--tanunee">
-                            <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                            <picture class="ye-pic"><source type="image/webp" srcset="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="90px"><img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="90" height="90" decoding="async"></picture>
                             <span class="top-trio__name">たぬ姉</span>
                         </a>
                     </div>
@@ -183,13 +184,13 @@
                     <!-- 先生への質問メモ -->
                     <div id="today-memo"></div>
 
-                    <!-- ビフォーアフター写真記録 -->
+                    <!-- 写真で経過を記録 -->
                     <div id="today-photo"></div>
 
                     <!-- キャラからのひとこと -->
                     <div class="today-char-card">
                         <div class="today-char-card__img">
-                            <img src="${moodImg}" alt="${moodChar.name}">
+                            ${characterPicture(moodImg, { alt: moodChar.name, width: 96 })}
                         </div>
                         <div class="today-char-card__content">
                             <div class="today-char-card__name" style="color:${moodChar.color}">${moodChar.name.toUpperCase ? moodChar.name : moodChar.name}</div>
@@ -198,7 +199,7 @@
                         <div class="today-char-card__friends">
                             ${['rink', 'konta', 'tanunee'].filter(k => k !== mood.charKey).map(k => `
                                 <div class="today-char-card__friend">
-                                    <img src="${getImagePath(k, 'normal', 0)}" alt="${CHARACTERS[k].name}">
+                                    ${characterPicture(getImagePath(k, 'normal', 0), { alt: CHARACTERS[k].name, width: 42 })}
                                 </div>
                             `).join('')}
                         </div>
@@ -233,7 +234,7 @@
                     <div class="quest-list">
                         <a href="selfcare/" class="quest-card ${quests.care.done ? 'quest-card--done' : ''}">
                             <div class="quest-card__icon">
-                                <img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                                <picture class="ye-pic"><source type="image/webp" srcset="images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="60px"><img src="images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="60" height="60" decoding="async"></picture>
                             </div>
                             <div class="quest-card__content">
                                 <div class="quest-card__title">本日のシグナル送信</div>
@@ -245,7 +246,7 @@
 
                         <a href="quiz/" class="quest-card ${quests.quiz.done ? 'quest-card--done' : ''}">
                             <div class="quest-card__icon">
-                                <img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                                <picture class="ye-pic"><source type="image/webp" srcset="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="60px"><img src="images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="60" height="60" decoding="async"></picture>
                             </div>
                             <div class="quest-card__content">
                                 <div class="quest-card__title">本日のミニ知識</div>
@@ -257,7 +258,7 @@
 
                         <a href="boost/" class="quest-card">
                             <div class="quest-card__icon">
-                                <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                                <picture class="ye-pic"><source type="image/webp" srcset="images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="60px"><img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="60" height="60" decoding="async"></picture>
                             </div>
                             <div class="quest-card__content">
                                 <div class="quest-card__title">本日のブースト</div>
@@ -269,7 +270,7 @@
 
                         <a href="advice/" class="quest-card ${quests.advice.done ? 'quest-card--done' : ''}">
                             <div class="quest-card__icon">
-                                <img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                                <picture class="ye-pic"><source type="image/webp" srcset="images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="60px"><img src="images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="60" height="60" decoding="async"></picture>
                             </div>
                             <div class="quest-card__content">
                                 <div class="quest-card__title">今日のひとこと</div>
@@ -366,7 +367,7 @@
                         const isAndroid = /Android/.test(ua);
                         // 公式バッジ（Apple: 日本語「App Storeで入手」 / Google: 日本語「Google Playで手に入れよう」）
                         const appleBadge = `<a href="${APPLE}" target="_blank" rel="noopener" class="store-badge" aria-label="App Storeで入手"><img src="images/store-badges/apple-appstore-ja.svg" alt="App Storeで入手"></a>`;
-                        const playBadge = `<a href="${PLAY}" target="_blank" rel="noopener" class="store-badge" aria-label="Google Playで手に入れよう"><img src="images/store-badges/google-play-ja.png" alt="Google Playで手に入れよう"></a>`;
+                        const playBadge = `<a href="${PLAY}" target="_blank" rel="noopener" class="store-badge" aria-label="Google Playで手に入れよう"><img src="images/store-badges/google-play-ja.png" alt="Google Playで手に入れよう" width="124" height="48"></a>`;
                         // デバイス出し分け：iOSはApp Storeのみ／AndroidはPlayのみ／PC等は両方
                         let badges, note;
                         if (isIOS) { badges = appleBadge; note = ''; }
@@ -376,7 +377,7 @@
                     <div class="app-download">
                         <div class="app-download__chip">Download</div>
                         <h2 class="app-download__title">アプリでもっとゆっくり</h2>
-                        <p class="app-download__lead">iPhone・Android アプリをリリースしました。<br>毎日のセルフケアを、もっと手軽に。完全無料。</p>
+                        <p class="app-download__lead">iPhone・Android アプリをリリースしました。<br>毎日のセルフケアを、もっと手軽に。基本無料。</p>
                         <div class="app-download__badges">${badges}</div>
                         ${note}
                     </div>
@@ -399,7 +400,7 @@
                     <!-- ロゴ控えめ表示 -->
                     <div style="text-align: center; margin: 32px 0 16px; opacity: 0.6;">
                         <a href="https://kimito-link.com/" target="_blank" rel="noopener" style="display: inline-block;">
-                            <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" style="height: 32px; width: auto;">
+                            <img src="images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" width="43" height="32" style="height: 32px; width: auto;">
                         </a>
                     </div>
                 </div>
@@ -451,11 +452,11 @@
                         <div class="ueda-card__chip" style="display:inline-block; font-family:'Noto Serif JP',serif; font-size:.65rem; letter-spacing:.28em; color:#8a7d76; text-transform:uppercase; margin-bottom:10px;">Today's Wisdom<span class="ueda-card__topic" style="display:inline-block; margin-left:8px; padding:2px 10px; background:rgba(167,138,107,.12); color:#a78a6b; border-radius:999px; font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:none;">${q.topic}</span></div>
                         <div class="ueda-card__body" style="display:flex; gap:14px; align-items:flex-start;">
                             <div class="ueda-card__avatar" style="width:60px; height:60px; flex:0 0 60px; border-radius:50%; background:#f4ede4; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                                <img src="${charImg}" alt="${char.name}" style="width:100%; height:100%; object-fit:contain; display:block;">
+                                ${characterPicture(charImg, { alt: char.name, width: 60, extra: 'style="width:100%; height:100%; object-fit:contain; display:block;"' })}
                             </div>
                             <div class="ueda-card__content" style="flex:1; min-width:0;">
                                 <div class="ueda-card__quote" style="font-family:'Noto Serif JP',serif; font-size:.95rem; font-weight:500; line-height:1.75; color:#2e2622; margin-bottom:10px;">${q.text}</div>
-                                <div class="ueda-card__source" style="font-size:.68rem; color:#8a7d76; line-height:1.5; padding-top:6px; border-top:1px dashed #ebe0d0;">— 上田 実『改訂版 驚異の再生医療 〜培養上清が世界を救う〜』扶桑社新書 (2022) より</div>
+                                <div class="ueda-card__source" style="font-size:.68rem; color:#8a7d76; line-height:1.5; padding-top:6px; border-top:1px dashed #ebe0d0;">— ${UEDA_SOURCE}<br>書籍からの引用です。研究段階の記述であり、効果や安全性を保証するものではありません。</div>
                             </div>
                         </div>
                         <div class="ueda-card__actions" style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
@@ -465,7 +466,7 @@
                     </div>
                 `;
                 document.getElementById('ueda-share-btn').addEventListener('click', () => {
-                    const txt = `【今日の上田先生の検証】\n\n${q.text}\n\n— 上田実『驚異の再生医療』より\n\nhttps://exosome.kimito.link/`;
+                    const txt = `【今日の上田先生のひとこと】\n\n${q.text}\n\n— ${UEDA_SOURCE}\n書籍からの引用であり、効果を保証するものではありません。\n\nhttps://exosome.kimito.link/`;
                     if (navigator.share) {
                         navigator.share({ text: txt }).catch(() => {});
                     } else if (navigator.clipboard) {
@@ -498,15 +499,15 @@
             // 先生への質問メモ
             renderDoctorMemo('today-memo');
 
-            // ビフォーアフター写真記録（非同期）
+            // 写真で経過を記録（非同期）
             renderPhotoLog('today-photo').catch((err) => {
                 console.error('Photo Log failed:', err);
             });
 
             // 初回起動時にオンボーディングを表示
             autoShowOnboardingIfNeeded(0);
-        })();
+        });
     </script>
 </body>
 </html>
-
+

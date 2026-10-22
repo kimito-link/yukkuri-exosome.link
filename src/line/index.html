@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
@@ -19,7 +20,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="../icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>エクソソームを、LINEで気軽に聞ける | ゆっくりエクソソーム</title>
     <meta name="description" content="エクソソーム・培養上清のことを、ゆっくり3人組「たぬ姉」がLINEでやさしく解説。友だち追加だけで、一般的な知識を会話形式で学べます。効果の断定や勧誘はしません。">
@@ -28,7 +28,7 @@
     <meta property="og:description" content="エクソソーム・培養上清のことを、ゆっくり3人組「たぬ姉」がLINEでやさしく解説。友だち追加だけで会話形式で学べます。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="../css/style.css">
     <style>
         /* このページ専用の軽い装飾。既存の .article / .btn を土台に最小限だけ足す。 */
@@ -165,7 +165,7 @@
 
                 <!-- ヒーロー -->
                 <section class="line-hero">
-                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" class="line-hero__char" loading="eager">
+                    <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="132px"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="132" height="132" class="line-hero__char" decoding="async" loading="eager"></picture>
                     <p class="line-hero__eyebrow">LINE公式アカウント</p>
                     <h1 class="line-hero__title">エクソソームのこと、<br><em>LINEで気軽に</em>聞いてみませんか？</h1>
                     <p class="line-hero__sub">
@@ -240,12 +240,12 @@
                 <section class="article__section">
                     <h2 class="article__h2">🏠 毎日の記録は、アプリで</h2>
                     <p>
-                        「もっと続けたい」「自分の体内シグナルを眺めたい」と思ったら、無料アプリ
+                        「もっと続けたい」「毎日のケアを記録したい」と思ったら、基本無料のアプリ
                         <strong>「ゆっくりエクソソーム」</strong>へ。睡眠・食事・運動・ファスティング、
                         サプリやクリニックの記録まで、3人組といっしょに積み上げられます。
                     </p>
                     <p style="text-align:center; margin: 22px 0 6px;">
-                        <a href="https://exosome.kimito.link/?ref_partner=otani" target="_blank" rel="noopener" class="btn btn--secondary" style="display:inline-flex; align-items:center; gap:8px;">
+                        <a href="https://exosome.kimito.link/" target="_blank" rel="noopener" class="btn btn--secondary" style="display:inline-flex; align-items:center; gap:8px;">
                             アプリ「ゆっくりエクソソーム」を見る →
                         </a>
                     </p>
@@ -278,8 +278,8 @@
 
     <div data-footer></div>
 
-    <script src="../js/common.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/auth-mode.js"></script>
+    <script defer src="../js/common.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script defer src="../js/auth-mode.js"></script>
 </body>
 </html>

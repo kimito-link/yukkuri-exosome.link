@@ -11,7 +11,7 @@ const QUIZ_QUESTIONS = [
             { text: '人工心臓の埋め込み技術', correct: false },
             { text: 'がんワクチンの開発', correct: false }
         ],
-        explain: '上田実先生（名古屋大学名誉教授）は、世界で初めて「幹細胞の分泌するサイトカイン（培養上清液中の成分）が組織再生の主役である」ことを発見しました。それまで廃棄物とみなされていた培養上清液に、再生医療の鍵が含まれていたのです。'
+        explain: '上田実先生（名古屋大学名誉教授）の著書では、幹細胞の分泌するサイトカイン（培養上清液中の成分）が組織再生に関わっている、と世界に先がけて報告された、と紹介されています。それまで廃棄物とみなされていた培養上清液に、再生に関わる成分が含まれているのではないか、と考えられています。研究段階の報告であり、効果を保証するものではありません。'
     },
     {
         q: '上田先生によれば、培養上清液には何種類のサイトカインなどのタンパク因子が含まれている？',
@@ -21,7 +21,7 @@ const QUIZ_QUESTIONS = [
             { text: '2,000種類以上', correct: true },
             { text: '無限', correct: false }
         ],
-        explain: '上田先生のインタビューによれば、培養上清液を分析すると「2,000種類以上のサイトカインなどのタンパク因子」が見つかったとのことです。これらが組み合わさって治療効果を生むと考えられています。'
+        explain: '上田先生のインタビューによれば、培養上清液を分析すると「2,000種類以上のサイトカインなどのタンパク因子」が見つかったとのことです。これらが一緒に働いているのではないか、と考えられています。研究段階の報告であり、効果を保証するものではありません。'
     },
     {
         q: 'エクソソームはどんなもの？',
@@ -215,7 +215,7 @@ function renderQuestion() {
                 <span>正解: ${score}</span>
             </div>
             <div class="quiz__character">
-                <img class="quiz__character-img" src="${charImg}" alt="${CHARACTERS[charKey].name}">
+                ${characterPicture(charImg, { alt: CHARACTERS[charKey].name, className: 'quiz__character-img', width: 140 })}
             </div>
             <div class="quiz__question">${q.q}</div>
             <div class="quiz__options" id="quiz-options">
@@ -331,7 +331,7 @@ function renderResult() {
     container.innerHTML = `
         <div class="quiz-result">
             <div class="quiz-result__chars">
-                <img class="quiz-result__char" src="${charImg}" alt="${char.name}">
+                ${characterPicture(charImg, { alt: char.name, className: 'quiz-result__char', width: 100 })}
             </div>
             <div class="quiz-result__score">スコア：${score} / ${questions.length}問正解</div>
             <div class="quiz-result__rank">${result.rank}</div>
@@ -356,9 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = `
             <div class="quiz-result">
                 <div class="quiz-result__chars">
-                    <img class="quiz-result__char" src="${getImagePath('rink', 'smileOpen', 1)}" alt="りんく">
-                    <img class="quiz-result__char" src="${getImagePath('konta', 'smileOpen', 1)}" alt="こん太">
-                    <img class="quiz-result__char" src="${getImagePath('tanunee', 'smileOpen', 1)}" alt="たぬ姉">
+                    ${characterPicture(getImagePath('rink', 'smileOpen', 1), { alt: 'りんく', className: 'quiz-result__char', width: 100 })}
+                    ${characterPicture(getImagePath('konta', 'smileOpen', 1), { alt: 'こん太', className: 'quiz-result__char', width: 100 })}
+                    ${characterPicture(getImagePath('tanunee', 'smileOpen', 1), { alt: 'たぬ姉', className: 'quiz-result__char', width: 100 })}
                 </div>
                 <h2 style="margin: 24px 0 8px;">エクソソームクイズ</h2>
                 <p style="color: var(--color-text-muted); margin-bottom: 24px;">全${QUIZ_QUESTIONS.length}問、何問正解できるかな？</p>

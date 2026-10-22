@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../../icons/favicon.ico">
@@ -19,13 +20,12 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="../../icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>エクソソームって何？ ゆっくり3人組がやさしく解説 | ゆっくりエクソソーム</title>
     <meta name="description" content="エクソソームを初心者でも分かるよう「お弁当箱」に例えて解説。細胞から分泌される小さなカプセルの正体を、ゆっくり3人組が楽しく説明します。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"></noscript>
     <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body data-depth="2">
@@ -48,8 +48,8 @@
                 </header>
 
                 <div class="article__lead">
-                    <strong>実は、再生医療の本命は「iPS細胞」ではなかった。</strong><br>
-                    名古屋大学の上田実先生が世界で初めて発見した、いま医学界を変えつつある<strong>「エクソソーム」</strong>。3人組が、芸能人もハマる最新の再生医療を、ゆっくりやさしく解きほぐします。
+                    <strong>再生医療の研究では、iPS細胞だけが注目されてきたわけではありません。</strong><br>
+                    名古屋大学の上田実先生が報告した、<strong>「エクソソーム」</strong>という細胞間の情報の運び手。ヒトでの医療応用は研究が進められている段階です。3人組が、その話題をゆっくりやさしく解きほぐします。
                 </div>
 
                 <section class="article__section">
@@ -57,31 +57,31 @@
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--tanunee">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>ねえ二人とも。今から30年以上前、ある日本の研究者が、世界中の医学者が見逃していた事実に気づいたの。<br>「<strong>幹細胞そのものじゃなくて、幹細胞が出している"何か"が、再生の主役だった</strong>」って。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--rink dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-blink-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-blink-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>えっ！？じゃあそれまでみんな、何を見てたのだ…？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--konta">
-                            <div class="dialog__avatar"><img src="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open.png" alt="こん太"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open.png" alt="こん太" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">こん太</div>
                                 <div class="dialog__bubble"><p>iPS細胞とか、聞いたことあるけど…そっちじゃないの？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
-                                <div class="dialog__bubble"><p>そう、みんなiPS細胞ばかり見ていたわ。でも答えは別のところにあった。それが今日のテーマ <strong>「エクソソーム」</strong> なのよ。</p></div>
+                                <div class="dialog__bubble"><p>そう、iPS細胞がよく知られているわね。いっぽうで、別のところも研究されているの。それが今日のテーマ <strong>「エクソソーム」</strong> なのよ。</p></div>
                             </div>
                         </div>
                     </div>
@@ -91,18 +91,18 @@
                     <h2 class="article__h2">🧬 結論：エクソソームの正体</h2>
                     <p><strong>エクソソームとは、細胞から分泌される、直径50〜150ナノメートル（10億分の1メートル）の超小型カプセル</strong>です。中にメッセンジャーRNA（mRNA）・マイクロRNA（miRNA）・タンパク質を抱え込み、ほかの細胞へ情報を届けます。</p>
                     <p>上田先生は、これをこう例えました——<br>「<em>エクソソームは封筒、情報伝達物質は便せん</em>」。<br>細胞同士が「お手紙」を交わしている。そのお手紙の<strong>封筒</strong>こそが、エクソソームの正体です。</p>
-                    <p>上田実先生の表現を借りると、「<em>エクソソームは封筒に相当し、情報伝達物質は便せんに書かれた手紙</em>」のような関係です（『驚異の再生医療』改訂版より）。</p>
+                    <p>上田実先生の表現を借りると、「<em>エクソソームは封筒に相当し、情報伝達物質は便せんに書かれた手紙</em>」のような関係です（『改訂版 驚異の再生医療 〜培養上清が世界を救う〜』より）。</p>
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--rink">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-half-eyes-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-half-eyes-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>むずかしいのだ…！ナノメートルって何なのだ？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>大丈夫よ、もっと身近なものに例えて説明するわね。</p></div>
@@ -117,28 +117,28 @@
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--tanunee">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>エクソソームを、小さな「お弁当箱」だと思ってみて。<br>細胞というお母さんが、お弁当箱（エクソソーム）の中に、お手紙やおかず（遺伝情報やタンパク質）を詰めて、他の細胞に届けるの。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--konta dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">こん太</div>
                                 <div class="dialog__bubble"><p>へえ！じゃあ受け取った細胞は、お弁当箱の中身を見て「あ、お母さんからこんなメッセージが来てる！」って分かるってこと？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>そういうこと。だからエクソソームは「細胞間の通信手段」とも呼ばれているのよ。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--rink dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>お弁当の配達なのだ！分かりやすいのだ！</p></div>
@@ -170,31 +170,31 @@
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--konta">
-                            <div class="dialog__avatar"><img src="../../images/characters/konta/kitsune-yukkuri-normal.png" alt="こん太"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/konta/kitsune-yukkuri-normal-360.webp 360w, ../../images/characters/konta/kitsune-yukkuri-normal-720.webp 720w" sizes="64px"><img src="../../images/characters/konta/kitsune-yukkuri-normal.png" alt="こん太" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">こん太</div>
                                 <div class="dialog__bubble"><p>姉ちゃん、なんで最近こんなに「エクソソーム」って聞くの？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
-                                <div class="dialog__bubble"><p>背景には、ある日本の研究者の発見があるのよ。<br>名古屋大学医学部の<strong>上田実</strong>先生（現・名誉教授）が、世界で初めて「<strong>幹細胞が分泌するサイトカインやエクソソームこそが、組織再生の主役</strong>」だと発見されたの。</p></div>
+                                <div class="dialog__bubble"><p>背景には、ある日本の研究者の報告があるのよ。<br>名古屋大学医学部の<strong>上田実</strong>先生（現・名誉教授）が、「<strong>幹細胞が分泌するサイトカインやエクソソームが、組織の再生に関わっているのではないか</strong>」と、世界に先がけて報告されたの。まだ研究段階の話よ。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--rink">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-blink-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-blink-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>えっ、それまでみんな何だと思ってたのだ？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
-                                <div class="dialog__bubble"><p>それまでは「幹細胞そのものが主役」だと考えられていたのね。だから培養上清液（幹細胞を育てた液から細胞を抜いた上澄み）は、長らく<strong>「廃棄物」として捨てられていた</strong>のよ。<br>でも、その上澄みのほうに、再生のキーが含まれていた。それを上田先生が証明されたの。</p></div>
+                                <div class="dialog__bubble"><p>それまでは「幹細胞そのものが主役」だと考えられていたのね。だから培養上清液（幹細胞を育てた液から細胞を抜いた上澄み）は、長らく<strong>「廃棄物」として扱われていた</strong>、と本には書かれているのよ。<br>その上澄みのほうに、再生に関わる成分が含まれているのではないか。それを上田先生のグループが研究として報告したの。効果を保証するものではないわ。</p></div>
                             </div>
                         </div>
                     </div>
@@ -216,22 +216,22 @@
 
                 <section class="article__section">
                     <h2 class="article__h2">📚 上田実先生の発見を、もう少し</h2>
-                    <p>上田実先生（名古屋大学医学部 名誉教授）のご著書『驚異の再生医療 培養上清が世界を救う』改訂版（扶桑社新書）によれば、研究は「動物の骨に幹細胞を移植する実験」から始まりました。「<strong>幹細胞の量を増やしても減らしても、骨の再生量があまり変わらない</strong>」という観察から、「幹細胞そのものではなく、幹細胞が出している『何か』が効いているのではないか」という仮説が生まれます。</p>
+                    <p>上田実先生（名古屋大学医学部 名誉教授）のご著書『改訂版 驚異の再生医療 〜培養上清が世界を救う〜』（扶桑社新書）によれば、研究は「動物の骨に幹細胞を移植する実験」から始まった、と紹介されています。「<strong>幹細胞の量を増やしても減らしても、骨の再生量があまり変わらない</strong>」という観察から、「幹細胞そのものではなく、幹細胞が出している『何か』が働いているのではないか」という仮説が生まれたと書かれています。</p>
                     <p>その後の研究で、培養上清液を分析すると<strong>100種類以上の生理活性物質</strong>が見つかり、さらに「<strong>幹細胞は数千種類のセクレトーム（分泌物）を産生し、それらが相加的に作用する</strong>」ことが分かってきました。タンパク質の一種であるサイトカイン（分子量が大きいもの）から、エクソソーム（遺伝子の切れ端が詰まったカプセルのような分子量が小さなもの）まで、培養上清には多種多様な物質が含まれています。</p>
                     <div class="article__note">
                         <strong>📌 ここがポイント</strong><br>
-                        単一の有効成分ではなく、「<strong>多種多様な物質が一緒になったときだけ治療効果が現れる</strong>」というのが上田先生の発見した重要な特徴です。これは、たくさんのおかずが組み合わさってこそ栄養バランスがとれるお弁当に似ています。
+                        単一の成分ではなく、「<strong>多種多様な物質が一緒になったときに働きが現れるのではないか</strong>」と、上田先生は考えている、と本では紹介されています。これは、たくさんのおかずが組み合わさってこそ栄養バランスがとれるお弁当に似た例えです。研究段階の報告であり、治療効果を保証するものではありません。
                     </div>
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--rink">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>数千種類！？お弁当の中身、おかずが多すぎて選べないのだ！</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>そう、だから「1個だけ取り出して薬にする」ではなくて、「培養上清をそのまま使う」のがポイントなのよ。</p></div>
@@ -245,35 +245,35 @@
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--konta">
-                            <div class="dialog__avatar"><img src="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open.png" alt="こん太"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-open.png" alt="こん太" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">こん太</div>
                                 <div class="dialog__bubble"><p>そんなにすごいなら、なんでみんな知らないの？病院に普通に置いてないし…</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>上田先生もご著書で触れているけど、本当の理由はね…<br><strong>「製薬企業にとって儲かりにくい」</strong>からなのよ。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--rink">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-blink-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-blink-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-blink-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
-                                <div class="dialog__bubble"><p>えっ、効くのに儲からないって、どういうことなのだ…？</p></div>
+                                <div class="dialog__bubble"><p>えっ、研究の話があるのに、なかなか広がらないって、どういうことなのだ…？</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-normal-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
-                                <div class="dialog__bubble"><p>従来の薬は「1つの有効成分」を特許で守るの。でも培養上清は<strong>2,000種類以上のサイトカイン</strong>が一緒に効く仕組み。特許化が難しいから、巨大企業が動きにくい。<br>その「制度のすき間」に、上田先生のような研究者と、それを実装する小さなクリニックが立っているのよ。</p></div>
+                                <div class="dialog__bubble"><p>従来の薬は「1つの有効成分」を特許で守ることが多い、と本では説明されているの。培養上清には<strong>2,000種類以上のサイトカインなど</strong>が含まれていて、それらが一緒に働いているのではないか、と考えられているの。効果を保証する話ではないわ。成分が多いと特許にしにくく、大きな企業が動きにくい、という見方もあるのよ。<br>だから研究や、自由診療として扱うクリニックで、いま検討が続いている、という整理なの。</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--konta">
-                            <div class="dialog__avatar"><img src="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">こん太</div>
                                 <div class="dialog__bubble"><p>つまりボクたちは、ニュースじゃなく「実物」で知る側に回るってことか…</p></div>
@@ -283,7 +283,7 @@
 
                     <div class="article__note">
                         <strong>📌 ここがこの記事のキモ</strong><br>
-                        エクソソームは「これから流行るかもしれない」未来の話ではなく、「<strong>すでに答えはあるのに、構造的に広まりきれていない</strong>」現在進行形の話なのです。
+                        エクソソームは「もう答えが出て、誰にでも効く」という話ではありません。研究は進んでいる一方で、ヒトでの確かめや制度の整備はまだ追いついていない、と考えられています。
                     </div>
                 </section>
 
@@ -291,20 +291,20 @@
                     <h2 class="article__h2">📝 3行まとめ</h2>
                     <ul>
                         <li>エクソソームは、細胞が交わす「お手紙の封筒」（直径約100nm）</li>
-                        <li>幹細胞そのものより、この封筒（と中身）こそが再生医療の主役だった</li>
-                        <li>すでに2,000種類以上の活性物質の働きが分かりつつあり、応用が始まっている</li>
+                        <li>幹細胞そのものだけでなく、この封筒（と中身）が再生に関わっている、と考えられている</li>
+                        <li>培養上清からは2,000種類以上の成分が報告されていて、応用は研究が進められている段階</li>
                     </ul>
 
                     <div class="dialog">
                         <div class="dialog__turn dialog__turn--rink">
-                            <div class="dialog__avatar"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">りんく</div>
                                 <div class="dialog__bubble"><p>「細胞のお弁当便」って覚えればいいのだ！</p></div>
                             </div>
                         </div>
                         <div class="dialog__turn dialog__turn--tanunee dialog__turn--right">
-                            <div class="dialog__avatar"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉"></div>
+                            <div class="dialog__avatar"><picture class="ye-pic"><source type="image/webp" srcset="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="64px"><img src="../../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="64" height="64" decoding="async"></picture></div>
                             <div class="dialog__body">
                                 <div class="dialog__name">たぬ姉</div>
                                 <div class="dialog__bubble"><p>その理解で十分よ。次の記事では「幹細胞との違い」を見ていきましょう。</p></div>
@@ -359,8 +359,8 @@
 
     <div data-footer></div>
 
-    <script src="../../js/common.js"></script>
-    <script src="../../js/auth.js"></script>
-    <script src="../../js/auth-mode.js"></script>
+    <script defer src="../../js/common.js"></script>
+    <script defer src="../../js/auth.js"></script>
+    <script defer src="../../js/auth-mode.js"></script>
 </body>
 </html>

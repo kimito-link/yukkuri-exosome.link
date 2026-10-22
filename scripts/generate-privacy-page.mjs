@@ -36,7 +36,7 @@ function buildHtml(cfg) {
     : `
                 <section class="article__section">
                     <h2 class="article__h2">💳 課金・サブスクリプション</h2>
-                    <p>本アプリは完全無料です。アプリ内課金およびサブスクリプションはありません。</p>
+                    <p>基本の記録は無料です。このアプリ内での課金やサブスクリプションはありません。長期の振り返りなど一部の機能は、kimito.link 側の追加の利用条件で解放されます。</p>
                 </section>`;
 
   return `<!DOCTYPE html>

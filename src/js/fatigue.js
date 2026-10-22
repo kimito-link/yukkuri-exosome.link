@@ -185,7 +185,7 @@ function renderFatigueCheck(containerId) {
                 </div>
 
                 <p style="font-size:.7rem; color:#8a7d76; margin-bottom:14px; letter-spacing:.04em; line-height:1.5;">
-                    点滴・サプリ・睡眠の効果を、体感で見える化。<br>
+                    点滴・サプリ・睡眠のあとの体感を、記録します。<br>
                     数字が<strong style="color:#7ca97a;">高いほど元気</strong>です（1=疲れ / 10=絶好調）。
                 </p>
 
@@ -272,7 +272,7 @@ function renderFatigueCheck(containerId) {
                 </div>
 
                 <div style="margin-top:10px; padding:8px; background:#faf6f1; border-radius:8px; font-size:.65rem; color:#8a7d76; line-height:1.5; letter-spacing:.03em;">
-                    💡 点滴やNMN・サプリの<strong>「効いてる感」</strong>を見える化。Boostタブの記録と並べて変化を観察できます。
+                    💡 点滴やNMN・サプリのあとの<strong>体感</strong>を記録します。Boostタブの記録と並べて見返せます。医療的な効果の判定ではありません。
                 </div>
             </div>
         `;

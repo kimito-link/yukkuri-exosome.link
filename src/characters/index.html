@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
@@ -19,13 +20,12 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="../icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>キャラクター紹介 | ゆっくりエクソソーム</title>
     <meta name="description" content="ゆっくりエクソソームに登場する3人組「りんく・こん太・たぬ姉」のプロフィール。それぞれの担当と性格を紹介。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"></noscript>
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .char-profile {
@@ -205,7 +205,7 @@
                 <!-- りんく -->
                 <article class="char-profile">
                     <div>
-                        <img class="char-profile__main-img" src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく">
+                        <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="220px"><img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="220" height="220" class="char-profile__main-img" decoding="async"></picture>
                     </div>
                     <div>
                         <h2 class="char-profile__name" style="color:#FF4FA3;">りんく</h2>
@@ -225,10 +225,10 @@
                         </div>
 
                         <div class="char-profile__images">
-                            <img src="../images/characters/link/link-yukkuri-normal-mouth-closed.png" alt="ノーマル">
-                            <img src="../images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="スマイル">
-                            <img src="../images/characters/link/link-yukkuri-blink-mouth-closed.png" alt="ぱちん">
-                            <img src="../images/characters/link/link-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-normal-mouth-closed-360.webp 360w, ../images/characters/link/link-yukkuri-normal-mouth-closed-720.webp 720w" sizes="72px"><img src="../images/characters/link/link-yukkuri-normal-mouth-closed.png" alt="ノーマル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-smile-mouth-closed-360.webp 360w, ../images/characters/link/link-yukkuri-smile-mouth-closed-720.webp 720w" sizes="72px"><img src="../images/characters/link/link-yukkuri-smile-mouth-closed.png" alt="スマイル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-blink-mouth-closed-360.webp 360w, ../images/characters/link/link-yukkuri-blink-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/link/link-yukkuri-blink-mouth-closed.png" alt="ぱちん" width="96" height="96" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-half-eyes-mouth-closed-360.webp 360w, ../images/characters/link/link-yukkuri-half-eyes-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/link/link-yukkuri-half-eyes-mouth-closed.png" alt="ジト目" width="96" height="96" decoding="async"></picture>
                         </div>
                     </div>
                 </article>
@@ -236,7 +236,7 @@
                 <!-- こん太 -->
                 <article class="char-profile">
                     <div>
-                        <img class="char-profile__main-img" src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太">
+                        <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="220px"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="220" height="220" class="char-profile__main-img" decoding="async"></picture>
                     </div>
                     <div>
                         <h2 class="char-profile__name" style="color:#F28C28;">こん太</h2>
@@ -256,10 +256,10 @@
                         </div>
 
                         <div class="char-profile__images">
-                            <img src="../images/characters/konta/kitsune-yukkuri-normal.png" alt="ノーマル">
-                            <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="スマイル">
-                            <img src="../images/characters/konta/kitsune-yukkuri-blink-mouth-closed.png" alt="ぱちん">
-                            <img src="../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-normal-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-normal-720.webp 720w" sizes="72px"><img src="../images/characters/konta/kitsune-yukkuri-normal.png" alt="ノーマル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-smile-mouth-closed-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-smile-mouth-closed-720.webp 720w" sizes="72px"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-closed.png" alt="スマイル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-blink-mouth-closed-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-blink-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/konta/kitsune-yukkuri-blink-mouth-closed.png" alt="ぱちん" width="96" height="96" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-closed-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/konta/kitsune-yukkuri-half-eyes-mouth-closed.png" alt="ジト目" width="96" height="96" decoding="async"></picture>
                         </div>
                     </div>
                 </article>
@@ -267,7 +267,7 @@
                 <!-- たぬ姉 -->
                 <article class="char-profile">
                     <div>
-                        <img class="char-profile__main-img" src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉">
+                        <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="220px"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="220" height="220" class="char-profile__main-img" decoding="async"></picture>
                     </div>
                     <div>
                         <h2 class="char-profile__name" style="color:#3E9B6A;">たぬ姉</h2>
@@ -287,10 +287,10 @@
                         </div>
 
                         <div class="char-profile__images">
-                            <img src="../images/characters/tanunee/tanuki-yukkuri-normal-mouth-closed.png" alt="ノーマル">
-                            <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="スマイル">
-                            <img src="../images/characters/tanunee/tanuki-yukkuri-blink-mouth-closed.png" alt="ぱちん">
-                            <img src="../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-closed.png" alt="ジト目">
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-normal-mouth-closed-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-normal-mouth-closed-720.webp 720w" sizes="72px"><img src="../images/characters/tanunee/tanuki-yukkuri-normal-mouth-closed.png" alt="ノーマル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed-720.webp 720w" sizes="72px"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-closed.png" alt="スマイル" width="72" height="72" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-blink-mouth-closed-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-blink-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/tanunee/tanuki-yukkuri-blink-mouth-closed.png" alt="ぱちん" width="96" height="96" decoding="async"></picture>
+                            <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-closed-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-closed-720.webp 720w" sizes="96px"><img src="../images/characters/tanunee/tanuki-yukkuri-half-eyes-mouth-closed.png" alt="ジト目" width="96" height="96" decoding="async"></picture>
                         </div>
                     </div>
                 </article>
@@ -313,8 +313,8 @@
 
     <div data-footer></div>
 
-    <script src="../js/common.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/auth-mode.js"></script>
+    <script defer src="../js/common.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script defer src="../js/auth-mode.js"></script>
 </body>
 </html>

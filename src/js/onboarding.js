@@ -22,7 +22,7 @@ function getOnboardingSlides(depth = 0) {
             visual: 'trio',
             content: `
                 <div class="onboarding__brand">
-                    <img class="onboarding__brand-logo" src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" onerror="this.style.display='none'">
+                    <img class="onboarding__brand-logo" src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" width="75" height="56" onerror="this.style.display='none'">
                     <div class="onboarding__brand-sub">Presents</div>
                 </div>
                 <h2 class="onboarding__title">ようこそ、<br><em>ゆっくりエクソソーム</em>へ</h2>
@@ -41,16 +41,16 @@ function getOnboardingSlides(depth = 0) {
             chip: 'Body Signal Map',
             visual: 'bodymap-mini',
             content: `
-                <h2 class="onboarding__title">あなたの体内エクソソームを、<br><em>見える化</em></h2>
+                <h2 class="onboarding__title">毎日のケア記録を、<br><em>マップで見える化</em></h2>
                 <p class="onboarding__desc">
                     髪・肌・目元・循環・腸・筋肉。<br>
-                    6つの部位それぞれに、<br>
-                    エクソソームが流れています。
+                    記録したケアに合わせて、<br>
+                    6つの部位が光る演出です。
                 </p>
                 <ul class="onboarding__features">
                     <li>毎日のケアで、対応する部位が光ります</li>
-                    <li>今日の自分の状態が、ひと目でわかる</li>
-                    <li>続けるほど、活性度がアップ</li>
+                    <li>記録の積み重ねが、ひと目でわかります</li>
+                    <li>光や粒の数は、測定値ではありません</li>
                 </ul>
             `
         },
@@ -66,8 +66,8 @@ function getOnboardingSlides(depth = 0) {
             content: `
                 <h2 class="onboarding__title">毎日の<em>肌</em>と<em>疲労</em>を、<br>10段階で記録</h2>
                 <p class="onboarding__desc">
-                    点滴やサプリの効果を「体感」で見える化。<br>
-                    業界標準のスケールで、ブレずに記録できます。
+                    その日の肌と疲れの体感を記録。<br>
+                    1〜10の目安で、あとから見返せます。
                 </p>
                 <ul class="onboarding__features">
                     <li>肌セルフチェック（ハリ・透明感・うるおいなど5項目）</li>
@@ -95,8 +95,9 @@ function getOnboardingSlides(depth = 0) {
                 <ul class="onboarding__features">
                     <li>エクソソーム点滴・上清液・NMN点滴など16種</li>
                     <li>NMN系には、特別なミトコンドリア演出</li>
-                    <li>取った日と肌・疲労の変化が並べて見える</li>
+                    <li>記録した日と、肌・疲労の体感を並べて見返せます</li>
                 </ul>
+                <p class="onboarding__note">エクソソーム・培養上清等の施術は公的保険適用外の自由診療で、国内で承認された医薬品ではないものを含みます。費用・リスク・副作用は必ず受診先で説明を受けてください。</p>
             `
         },
         // ───────────────────────────────────────
@@ -118,7 +119,7 @@ function getOnboardingSlides(depth = 0) {
                 <ul class="onboarding__features">
                     <li>📅 次回の点滴・サプリ予定をカウントダウン</li>
                     <li>💬 先生への質問メモ（画面ごとお見せできます）</li>
-                    <li>📸 ビフォーアフター写真記録（端末内のみ）</li>
+                    <li>📸 写真で経過を記録（端末内のみ）</li>
                 </ul>
             `
         },
@@ -137,7 +138,7 @@ function getOnboardingSlides(depth = 0) {
                     3人組が、いつでも見守っています。
                 </p>
                 <ul class="onboarding__features">
-                    <li>無料・kimito.link アカウントでログイン</li>
+                    <li>基本無料・kimito.link アカウントでログイン</li>
                     <li>通知をオンにすると、毎日呼んでくれます</li>
                     <li>続けるほど、3人と仲よくなれます</li>
                 </ul>
@@ -209,13 +210,13 @@ function showOnboarding(depth = 0, onDone = null) {
                 <div class="onboarding__visual">
                     <div class="onboarding__trio">
                         <div class="onboarding__trio-member">
-                            <img src="${getImagePath('rink', 'smileOpen', depth)}" alt="りんく">
+                            ${characterPicture(getImagePath('rink', 'smileOpen', depth), { alt: 'りんく', width: 110 })}
                         </div>
                         <div class="onboarding__trio-member onboarding__trio-member--middle">
-                            <img src="${getImagePath('konta', 'smileOpen', depth)}" alt="こん太">
+                            ${characterPicture(getImagePath('konta', 'smileOpen', depth), { alt: 'こん太', width: 140, extra: 'fetchpriority="high"' })}
                         </div>
                         <div class="onboarding__trio-member">
-                            <img src="${getImagePath('tanunee', 'smileOpen', depth)}" alt="たぬ姉">
+                            ${characterPicture(getImagePath('tanunee', 'smileOpen', depth), { alt: 'たぬ姉', width: 110 })}
                         </div>
                     </div>
                 </div>
@@ -226,7 +227,7 @@ function showOnboarding(depth = 0, onDone = null) {
                     <div class="onboarding__hero">
                         <div class="onboarding__halo ${slide.haloClass || ''}"></div>
                         <div class="onboarding__hero-char">
-                            <img src="${getImagePath(slide.char, 'smileOpen', depth)}" alt="${CHARACTERS[slide.char].name}">
+                            ${characterPicture(getImagePath(slide.char, 'smileOpen', depth), { alt: CHARACTERS[slide.char].name, width: 200 })}
                         </div>
                     </div>
                 </div>
@@ -266,7 +267,7 @@ function showOnboarding(depth = 0, onDone = null) {
                         </svg>
                         <div class="charmap__ring"></div>
                         <div class="charmap__face">
-                            <img src="${getImagePath('rink', 'smileOpen', depth)}" alt="りんく">
+                            ${characterPicture(getImagePath('rink', 'smileOpen', depth), { alt: 'りんく', width: 110 })}
                         </div>
                         ${regions.map(r => `
                             <div class="charmap__point charmap__point--${r.id} ${r.active ? 'is-active' : ''}" style="top:${positions[r.id].top}; left:${positions[r.id].left};">

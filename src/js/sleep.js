@@ -198,8 +198,8 @@ function renderSleepLog(containerId) {
                 </div>
 
                 <p style="font-size:.7rem; color:#8a7d76; margin-bottom:14px; letter-spacing:.04em; line-height:1.5;">
-                    細胞の修復シグナルは<strong style="color:#6b6499;">深い眠りの間</strong>に最も働きます。<br>
-                    睡眠は、体内エクソ活性のいちばんの土台。
+                    深い眠りのあいだに、体の修復が進みやすい、と言われています。<br>
+                    睡眠の記録は、毎日の土台のひとつです。
                 </p>
 
                 ${mainHtml}

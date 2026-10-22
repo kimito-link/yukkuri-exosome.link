@@ -1,5 +1,5 @@
 /**
- * Photo Log - ビフォーアフター写真記録
+ * Photo Log - 写真で経過を記録
  *
  * 顔写真を撮影/選択 → 端末内 IndexedDB に保存 → スライダーで比較
  *
@@ -226,7 +226,7 @@ async function renderPhotoLog(containerId) {
                 </div>
 
                 <p style="font-size:.7rem; color:#8a7d76; margin-bottom:14px; letter-spacing:.04em; line-height:1.5;">
-                    週1回ペースで撮影 → ビフォーアフター比較。<br>
+                    週1回くらいのペースで撮影して、あとから見比べられます。<br>
                     📌 写真は<strong>すべて端末内</strong>にだけ保存、外部送信しません。
                 </p>
 
@@ -246,7 +246,7 @@ async function renderPhotoLog(containerId) {
                 ${photosCount >= 2 ? `
                     <div style="display:flex; gap:6px; margin-bottom:12px;">
                         <button id="photo-compare-toggle" style="flex:1; padding:10px; background:${compareMode ? '#c9899a' : 'transparent'}; color:${compareMode ? '#fff' : '#c9899a'}; border:1.5px solid #c9899a; border-radius:10px; font-size:.85rem; font-weight:700; cursor:pointer; letter-spacing:.05em;">
-                            ${compareMode ? '✕ 比較モード終了' : '⇄ ビフォーアフター比較'}
+                            ${compareMode ? '✕ 比較を終了' : '⇄ 写真を見比べる'}
                         </button>
                     </div>
                 ` : ''}
@@ -256,7 +256,7 @@ async function renderPhotoLog(containerId) {
                         <div style="display:flex; gap:8px;">
                             <!-- Before -->
                             <div style="flex:1; text-align:center;">
-                                <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.15em; margin-bottom:4px;">BEFORE</div>
+                                <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.15em; margin-bottom:4px;">前の記録</div>
                                 <select id="photo-before" style="width:100%; padding:6px; border:1px solid #ebe0d0; border-radius:6px; font-size:.75rem; background:#fff; color:#2e2622; margin-bottom:6px;">
                                     ${photos.map(p => `<option value="${p.id}" ${p.id === beforeId ? 'selected' : ''}>${formatPhotoDate(p.takenAt)} (${daysAgo(p.takenAt)})</option>`).join('')}
                                 </select>
@@ -264,7 +264,7 @@ async function renderPhotoLog(containerId) {
                             </div>
                             <!-- After -->
                             <div style="flex:1; text-align:center;">
-                                <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.15em; margin-bottom:4px;">AFTER</div>
+                                <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.15em; margin-bottom:4px;">後の記録</div>
                                 <select id="photo-after" style="width:100%; padding:6px; border:1px solid #ebe0d0; border-radius:6px; font-size:.75rem; background:#fff; color:#2e2622; margin-bottom:6px;">
                                     ${photos.map(p => `<option value="${p.id}" ${p.id === afterId ? 'selected' : ''}>${formatPhotoDate(p.takenAt)} (${daysAgo(p.takenAt)})</option>`).join('')}
                                 </select>

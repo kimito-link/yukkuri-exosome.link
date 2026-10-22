@@ -126,7 +126,7 @@ const STAGE_EMOJI = {
                             <span>クイズ最高 ${quizBest}/${quizMax}</span>
                         </div>
                         <div style="font-size:.62rem; color:#8a7d76; margin-top:8px; line-height:1.5; letter-spacing:.02em;">
-                            🧬 学び続ける脳は若い。リスキリングは長寿スキルの柱。「心と社会のケア」とクイズで育ちます。
+                            🧬 学び続けることは、脳の健康と関連する、と言われています。「心と社会のケア」とクイズの記録がここに集まります。
                         </div>
                     </div>
                 `;
@@ -135,15 +135,15 @@ const STAGE_EMOJI = {
             <!-- 3人組 -->
             <div class="garden-chars">
                 <div class="garden-char">
-                    <div class="garden-char__img"><img src="${getImagePath('rink', 'smile', 1)}" alt="りんく"></div>
+                    <div class="garden-char__img">${characterPicture(getImagePath('rink', 'smile', 1), { alt: 'りんく', width: 70 })}</div>
                     <div class="garden-char__name" style="color:#ff8fa3;">りんく</div>
                 </div>
                 <div class="garden-char">
-                    <div class="garden-char__img"><img src="${getImagePath('konta', 'smile', 1)}" alt="こん太"></div>
+                    <div class="garden-char__img">${characterPicture(getImagePath('konta', 'smile', 1), { alt: 'こん太', width: 70 })}</div>
                     <div class="garden-char__name" style="color:#ffb347;">こん太</div>
                 </div>
                 <div class="garden-char">
-                    <div class="garden-char__img"><img src="${getImagePath('tanunee', 'smile', 1)}" alt="たぬ姉"></div>
+                    <div class="garden-char__img">${characterPicture(getImagePath('tanunee', 'smile', 1), { alt: 'たぬ姉', width: 70 })}</div>
                     <div class="garden-char__name" style="color:#c19a6b;">たぬ姉</div>
                 </div>
             </div>

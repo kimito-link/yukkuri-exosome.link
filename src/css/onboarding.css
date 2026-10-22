@@ -412,6 +412,16 @@
     font-size: 0.95rem;
 }
 
+.onboarding__note {
+    margin: 14px auto 0;
+    max-width: 320px;
+    text-align: left;
+    font-size: 0.68rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+}
+
 /* フッター */
 .onboarding__footer {
     position: absolute;
@@ -486,6 +496,25 @@
 
 .onboarding__cta:hover .onboarding__cta-arrow {
     transform: translateX(4px);
+}
+
+/* 375px前後で「タップで次へ」が本文に寄りすぎないよう、下の余白を広げる */
+@media (max-width: 480px) {
+    .onboarding__slide {
+        justify-content: flex-start;
+        padding: 56px 20px 200px;
+        overflow-y: auto;
+    }
+    .onboarding__visual {
+        min-height: 148px;
+        margin-bottom: 20px;
+    }
+    .onboarding__tap-hint {
+        bottom: 148px;
+    }
+    .onboarding__desc {
+        margin-bottom: 16px;
+    }
 }
 
 /* レスポンシブ */

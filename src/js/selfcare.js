@@ -366,7 +366,7 @@ function renderFeedback() {
 
     const el = document.getElementById('selfcare-feedback');
     el.innerHTML = `
-        <img class="selfcare__feedback-char" src="${charImg}" alt="${char.name}">
+        ${characterPicture(charImg, { alt: char.name, className: 'selfcare__feedback-char', width: 80 })}
         <div class="selfcare__feedback-text">
             <strong style="color: ${char.color}">${char.name}：</strong><br>
             ${fb.text}

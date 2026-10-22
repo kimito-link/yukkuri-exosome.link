@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
@@ -19,13 +20,12 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="../icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>サイトについて | ゆっくりエクソソーム</title>
     <meta name="description" content="ゆっくりエクソソームの運営方針・免責事項・お問い合わせ。エクソソームに関する一般情報を、ゆっくり3人組のキャラクターを通じて分かりやすく届けます。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"></noscript>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-depth="1">
@@ -85,7 +85,7 @@
                         <li><strong>上田 実（名古屋大学医学部 名誉教授）</strong>
                             <ul style="margin-top: 4px;">
                                 <li>『驚異の再生医療 〜培養上清とは何か〜』扶桑社新書（2019年）</li>
-                                <li>『改訂版 驚異の再生医療 培養上清が世界を救う』扶桑社（2022年）</li>
+                                <li>『改訂版 驚異の再生医療 〜培養上清が世界を救う〜』扶桑社新書（2022年）</li>
                                 <li>名古屋大学医学系研究科顎顔面外科学の各種研究発表（培養上清による組織再生に関する一連の研究、2012年〜）</li>
                             </ul>
                         </li>
@@ -97,8 +97,8 @@
                         ※ 当サイトは上田実先生・名古屋大学・出版各社から監修や承認を受けたものではありません。あくまで公開情報を参考にした、一般向けの情報提供を目的としたサイトです。
                     </p>
 
-                    <h3 class="article__h3">医療広告ガイドラインへの準拠</h3>
-                    <p>当サイトは厚生労働省の医療広告ガイドラインに準拠し、効果を断定する表現や、誤解を招く表現を避けています。「治る」「絶対」「最高」など、効能を保証する表現は使用しません。</p>
+                    <h3 class="article__h3">医療広告ガイドラインへの配慮</h3>
+                    <p>当サイトは厚生労働省の医療広告ガイドラインに配慮し、効果を断定する表現や、誤解を招く表現を避けています。「治る」「絶対」「最高」など、効能を保証する表現は使用しません。</p>
 
                     <h3 class="article__h3">中立性</h3>
                     <p>特定のクリニック・商品・サービスを推奨することを目的とした記述は行いません。読者のみなさまが施術や商品を検討する際の参考情報として、中立的な視点で情報をまとめます。</p>
@@ -158,8 +158,8 @@
 
     <div data-footer></div>
 
-    <script src="../js/common.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/auth-mode.js"></script>
+    <script defer src="../js/common.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script defer src="../js/auth-mode.js"></script>
 </body>
 </html>
