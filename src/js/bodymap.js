@@ -89,7 +89,7 @@ function renderBodyMap(containerId, activeCareIds = new Set(), depth = 0) {
                 <div class="charmap__ring"></div>
                 <!-- キャラ顔 -->
                 <div class="charmap__face">
-                    <img src="${faceImg}" alt="りんく">
+                    ${characterPicture(faceImg, { alt: 'りんく', width: 192 })}
                 </div>
                 <!-- 部位ポイント -->
                 ${BODY_REGIONS.map(r => {

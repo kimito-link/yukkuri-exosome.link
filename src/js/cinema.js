@@ -332,7 +332,7 @@ const CINEMA_ACTS = [
         const char = CHARACTERS[a.speaker];
         $say.className = `cinema__say cinema__say--${a.speaker}`;
         $say.innerHTML = `
-            <img src="${getImagePath(a.speaker, a.expression, CINEMA_DEPTH)}" alt="${char.name}">
+            ${characterPicture(getImagePath(a.speaker, a.expression, CINEMA_DEPTH), { alt: char.name, width: 52 })}
             <div class="cinema__bubble"><strong>${char.name}</strong>「${a.line}」</div>
         `;
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <script>(function(){var h=false;var re=/(?:^|;\s*)__client_uat[^=]*=([^;]*)/g;var m;while((m=re.exec(document.cookie))){if(m[1]&&m[1]!=='0'){h=true;break}}document.documentElement.setAttribute('data-auth',h?'member':'guest');})();</script>
     <!-- ye:favicon:start -->
     <link rel="icon" type="image/x-icon" href="../icons/favicon.ico">
@@ -19,7 +20,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <!-- ye:favicon:end -->
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ゆっくりエクソソーム｜毎日のセルフケアを記録・振り返る</title>
     <meta name="description" content="ゆっくり3人組と、肌・疲れ・睡眠や日々のセルフケアを記録。サプリ・受診メモ・写真も自分の端末で振り返る基本無料のアプリです。クリニック向けの紹介制度もご案内。">
@@ -28,7 +28,7 @@
     <meta property="og:description" content="知る・記録する・振り返る。ゆっくり3人組と続ける、基本無料のセルフケア記録アプリ。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/lp.css">
@@ -47,12 +47,12 @@
             <div class="lp-hero__bg" aria-hidden="true"><span class="lp-hero__orb lp-hero__orb--1"></span><span class="lp-hero__orb lp-hero__orb--2"></span><span class="lp-hero__ring lp-hero__ring--1"></span></div>
             <div class="lp-hero__inner">
                 <div class="lp-hero__trio">
-                    <img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" width="180" height="180" alt="こん太" fetchpriority="high">
-                    <img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" width="180" height="180" alt="りんく" class="lp-hero__trio-main" fetchpriority="high">
-                    <img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" width="180" height="180" alt="たぬ姉" fetchpriority="high">
+                    <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="88px"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="88" height="88" decoding="async" fetchpriority="high"></picture>
+                    <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="108px"><img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="108" height="108" class="lp-hero__trio-main" decoding="async" fetchpriority="high"></picture>
+                    <picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="88px"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="88" height="88" decoding="async" fetchpriority="high"></picture>
                 </div>
                 <p class="lp-hero__eyebrow">知る・記録する・振り返る</p>
-                <h1 id="lp-title" class="lp-hero__title">きょうのセルフケアを、<br><span class="lp-hero__em">ゆっくり3人組</span>と。</h1>
+                <h1 id="lp-title" class="lp-hero__title">今日のセルフケアを、<br><span class="lp-hero__em">ゆっくり3人組</span>と。</h1>
                 <p class="lp-hero__sub">肌や疲れの手ごたえ、眠った時間、続けたケア。<br>毎日の小さな記録を、自分のペースで残せます。</p>
                 <div class="clinic-actions"><a href="../" class="clinic-button" data-ref-link>ブラウザで使ってみる <span aria-hidden="true">→</span></a><a href="#clinic-partner" class="clinic-button clinic-button--secondary">クリニック・紹介パートナーの方へ</a></div>
                 <p class="clinic-note">基本の記録は無料。アプリの説明はログインせずに読めます。<br>診断や治療ではなく、毎日のセルフケアを振り返るためのアプリです。</p>
@@ -92,9 +92,9 @@
         <section class="lp-section lp-section--tint" aria-labelledby="lp-trio-title">
             <h2 id="lp-trio-title" class="lp-section__title">3人と、自分のペースで。</h2>
             <div class="lp-trio">
-                <article class="lp-trio__card lp-trio__card--rink"><img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" width="160" height="160" alt="りんく" loading="lazy"><h3>りんく</h3><p>つくる人。毎日の「つなご！」を一緒に。</p></article>
-                <article class="lp-trio__card lp-trio__card--konta"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" width="160" height="160" alt="こん太" loading="lazy"><h3>こん太</h3><p>やってみる係。今日の小さな一歩を応援。</p></article>
-                <article class="lp-trio__card lp-trio__card--tanunee"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" width="160" height="160" alt="たぬ姉" loading="lazy"><h3>たぬ姉</h3><p>調べ係。知ることも、ゆっくり一緒に。</p></article>
+                <article class="lp-trio__card lp-trio__card--rink"><picture class="ye-pic"><source type="image/webp" srcset="../images/characters/link/link-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/link/link-yukkuri-smile-mouth-open-720.webp 720w" sizes="110px"><img src="../images/characters/link/link-yukkuri-smile-mouth-open.png" alt="りんく" width="110" height="110" decoding="async" loading="lazy"></picture><h3>りんく</h3><p>つくる人。毎日の「つなご！」を一緒に。</p></article>
+                <article class="lp-trio__card lp-trio__card--konta"><picture class="ye-pic"><source type="image/webp" srcset="../images/characters/konta/kitsune-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/konta/kitsune-yukkuri-smile-mouth-open-720.webp 720w" sizes="110px"><img src="../images/characters/konta/kitsune-yukkuri-smile-mouth-open.png" alt="こん太" width="110" height="110" decoding="async" loading="lazy"></picture><h3>こん太</h3><p>やってみる係。今日の小さな一歩を応援。</p></article>
+                <article class="lp-trio__card lp-trio__card--tanunee"><picture class="ye-pic"><source type="image/webp" srcset="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-360.webp 360w, ../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open-720.webp 720w" sizes="110px"><img src="../images/characters/tanunee/tanuki-yukkuri-smile-mouth-open.png" alt="たぬ姉" width="110" height="110" decoding="async" loading="lazy"></picture><h3>たぬ姉</h3><p>調べ係。知ることも、ゆっくり一緒に。</p></article>
             </div>
         </section>
         <section class="lp-section" id="lp-privacy" aria-labelledby="lp-privacy-title">
@@ -110,7 +110,8 @@
                 <h3>紹介制度は、提携条件を確認してから。</h3>
                 <ol class="clinic-steps"><li><span class="clinic-step-number">01</span><h4>専用の紹介リンクを案内</h4><p>紹介パートナーとしての受付後、コードの発行・有効化を確認します。</p></li><li><span class="clinic-step-number">02</span><h4>対象の利用・お支払いを確認</h4><p>紹介先が対象の有料サービスを利用した場合に、運営が成果を確認します。</p></li><li><span class="clinic-step-number">03</span><h4>契約条件に沿って紹介料を計上</h4><p>料率・対象売上・確認方法・支払時期は提携時に確認します。リンクを開いただけで報酬が発生するものではありません。</p></li></ol>
                 <p class="clinic-note">ご案内・成果確認・支払いの案内は運営窓口で行います。紹介料の対象は、提携条件で定めるアプリ・サービスの利用料です。</p>
-                <div class="clinic-actions"><a href="https://kimito.link/partner/" class="clinic-button" data-ref-link>紹介制度・提携条件を確認する →</a><a href="https://kimito.link/dashboard/longevity/" class="clinic-button clinic-button--secondary" data-ref-link>追加機能の案内を確認する</a></div>
+                <div class="clinic-actions"><a href="https://kimito.link/partner/" class="clinic-button" data-ref-link>紹介制度・提携条件を確認する →</a><a href="https://kimito.link/dashboard/longevity/" class="clinic-button clinic-button--secondary" data-ref-link>追加機能の案内を確認する（ログインが必要）</a></div>
+                <p class="clinic-note">追加機能の案内は kimito.link にログインしたあとで開きます。ログインしていない場合は、ログイン画面に移動します。</p>
             </div>
             <p class="clinic-note">写真や健康記録を、紹介料の成果判定のために送る必要はありません。紹介するアプリの運営・対象条件も、利用者に明示してください。</p>
         </section>
@@ -125,11 +126,12 @@
         <section class="lp-section"><p class="lp-disclaimer">このアプリは一般的な情報の紹介と、生活の記録のためのものです。診断や治療を目的としたものではありません。持病・服薬・体調や施術に関する個別の判断は、医療機関で医師にご相談ください。</p></section>
     </main>
     <div data-footer></div>
-    <script src="../js/common.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/refpartner.js"></script>
-    <script src="../js/lp-clinic.js"></script>
+    <script defer src="../js/common.js"></script>
+    <script defer src="../js/auth.js"></script>
+    <script defer src="../js/refpartner.js"></script>
+    <script defer src="../js/lp-clinic.js"></script>
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
     /**
      * ★LPのログインボタン = この画面のまま Clerk のログインモーダルを開く（自ドメイン完結）。
      *   すれ違ひ通信と同じく、本家 kimito.link へは飛ばさない（飛ばすと FORCE リダイレクトで
@@ -176,14 +178,16 @@
 
         // ログイン済みならボタンの文言を「つづきから」にする（押せば即アプリ）
         if (typeof YEAuth !== 'undefined' && YEAuth.isSignedIn()) {
-            var labels = document.querySelectorAll('.lp-xbtn__label');
+            var labels = document.querySelectorAll('[data-lp-login]');
             for (var j = 0; j < labels.length; j++) labels[j].textContent = 'つづきから記録する';
             var top = document.querySelector('.lp-top__login');
-            if (top) top.textContent = 'アプリをひらく';
+            if (top) top.textContent = 'アプリを開く';
         }
     })();
+    });
     </script>
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
     /**
      * ストアバッジのデバイス出し分け。
      * Today画面（index.html）と同じ方式:
@@ -203,7 +207,7 @@
         var appleBadge = '<a href="' + APPLE + '" target="_blank" rel="noopener" class="store-badge" aria-label="App Storeで入手">'
             + '<img src="../images/store-badges/apple-appstore-ja.svg" alt="App Storeで入手"></a>';
         var playBadge = '<a href="' + PLAY + '" target="_blank" rel="noopener" class="store-badge" aria-label="Google Playで手に入れよう">'
-            + '<img src="../images/store-badges/google-play-ja.png" alt="Google Playで手に入れよう"></a>';
+            + '<img src="../images/store-badges/google-play-ja.png" alt="Google Playで手に入れよう" width="124" height="48"></a>';
 
         var badges;
         if (isIOS) badges = appleBadge;
@@ -218,6 +222,7 @@
                 : '<div class="app-download__badges">' + badges + '</div>';
         });
     })();
+    });
     </script>
 </body>
 </html>

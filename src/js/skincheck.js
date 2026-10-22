@@ -1,7 +1,7 @@
 /**
  * Skin Check - 肌セルフチェック（10段階＋ガイド版）
  *
- * 評価基準は業界標準（ポーラ10段階・医療VASスケール0-10）を参考に設計。
+ * 評価の目安は、一般的な10段階評価やVAS（0-10）を参考に設計。
  * 各項目の1/3/5/7/10に具体例ガイドを表示し、ブレない記録を促す。
  *
  * すべて端末内（localStorage）で完結、プライバシー◎。
@@ -262,7 +262,7 @@ function renderSkinCheck(containerId) {
                 </div>
 
                 <div style="margin-top:10px; padding:8px; background:#faf6f1; border-radius:8px; font-size:.65rem; color:#8a7d76; line-height:1.5; letter-spacing:.03em;">
-                    💡 評価基準は<strong>業界標準（ポーラ10段階・医療VAS 0-10）</strong>を参考。これは医療診断ではなく、日々の変化を見える化するためのセルフチェックです。
+                    💡 評価の目安は、<strong>一般的な10段階評価やVASを参考に</strong>しています。これは医療診断ではなく、日々の体感を記録するためのセルフチェックです。
                 </div>
             </div>
         `;

@@ -116,7 +116,7 @@ function renderNextReminder(containerId) {
                         次回の点滴・サプリ補充・通院予定を登録すると、ホームに表示されます。
                     </p>
 
-                    <input type="text" id="reminder-name" placeholder="例：エクソソーム点滴、NMNサプリ補充" value="${(reminder && reminder.item) || ''}" style="width:100%; padding:10px 12px; border:1.5px solid #ebe0d0; border-radius:10px; font-size:.85rem; font-family:inherit; background:#faf6f1; color:#2e2622; margin-bottom:10px; box-sizing:border-box;">
+                    <input type="text" id="reminder-name" aria-label="予定の内容" placeholder="例：エクソソーム点滴、NMNサプリ補充" value="${(reminder && reminder.item) || ''}" style="width:100%; padding:10px 12px; border:1.5px solid #ebe0d0; border-radius:10px; font-size:.85rem; font-family:inherit; background:#faf6f1; color:#2e2622; margin-bottom:10px; box-sizing:border-box;">
 
                     <div style="margin-bottom:10px;">
                         <div style="font-size:.65rem; color:#8a7d76; letter-spacing:.1em; margin-bottom:6px;">⏱ どのくらい先？</div>
@@ -127,7 +127,7 @@ function renderNextReminder(containerId) {
                         </div>
                     </div>
 
-                    <input type="date" id="reminder-date" value="${(reminder && reminder.date) || ''}" style="width:100%; padding:10px 12px; border:1.5px solid #ebe0d0; border-radius:10px; font-size:.85rem; font-family:inherit; background:#faf6f1; color:#2e2622; margin-bottom:12px; box-sizing:border-box;">
+                    <input type="date" id="reminder-date" aria-label="予定の日付" value="${(reminder && reminder.date) || ''}" style="width:100%; padding:10px 12px; border:1.5px solid #ebe0d0; border-radius:10px; font-size:.85rem; font-family:inherit; background:#faf6f1; color:#2e2622; margin-bottom:12px; box-sizing:border-box;">
 
                     <div style="display:flex; gap:6px;">
                         <button id="reminder-save" style="flex:1; padding:10px; background:linear-gradient(135deg,#c9899a,#c9a96e); color:#fff; border:none; border-radius:10px; font-size:.85rem; font-weight:700; letter-spacing:.05em; cursor:pointer;">保存</button>

@@ -23,7 +23,7 @@ const ADVICE_LIST = [
     { char: 'konta', expression: 'smileOpen', category: '健康', text: 'ストレッチって地味だけど、本当に大事だよ！朝5分だけでも続けてみて。' },
     { char: 'konta', expression: 'half', category: '運動', text: '「忙しくて運動できない」のはみんな同じ。5分でいいから、何かしてみよう！' },
     { char: 'konta', expression: 'smile', category: '運動', text: 'ウォーキングがおすすめだよ！激しい運動じゃなくても、続けることが大切なんだ。' },
-    { char: 'konta', expression: 'smileOpen', category: '健康', text: '深呼吸って簡単だけど効果抜群！緊張したら、ゆっくり3回深呼吸してみて。' },
+    { char: 'konta', expression: 'smileOpen', category: '健康', text: '深呼吸は、気持ちを落ち着けるのに役立つと言われています。緊張したら、ゆっくり3回深呼吸してみて。' },
     { char: 'konta', expression: 'normal', category: '運動', text: '筋肉は使わないと減っちゃう。週2〜3回、軽い筋トレも入れるといいよ！' },
     { char: 'konta', expression: 'smile', category: '健康', text: '日光浴は15分でOK！朝の光を浴びると、体内時計が整うんだよ。' },
     { char: 'konta', expression: 'smileOpen', category: '運動', text: 'ストレスは運動で発散だ！走ると気持ちもスッキリするよ。' },
@@ -66,7 +66,7 @@ function renderAdvice(advice) {
     card.innerHTML = `
         <div class="advice__category">${advice.category}</div>
         <div class="advice__char">
-            <img src="${charImg}" alt="${char.name}">
+            ${characterPicture(charImg, { alt: char.name, width: 160 })}
         </div>
         <div class="advice__name" style="color: ${char.color}">${char.name}</div>
         <div class="advice__bubble">${advice.text}</div>

@@ -74,6 +74,22 @@ function getImagePath(charKey, expression, depth = 0) {
 }
 
 /**
+ * キャラ画像。表示幅に合わせた WebP（360 / 720）を優先し、非対応時は PNG。
+ * width は CSS ピクセルの表示サイズ。sizes に使う。
+ */
+function characterPicture(src, opt) {
+    opt = opt || {};
+    const alt = String(opt.alt || '').replace(/"/g, '&quot;');
+    const w = opt.width || 120;
+    const h = opt.height || w;
+    const cls = opt.className ? ` class="${opt.className}"` : '';
+    const extra = opt.extra ? ` ${opt.extra}` : '';
+    const stem = String(src).replace(/\.png$/i, '');
+    const decoding = /decoding=/.test(extra) ? '' : ' decoding="async"';
+    return `<picture class="ye-pic"><source type="image/webp" srcset="${stem}-360.webp 360w, ${stem}-720.webp 720w" sizes="${w}px"><img src="${src}" alt="${alt}" width="${w}" height="${h}"${cls}${decoding}${extra}></picture>`;
+}
+
+/**
  * 現在の日付（YYYY-MM-DD）
  */
 function getTodayKey() {
@@ -231,12 +247,12 @@ function injectChrome(depth = 0) {
                 <div class="site-footer__inner">
                     <div class="site-footer__sister">
                         <a href="https://kimito-link.com/" target="_blank" rel="noopener" class="site-footer__sister-link">
-                            <img src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" loading="lazy">
+                            <img src="${base}images/kimito-link-logo/logo_kimito-link_RGB_color.png" alt="Kimito-Link" width="43" height="32" loading="lazy">
                         </a>
                     </div>
                     <div class="site-footer__disclaimer">
                         <strong>免責事項</strong><br>
-                        当サイトは、エクソソームに関する一般的な情報をゆっくり3人組のキャラクターを通じて分かりやすく伝えることを目的とした情報サイトです。掲載内容は公開されている文献や一般的な知見をもとにしていますが、医療行為や診断、治療効果を保証するものではありません。施術や健康に関する個別のご相談は、必ず医療機関にて医師にご確認ください。本サイトは医療広告ガイドラインに準拠し、効果の断定的な表現を避けています。
+                        当サイトは、エクソソームに関する一般的な情報をゆっくり3人組のキャラクターを通じて分かりやすく伝えることを目的とした情報サイトです。掲載内容は公開されている文献や一般的な知見をもとにしていますが、医療行為や診断、治療効果を保証するものではありません。施術や健康に関する個別のご相談は、必ず医療機関にて医師にご確認ください。本サイトは医療広告ガイドラインに配慮し、効果の断定的な表現を避けています。
                     </div>
                     <nav class="site-footer__nav">
                         <a href="${base}">ホーム</a>
@@ -263,11 +279,16 @@ function buildDialogTurn(speaker, text, side = 'left', expression = 'smile', dep
     const char = CHARACTERS[speaker];
     if (!char) return '';
     const sideClass = side === 'right' ? 'dialog__turn--right' : '';
-    const img = getImagePath(speaker, expression, depth);
+    const img = characterPicture(getImagePath(speaker, expression, depth), {
+        alt: char.name,
+        width: 64,
+        height: 64,
+        extra: 'loading="lazy"'
+    });
     return `
         <div class="dialog__turn dialog__turn--${speaker} ${sideClass}">
             <div class="dialog__avatar">
-                <img src="${img}" alt="${char.name}" loading="lazy">
+                ${img}
             </div>
             <div class="dialog__body">
                 <div class="dialog__name">${char.name}</div>
