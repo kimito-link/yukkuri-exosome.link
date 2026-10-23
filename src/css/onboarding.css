@@ -498,6 +498,39 @@
     transform: translateX(4px);
 }
 
+/* iPad 横向きなど高さが足りないとき、次へボタンに本文が隠れないようにする */
+@media (max-height: 860px) and (min-width: 700px) {
+    .onboarding__slide {
+        justify-content: flex-start;
+        padding-top: 56px;
+        padding-bottom: 140px;
+        overflow-y: auto;
+    }
+    .onboarding__visual {
+        min-height: 120px;
+        margin-bottom: 12px;
+    }
+    .onboarding__trio-member {
+        width: 88px;
+        height: 88px;
+    }
+    .onboarding__trio-member--middle {
+        width: 108px;
+        height: 108px;
+    }
+    .onboarding__hero-char {
+        width: 140px;
+        height: 140px;
+    }
+    .onboarding__halo {
+        width: 180px;
+        height: 180px;
+    }
+    .onboarding__tap-hint {
+        bottom: 118px;
+    }
+}
+
 /* 375px前後で「タップで次へ」が本文に寄りすぎないよう、下の余白を広げる */
 @media (max-width: 480px) {
     .onboarding__slide {
