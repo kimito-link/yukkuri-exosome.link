@@ -24,8 +24,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ゆっくりエクソ">
-    <!-- iOS Safari 純正スマートアプリバナー（Safari以外は無視。Capacitorアプリ内では作用しない） -->
-    <meta name="apple-itunes-app" content="app-id=6775201794, app-argument=https://exosome.kimito.link/">
+    <!-- Safari が画面の上に出す「開く」バナー用の meta は置かない。
+         オンボーディングの最初の画面を隠し、すでにウェブアプリを見ている人には
+         何が開くのかも分かりにくい。入手は画面内の App Store バッジに任せる。 -->
     <meta property="og:image" content="https://exosome.kimito.link/icons/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -385,16 +386,17 @@
                     })()}
 
                     <!-- LINE公式アカウント導線（りんく・こん太・たぬ姉と直接やりとり） -->
-                    <div class="line-connect">
+                    <div class="line-connect" id="line-add-qr">
                         <div class="line-connect__chip">LINE公式アカウント</div>
                         <h2 class="line-connect__title">ゆっくり3人組と、LINEでもつながれます</h2>
-                        <p class="line-connect__lead">アプリを開かなくても、気になったことをそのまま話しかけられます。<br>友だち追加は無料・登録不要です。</p>
+                        <p class="line-connect__lead">友だち追加は無料です。スマホではボタンからLINEアプリの友だち追加が開きます。iPadやパソコンでは、下のQRコードをスマホのLINEで読み取ってください。</p>
                         <div class="line-connect__body">
                             <img src="images/line/line-qr.png" alt="LINE公式アカウント友だち追加QRコード" class="line-connect__qr" loading="lazy">
-                            <a href="https://lin.ee/zMVlevv" target="_blank" rel="noopener" class="line-connect__cta">
-                                <span>友だち追加はこちら →</span>
+                            <a href="#line-add-qr" class="line-connect__cta" data-line-add data-line-href="https://lin.ee/zMVlevv">
+                                <span>LINEで友だち追加する</span>
                             </a>
                         </div>
+                        <p class="line-connect__note">iPadやパソコンでボタンを押すと、このQRコードまで移るだけです。LINEアプリが無い端末でも、スマホのLINEで読み取って追加できます。</p>
                     </div>
 
                     <!-- ロゴ控えめ表示 -->
@@ -503,6 +505,9 @@
             renderPhotoLog('today-photo').catch((err) => {
                 console.error('Photo Log failed:', err);
             });
+
+            // スマホだけ LINE の追加リンクを有効にする（iPad は QR のまま）
+            if (typeof upgradeLineAddLinks === 'function') upgradeLineAddLinks();
 
             // 初回起動時にオンボーディングを表示
             autoShowOnboardingIfNeeded(0);
