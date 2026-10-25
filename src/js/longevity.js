@@ -219,20 +219,20 @@ function renderLongevityScore(containerId) {
 
     container.innerHTML = `
         <div class="longevity" style="background:linear-gradient(135deg,#fff,#faf4ee); border-radius:22px; padding:22px 20px; box-shadow:0 4px 20px rgba(46,38,34,.06); margin-bottom:20px; border:1px solid ${ev.color}33;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <div style="font-family:'Noto Serif JP',serif; font-size:1rem; font-weight:600; letter-spacing:.08em;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+                <div style="font-family:'Noto Serif JP',serif; font-size:1rem; font-weight:600; letter-spacing:.04em; min-width:0;">
                     🧬 ロンジェビティ・スコア
                 </div>
-                <div style="font-size:.62rem; color:#8a7d76; letter-spacing:.1em; border:1px solid #ebe0d0; padding:2px 8px; border-radius:99px;">エイジテック風</div>
+                <div style="font-size:.62rem; color:#8a7d76; letter-spacing:.06em; border:1px solid #ebe0d0; padding:2px 8px; border-radius:99px; flex:0 0 auto;">エイジテック風</div>
             </div>
 
             ${s.hasAny ? `
-                <div style="display:flex; align-items:center; gap:16px; margin-bottom:14px;">
+                <div style="display:flex; align-items:center; gap:12px 16px; margin-bottom:14px; flex-wrap:wrap;">
                     <div style="flex:0 0 auto; text-align:center;">
                         <div style="font-family:'Noto Serif JP',serif; font-size:2.6rem; font-weight:700; color:${ev.color}; line-height:1;">${s.total}</div>
                         <div style="font-size:.6rem; color:#8a7d76; letter-spacing:.1em;">/ 100</div>
                     </div>
-                    <div style="flex:1; min-width:0;">
+                    <div style="flex:1 1 14rem; min-width:0;">
                         <div style="display:inline-block; padding:3px 12px; border-radius:99px; background:${ev.color}1a; color:${ev.color}; font-size:.78rem; font-weight:700; letter-spacing:.06em; margin-bottom:6px;">${ev.emoji} ${ev.label}</div>
                         <div style="font-size:.82rem; color:#2e2622; line-height:1.5;">🧫 今週の手ごたえ：${feelText}</div>
                     </div>

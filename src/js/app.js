@@ -308,6 +308,7 @@ function injectAppShell(activeTab = 'today', depth = 0) {
             <span class="app-brand__combo-no">の</span>
             <span class="app-brand__combo-name">ゆっくりエクソソーム</span>
         </a>
+        <button type="button" class="guest-only app-brand__login" id="app-brand-login">ログイン</button>
         <span class="member-only app-brand__dashboard-link" data-kimito-dashboard-link
               data-kimito-dashboard-label="マイページ"
               data-kimito-dashboard-class="app-brand__dashboard-link-anchor"></span>
@@ -324,6 +325,16 @@ function injectAppShell(activeTab = 'today', depth = 0) {
         dashLinkScript.async = true;
         dashLinkScript.setAttribute('data-kimito-dashboard-link-script', '');
         document.head.appendChild(dashLinkScript);
+    }
+
+    // 未ログインのときはヘッダー右にログインを出す。ログイン中は Clerk の UserButton。
+    const loginBtn = document.getElementById('app-brand-login');
+    if (loginBtn && typeof YEAuth !== 'undefined' && YEAuth.openSignIn) {
+        loginBtn.addEventListener('click', () => {
+            YEAuth.openSignIn().catch(() => {
+                App.showToast('ログインを開けませんでした。時間をおいて試してください', '⚠️', 3000);
+            });
+        });
     }
 
     // Clerk 公式 UserButton をマウント（ログイン中のアカウント＋メニュー）

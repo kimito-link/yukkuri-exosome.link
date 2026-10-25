@@ -8,7 +8,7 @@
     "web:dev": "http-server src -p 8765 -c-1",
     "web:serve": "http-server src -p 8765 -c-1",
     "cap:copy": "node scripts/copy-web-to-www.mjs",
-    "cap:sync": "npm run cap:copy && cap sync && node scripts/patch-ios-plist.mjs",
+    "cap:sync": "npm run cap:copy && cap sync && node scripts/patch-ios-plist.mjs && node scripts/patch-ios-webview.mjs",
     "ios:add": "cap add ios",
     "ios:open": "cap open ios",
     "ios:sync": "npm run cap:copy && cap sync ios && node scripts/patch-ios-plist.mjs",

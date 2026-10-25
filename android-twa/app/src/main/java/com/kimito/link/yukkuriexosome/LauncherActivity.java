@@ -46,9 +46,13 @@ public class LauncherActivity
     protected Uri getLaunchingUrl() {
         // Get the original launch Url.
         Uri uri = super.getLaunchingUrl();
-
-        
-
-        return uri;
+        if (uri == null) return null;
+        // 起動 URL にシェルの版を乗せる。Web が「Google Play に新しいバージョンがあります」を
+        // 出せるようにするため。この変更は次に Play へ出したバイナリから効く。
+        // versionName / versionCode はここでは変えない。
+        return uri.buildUpon()
+                .appendQueryParameter("ye_shell", "android")
+                .appendQueryParameter("ye_shell_ver", BuildConfig.VERSION_NAME)
+                .build();
     }
 }

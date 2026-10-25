@@ -31,9 +31,30 @@
             <!-- プロフィール -->
             <div class="me-profile">
                 <div class="me-profile__avatar">🧬</div>
-                <div class="me-profile__name">あなた</div>
+                <div class="me-profile__name" id="me-profile-name">あなた</div>
                 <div class="me-profile__title">${titleByLevel}</div>
             </div>
+
+            <!-- アカウント（未ログインでもここにログインがある） -->
+            <h2 class="app-section-title">
+                <span class="app-section-title__emoji">🔗</span>
+                アカウント
+            </h2>
+            <div class="me-list">
+                <div class="me-list__item" id="account-row">
+                    <div class="me-list__icon">👤</div>
+                    <div class="me-list__label" id="account-label">ログインしていません</div>
+                    <div class="me-list__arrow" id="account-arrow">ログイン</div>
+                </div>
+                <a href="https://kimito.link/dashboard/" target="_blank" rel="noopener" class="me-list__item member-only">
+                    <div class="me-list__icon">⚙️</div>
+                    <div class="me-list__label">kimito.link マイページでアカウント管理</div>
+                    <div class="me-list__arrow">↗</div>
+                </a>
+            </div>
+            <p style="font-size:.72rem; color:var(--color-text-muted); margin:6px 2px 16px; line-height:1.6;">
+                記録を保存するには kimito.link の共通アカウントでログインします。同じIDで、すれ違ひ通信など kimito.link のアプリにも入れます。
+            </p>
 
             <!-- 統計 -->
             <h2 class="app-section-title">
@@ -92,30 +113,6 @@
                     <input type="time" id="notif-time-input" value="${notifTime}" style="border:none; background: transparent; font-family: inherit; font-size: 0.95rem; text-align: right;">
                 </div>
             </div>
-
-            <!-- アカウント（kimito.link 共通アカウント）
-                 ★ログイン必須。この画面に来ている時点でログイン済み。
-                 ここではアカウントの確認・ログアウト・kimito.link での管理への
-                 導線を出す。premium.js のチケット検証・YEStorage の記録は従来どおり。 -->
-            <h2 class="app-section-title">
-                <span class="app-section-title__emoji">🔗</span>
-                アカウント
-            </h2>
-            <div class="me-list">
-                <div class="me-list__item" id="account-row">
-                    <div class="me-list__icon">👤</div>
-                    <div class="me-list__label" id="account-label">kimito.link アカウント</div>
-                    <div class="me-list__arrow" id="account-arrow">→</div>
-                </div>
-                <a href="https://kimito.link/dashboard/" target="_blank" rel="noopener" class="me-list__item">
-                    <div class="me-list__icon">⚙️</div>
-                    <div class="me-list__label">kimito.link マイページでアカウント管理</div>
-                    <div class="me-list__arrow">↗</div>
-                </a>
-            </div>
-            <p style="font-size:.72rem; color:var(--color-text-muted); margin:6px 2px 0; line-height:1.6;">
-                このアプリは kimito.link の共通アカウントで動いています。同じIDで、すれ違ひ通信・動員チャレンジなど kimito.link のアプリにもそのまま入れます。
-            </p>
 
             <!-- 詳しく知る -->
             <h2 class="app-section-title">
@@ -201,16 +198,37 @@
     document.getElementById('me-screen').innerHTML = html;
     mountLegalFooter(1);
 
-    // アカウント（kimito.link ログイン・すみわけ）
+    // アカウント（未ログインでも「ログイン」と分かる。ログイン中は名前とログアウト）
     if (typeof YEAuth !== 'undefined') {
         const accountLabel = document.getElementById('account-label');
         const accountArrow = document.getElementById('account-arrow');
-        if (YEAuth.isSignedIn()) {
-            accountLabel.textContent = 'kimito.link でログイン中（タップでログアウト）';
-            accountArrow.textContent = '';
+        const accountRow = document.getElementById('account-row');
+        const profileName = document.getElementById('me-profile-name');
+        const member = document.documentElement.getAttribute('data-auth') === 'member';
+        function showGuest() {
+            accountLabel.textContent = 'ログインしていません';
+            accountArrow.textContent = 'ログイン';
+            accountRow.dataset.signedIn = '0';
         }
-        document.getElementById('account-row').addEventListener('click', () => {
-            if (YEAuth.isSignedIn()) {
+        function showMember(user) {
+            const name = (user && user.name) ? user.name : 'kimito.link';
+            accountLabel.textContent = name + ' でログイン中';
+            accountArrow.textContent = 'ログアウト';
+            accountRow.dataset.signedIn = '1';
+            if (profileName && user && user.name) profileName.textContent = user.name;
+        }
+        if (!member) showGuest();
+        else {
+            accountLabel.textContent = 'ログイン状態を確認しています';
+            accountArrow.textContent = '';
+            YEAuth.getUser().then((user) => {
+                if (!accountLabel.isConnected) return;
+                if (user) showMember(user);
+                else showGuest();
+            }).catch(() => showGuest());
+        }
+        accountRow.addEventListener('click', () => {
+            if (accountRow.dataset.signedIn === '1') {
                 if (confirm('ログアウトしますか？\n記録は端末に残ります。')) {
                     YEAuth.signOut().then(() => {
                         App.showToast('ログアウトしました', '👋');
