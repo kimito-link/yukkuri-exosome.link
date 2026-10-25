@@ -156,6 +156,9 @@ jobs:
           fi
           npx cap copy ios
 
+      - name: Lock WKWebView pinch zoom and report shell version
+        run: node scripts/patch-ios-webview.mjs
+
       # WKWebView の file input からカメラ/写真ライブラリを開くための権限文言と、
       # 標準 HTTPS / OS 提供の TLS のみなら非免除暗号を使わない宣言（審査・輸出コンプライアンスの手戻り軽減）
       - name: Info.plist privacy permissions + export compliance

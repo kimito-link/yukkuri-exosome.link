@@ -1,0 +1,11 @@
+{
+  "webBuild": "20261025.1",
+  "shell": {
+    "ios": "0.2.0",
+    "android": "0.2.1"
+  },
+  "storeUrl": {
+    "ios": "https://apps.apple.com/app/id6775201794",
+    "android": "https://play.google.com/store/apps/details?id=com.kimito.link.yukkuriexosome"
+  }
+}

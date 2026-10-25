@@ -51,6 +51,9 @@
     var AUTH_STATE_KEY = 'auth_signed_in'; // YEStorage 経由 → 実キーは ye_auth_signed_in
 
     var clerkLoadPromise = null;
+    var clerkWatchInstalled = false;
+    // 人がログインを開いたときだけ、成立後に画面を読み直す（記録の関所が member になる）。
+    var reloadOnSessionChange = false;
 
     // ワンタップXログイン部品（x-one-tap-signin.js）はこのファイルと同じ js/ にある。
     // ページごとに相対パスが違う（../js/ ・ ../../js/）ので、自分自身の src から導く。
@@ -145,6 +148,32 @@
         return clerkLoadPromise;
     }
 
+    function syncAuthFlag(signedIn) {
+        if (signedIn) YEStorage.set(AUTH_STATE_KEY, true);
+        else YEStorage.remove(AUTH_STATE_KEY);
+        if (document.documentElement) {
+            document.documentElement.setAttribute('data-auth', signedIn ? 'member' : 'guest');
+        }
+    }
+
+    /**
+     * Clerk のセッション変化を data-auth に反映する。
+     * ログイン操作の直後だけ、guest → member で1回読み直す。
+     */
+    function watchClerk(Clerk) {
+        if (!Clerk || clerkWatchInstalled || typeof Clerk.addListener !== 'function') return;
+        clerkWatchInstalled = true;
+        Clerk.addListener(function (payload) {
+            var signedIn = !!(payload && payload.session);
+            var wasMember = document.documentElement.getAttribute('data-auth') === 'member';
+            syncAuthFlag(signedIn);
+            if (reloadOnSessionChange && signedIn && !wasMember) {
+                reloadOnSessionChange = false;
+                location.reload();
+            }
+        });
+    }
+
     /** ログイン済みかどうか（Clerk未読込の間はローカルの軽いフラグで即答） */
     function isSignedIn() {
         if (window.Clerk && window.Clerk.session) return true;
@@ -176,12 +205,10 @@
         //   ★非同期処理の前に同期で判定する（activation は約5秒で切れ、Clerk 読込がそれを超えうる）。
         //   userActivation 非対応のブラウザは「タップ扱いにしない」側に倒す（fail-safe）。
         var viaTap = !!(navigator.userActivation && navigator.userActivation.isActive);
+        reloadOnSessionChange = true;
         return Promise.all([loadClerk(), loadOneTap()]).then(function (results) {
             var Clerk = results[0];
-            Clerk.addListener(function (payload) {
-                var signedIn = !!(payload && payload.session);
-                YEStorage.set(AUTH_STATE_KEY, signedIn);
-            });
+            watchClerk(Clerk);
             // signInFallbackRedirectUrl は「モーダルではなくページ遷移でログインした場合」の
             // 戻り先。モーダル運用では基本使われないが、念のため今の画面を指定する。
             Clerk.openSignIn({
@@ -198,9 +225,10 @@
     /** サインアウト。 */
     function signOut() {
         return loadClerk().then(function (Clerk) {
+            watchClerk(Clerk);
             return Clerk.signOut();
         }).then(function () {
-            YEStorage.remove(AUTH_STATE_KEY);
+            syncAuthFlag(false);
         });
     }
 
@@ -227,11 +255,7 @@
         return loadClerk().then(function (Clerk) {
             var ok = !!(Clerk && Clerk.session);
             // 実態に合わせてフラグを直す（次回の初期表示が正しくなる）
-            if (ok) {
-                YEStorage.set(AUTH_STATE_KEY, true);
-            } else {
-                YEStorage.remove(AUTH_STATE_KEY);
-            }
+            syncAuthFlag(ok);
             return ok;
         }).catch(function () {
             // ★読み込めなかったときは「切れている」とみなさない。
@@ -278,6 +302,8 @@
         if (!el) return Promise.resolve(false);
         return loadClerk().then(function (Clerk) {
             if (!Clerk || !Clerk.user || typeof Clerk.mountUserButton !== 'function') return false;
+            syncAuthFlag(true);
+            watchClerk(Clerk);
             Clerk.mountUserButton(el, {
                 // 名前（@username）をアバターの横に出す＝「誰として入っているか」を常時表示。
                 showName: true,

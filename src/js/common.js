@@ -388,5 +388,30 @@ if (typeof window !== 'undefined') {
         injectChrome(depth);
         injectHeadMeta(depth);
         upgradeLineAddLinks();
+        bootYeAppUpdate();
     });
+}
+
+/**
+ * 画面の更新確認（js/app-update.js）。
+ * スクリプトの場所は common.js 自身の URL から決める。
+ * body の data-depth は多くのページで未設定なので、それに頼ると /me/js/ を見に行ってしまう。
+ */
+function bootYeAppUpdate() {
+    if (document.querySelector('script[data-ye-app-update]')) return;
+    let base = '';
+    const scripts = document.getElementsByTagName('script');
+    for (let i = scripts.length - 1; i >= 0; i--) {
+        const src = scripts[i].src || '';
+        if (/js\/common\.js(\?|$)/.test(src)) {
+            base = src.replace(/js\/common\.js(\?.*)?$/, '');
+            break;
+        }
+    }
+    if (!base) return;
+    const s = document.createElement('script');
+    s.src = base + 'js/app-update.js';
+    s.defer = true;
+    s.setAttribute('data-ye-app-update', '');
+    document.head.appendChild(s);
 }

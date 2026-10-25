@@ -65,8 +65,8 @@
     "hasInAppPurchase": false,
     "hasSubscription": false,
     "hasPaidContent": false,
-    "summaryEn": "A free self-care companion app paired with three 'yukkuri' (slow-life) characters. Records daily skin and fatigue self-checks, supplement intake notes, and clinic-visit memos — entirely on-device with no account, no payments, and no third-party content.",
-    "summaryJa": "ゆっくり3人組と一緒に毎日のセルフケアを記録する無料アプリ。肌・疲労チェック、サプリ記録、クリニック質問メモなどを端末内のみで管理。アカウント登録・課金・第三者コンテンツ一切なし。"
+    "summaryEn": "A self-care log with three characters. Saving records requires a kimito.link sign-in. No in-app purchases or ads. Daily notes stay on the device; a signed-in account can copy some daily records for another device. Not a medical device.",
+    "summaryJa": "セルフケアの記録アプリ。保存にはkimito.linkログインが必要。アプリ内課金はありません。"
   },
   "ownership": {
     "organization": "Kimito-Link",
