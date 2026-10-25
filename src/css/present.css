@@ -1,0 +1,668 @@
+/* 紹介ページ（/guide/）と料金表（/price/）。
+   色は style.css のトークンと、LP のクリニック向けボタン色に揃える。 */
+
+.present-page {
+    color: var(--color-text);
+}
+
+.present-skip {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    z-index: 50;
+    background: #fff;
+    color: var(--color-text);
+    padding: 12px 16px;
+}
+
+.present-skip:focus {
+    top: 8px;
+}
+
+.present-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.present-top {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(255, 250, 243, 0.94);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.present-top__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    min-height: 64px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.present-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.present-brand img {
+    width: 36px;
+    height: auto;
+}
+
+.present-top__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.present-top__nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 14px;
+    color: #603b48;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+}
+
+.present-top__app {
+    border: 1.5px solid #603b48;
+    border-radius: var(--radius-pill);
+    background: #fff;
+}
+
+.present-hero {
+    margin: 18px 0 8px;
+    padding: 28px 22px 26px;
+    border-radius: 28px;
+    background:
+        radial-gradient(80% 70% at 0% 0%, rgba(201, 137, 154, 0.18), transparent 62%),
+        radial-gradient(70% 60% at 100% 0%, rgba(201, 169, 110, 0.2), transparent 58%),
+        linear-gradient(180deg, #fbf6f1 0%, #fffaf3 100%);
+    border: 1px solid #f0e4da;
+}
+
+.present-hero__layout {
+    display: grid;
+    gap: 8px 28px;
+}
+
+.present-kicker {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    background: #603b48;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.present-title,
+.present-hero h1 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.35;
+    color: #2e2622;
+}
+
+.present-hero h1 {
+    margin: 0 0 12px;
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+}
+
+.present-lead {
+    margin: 0 0 8px;
+    color: #3d3330;
+    font-size: 1.02rem;
+    line-height: 1.8;
+}
+
+.present-lead strong {
+    font-weight: 700;
+}
+
+.guide-trio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 10px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.guide-trio li {
+    width: 96px;
+    text-align: center;
+    color: #6b5348;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.guide-trio img {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 2px;
+    object-fit: contain;
+}
+
+.present-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 8px;
+}
+
+.present-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 1px solid #603b48;
+    border-radius: var(--radius-pill);
+    background: #603b48;
+    color: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.present-btn:hover {
+    background: #4c2f39;
+    color: #fff;
+    opacity: 1;
+}
+
+.present-btn--line {
+    border-color: #0b6b32;
+    background: #0b6b32;
+}
+
+.present-btn--line:hover {
+    background: #085628;
+    color: #fff;
+}
+
+.present-btn--ghost {
+    background: transparent;
+    color: #603b48;
+}
+
+.present-btn--ghost:hover {
+    background: #f3e4e6;
+    color: #4c2f39;
+}
+
+.present-btn:focus-visible,
+.present-top__nav a:focus-visible,
+.present-nav a:focus-visible,
+.present-brand:focus-visible {
+    outline: 3px solid #603b48;
+    outline-offset: 3px;
+}
+
+.present-note,
+.present-disclaimer {
+    color: #5c514c;
+    font-size: 0.84rem;
+    line-height: 1.75;
+}
+
+.present-note a:not(.present-btn),
+.present-disclaimer a:not(.present-btn),
+.present-section a:not(.present-btn) {
+    color: #603b48;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.present-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin: 0;
+    padding: 4px 0 8px;
+    border-bottom: 1px solid #e6d8d0;
+}
+
+.present-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: #603b48;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.present-section,
+#guide-line {
+    scroll-margin-top: 84px;
+}
+
+.present-section {
+    padding: 36px 0 8px;
+}
+
+.present-section--tint {
+    margin-top: 28px;
+    padding: 28px 18px 20px;
+    border-radius: 24px;
+    background: #fff7f1;
+}
+
+.present-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+}
+
+.present-num {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 50%;
+    background: #603b48;
+    color: #fff;
+    font-family: var(--font-base);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.guide-grid,
+.guide-merits,
+.guide-steps,
+.price-glance {
+    display: grid;
+    gap: 12px;
+}
+
+.guide-card,
+.guide-merit,
+.guide-step,
+.price-glance__card {
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #eadbd0;
+    border-radius: 16px;
+    padding: 16px 16px 14px;
+}
+
+.guide-card h3,
+.guide-merit h3,
+.guide-step h3,
+.price-glance__name {
+    margin: 0 0 6px;
+    font-size: 1.02rem;
+    line-height: 1.45;
+}
+
+.guide-card p,
+.guide-merit p,
+.guide-step p,
+.price-glance__card p {
+    margin: 0;
+    color: #5c514c;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.guide-merit {
+    background: #fff7f1;
+}
+
+.guide-merit h3 {
+    color: #8a3d28;
+}
+
+.guide-free {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    background: #e5f4ea;
+    color: #145c32;
+    font-size: 0.82rem;
+    font-weight: 700;
+    vertical-align: 1px;
+}
+
+.guide-step {
+    text-align: center;
+}
+
+.guide-step .present-actions {
+    justify-content: center;
+}
+
+.guide-step h3 {
+    color: #603b48;
+}
+
+.guide-qr,
+.guide-line-qr {
+    width: 168px;
+    height: 168px;
+    margin: 4px auto 10px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+}
+
+.guide-qr img,
+.guide-line-qr img {
+    width: 168px;
+    height: 168px;
+    object-fit: contain;
+}
+
+.guide-shot {
+    width: min(148px, 70%);
+    height: auto;
+    margin: 4px auto 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.guide-url {
+    margin: 0 auto;
+    max-width: 100%;
+    color: #5c514c;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.present-disclaimer {
+    margin: 28px 0 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e3d5ca;
+}
+
+.price-glance__who {
+    margin: 0 0 4px;
+    color: #734853;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.price-glance__yen {
+    margin: 8px 0 0;
+    color: #2e2622;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.price-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #f4efe8;
+    color: #3d3330;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+.price-chip--free {
+    background: #e5f4ea;
+    color: #145c32;
+}
+
+.price-chip--ask {
+    background: #f8efe4;
+    color: #6b3e24;
+}
+
+.price-table-wrap {
+    width: 100%;
+    margin: 8px 0 18px;
+}
+
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #eadbd0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.price-table th,
+.price-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid #eadbd0;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.7;
+    font-size: 0.92rem;
+    overflow-wrap: anywhere;
+}
+
+.price-table thead th {
+    background: #f4ede4;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+}
+
+.price-table tr:last-child th,
+.price-table tr:last-child td {
+    border-bottom: 0;
+}
+
+.price-table th[scope="row"] {
+    font-weight: 700;
+}
+
+.price-steps {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+}
+
+.price-steps li {
+    padding: 14px 14px 12px;
+    background: #fff;
+    border: 1px solid #eadbd0;
+    border-radius: 14px;
+}
+
+.price-steps strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #603b48;
+}
+
+.price-steps p {
+    margin: 0;
+    color: #5c514c;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+@media (min-width: 720px) {
+    .price-table {
+        table-layout: fixed;
+    }
+
+    .price-col-item { width: 30%; }
+    .price-col-fee { width: 22%; }
+}
+
+@media (min-width: 700px) {
+    .guide-grid,
+    .guide-merits,
+    .price-glance {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 800px) {
+    .present-hero__layout {
+        grid-template-columns: minmax(0, 1fr) 270px;
+        align-items: center;
+    }
+
+    .present-hero__copy {
+        text-align: left;
+    }
+
+    .present-hero__layout .guide-trio li {
+        width: 80px;
+    }
+
+    .present-hero__layout .guide-trio img {
+        width: 76px;
+        height: 76px;
+    }
+}
+
+@media (min-width: 1040px) {
+    .present-hero__layout {
+        grid-template-columns: minmax(0, 1.35fr) 340px;
+    }
+
+    .present-hero__layout .guide-trio li {
+        width: 104px;
+    }
+
+    .present-hero__layout .guide-trio img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .guide-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .guide-steps,
+    .price-steps {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+    }
+
+    .price-glance {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 719px) {
+    .price-table thead {
+        display: none;
+    }
+
+    .price-table,
+    .price-table tbody,
+    .price-table tr,
+    .price-table th,
+    .price-table td {
+        display: block;
+        width: auto;
+    }
+
+    .price-table {
+        border: 0;
+        background: transparent;
+        overflow: visible;
+    }
+
+    .price-table tr {
+        margin: 0 0 12px;
+        padding: 12px 14px;
+        background: #fff;
+        border: 1px solid #eadbd0;
+        border-radius: 16px;
+    }
+
+    .price-table th,
+    .price-table td {
+        padding: 6px 0;
+        border: 0;
+    }
+
+    .price-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        color: #734853;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+    }
+}
+
+@media (max-width: 699px) {
+    .present-wrap {
+        padding: 0 16px;
+    }
+
+    .present-hero {
+        padding: 22px 16px 18px;
+        border-radius: 20px;
+    }
+
+    .present-actions {
+        flex-direction: column;
+    }
+
+    .present-actions .present-btn {
+        width: 100%;
+    }
+
+    .present-top__nav a {
+        padding-inline: 10px;
+        font-size: 0.82rem;
+    }
+
+    .guide-trio li {
+        width: 88px;
+    }
+
+    .guide-trio img {
+        width: 84px;
+        height: 84px;
+    }
+
+    .present-section--tint {
+        padding-inline: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}

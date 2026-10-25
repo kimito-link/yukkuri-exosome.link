@@ -75,7 +75,10 @@
         .line-add-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            max-width: 100%;
+            box-sizing: border-box;
             background: #06c755;
             color: #fff;
             font-weight: 700;
@@ -86,6 +89,11 @@
             border-radius: 999px;
             box-shadow: 0 6px 18px rgba(6,199,85,.32);
             transition: transform .12s ease, box-shadow .12s ease;
+        }
+        #line-add-qr:target {
+            outline: 3px solid #06c755;
+            outline-offset: 6px;
+            border-radius: 16px;
         }
         .line-add-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(6,199,85,.4); }
         .line-add-btn__icon { width: 24px; height: 24px; fill: #fff; }
@@ -173,14 +181,14 @@
                         エクソソーム・培養上清の一般的な知識を、会話形式でやさしく解説します。
                         むずかしい論文の話も、ひとこと添えてかみ砕いてくれます。
                     </p>
-                    <a href="https://lin.ee/u1sFh3Vm" target="_blank" rel="noopener" class="line-add-btn">
+                    <a href="#line-add-qr" class="line-add-btn" data-line-add data-line-href="https://lin.ee/u1sFh3Vm">
                         <svg class="line-add-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.73 2 10.3c0 4.1 3.58 7.53 8.42 8.17.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.26-.2 1.02.9.56 1.1-.46 5.9-3.48 8.05-5.95C21.64 13.6 22 12 22 10.3 22 5.73 17.52 2 12 2z"/></svg>
-                        <span>友だち追加して聞いてみる</span>
+                        <span>LINEで友だち追加する</span>
                     </a>
-                    <p class="line-hero__note">友だち追加は無料・登録不要です</p>
-                    <div class="line-qr-block">
+                    <p class="line-hero__note">友だち追加は無料です。スマホではLINEアプリの友だち追加が開きます。iPadやパソコンでは、下のQRコードをスマホのLINEで読み取ってください。</p>
+                    <div class="line-qr-block" id="line-add-qr">
                         <img src="../images/line/line-qr.png" alt="LINE公式アカウント「ゆっくりエクソソーム」友だち追加QRコード" class="line-qr-block__img" loading="lazy">
-                        <p class="line-qr-block__note">PCでご覧の方は、スマホのLINEでこのQRコードを読み取ってください</p>
+                        <p class="line-qr-block__note">iPadやパソコンで上のボタンを押すと、このQRコードまで戻るだけです。LINEアプリが無い端末でも、スマホのLINEで読み取って追加できます。</p>
                     </div>
                 </section>
 
@@ -210,9 +218,9 @@
                 <section class="article__section">
                     <h2 class="article__h2">📱 使い方はかんたん</h2>
                     <ol class="line-steps">
-                        <li>上の <strong>「友だち追加」</strong> ボタンをタップ（LINEアプリが開きます）</li>
-                        <li>そのまま <strong>トークに質問を送るだけ</strong>。たぬ姉がやさしく答えます</li>
-                        <li>もっと記録したくなったら、アプリ <strong>「ゆっくりエクソソーム」</strong> もどうぞ</li>
+                        <li>スマホの方は <strong>「LINEで友だち追加する」</strong> を押すと、LINEアプリの友だち追加画面が開きます</li>
+                        <li>iPadやパソコンでは、QRコードをスマホのLINEで読み取ってください。アプリが開かないときは、このページのQRから追加できます</li>
+                        <li>トークに質問を送ると、たぬ姉が一般的な知識をやさしく答えます</li>
                     </ol>
                 </section>
 
@@ -255,11 +263,11 @@
                 <section class="line-hero" style="margin-top:28px; margin-bottom:8px;">
                     <h2 class="line-hero__title" style="font-size:1.25rem;">まずは友だち追加から</h2>
                     <p class="line-hero__sub">気になったことを、そのまま聞いてみてください。</p>
-                    <a href="https://lin.ee/u1sFh3Vm" target="_blank" rel="noopener" class="line-add-btn">
+                    <a href="#line-add-qr" class="line-add-btn" data-line-add data-line-href="https://lin.ee/u1sFh3Vm">
                         <svg class="line-add-btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 5.73 2 10.3c0 4.1 3.58 7.53 8.42 8.17.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.26-.2 1.02.9.56 1.1-.46 5.9-3.48 8.05-5.95C21.64 13.6 22 12 22 10.3 22 5.73 17.52 2 12 2z"/></svg>
-                        <span>友だち追加して聞いてみる</span>
+                        <span>LINEで友だち追加する</span>
                     </a>
-                    <p class="line-hero__note">友だち追加は無料・登録不要です</p>
+                    <p class="line-hero__note">iPadやパソコンでは、上のQRコードをスマホのLINEで読み取ってください。</p>
                 </section>
 
                 <!-- 免責 -->

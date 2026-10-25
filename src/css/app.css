@@ -6,6 +6,9 @@
     --app-tab-h: 64px;
     --app-status-h: 56px;
     --app-brand-h: 56px;
+    /* viewport-fit=cover のとき、ノッチとホームインジケータの分。Safari では 0 になる */
+    --app-safe-top: env(safe-area-inset-top, 0px);
+    --app-safe-bottom: env(safe-area-inset-bottom, 0px);
     --app-bg: linear-gradient(180deg, #faf6f1 0%, #f4ede4 100%);
     --app-card-shadow: 0 4px 20px rgba(46, 38, 34, 0.06), 0 1px 4px rgba(46, 38, 34, 0.03);
 }
@@ -13,10 +16,12 @@
 /* アプリモードで body をリセット */
 body.app-mode {
     background: var(--app-bg);
-    background-attachment: fixed;
-    padding-top: calc(var(--app-brand-h) + var(--app-status-h));
-    padding-bottom: calc(var(--app-tab-h) + env(safe-area-inset-bottom, 0));
+    /* iOS は background-attachment:fixed が下端まで塗れず、タブの下に白い帯が出る */
+    background-attachment: scroll;
+    padding-top: calc(var(--app-brand-h) + var(--app-status-h) + var(--app-safe-top));
+    padding-bottom: calc(var(--app-tab-h) + var(--app-safe-bottom));
     min-height: 100vh;
+    min-height: 100dvh;
     max-width: 100%;
     overflow-x: hidden;
     overflow-x: clip;
@@ -33,16 +38,15 @@ body.app-mode {
     right: 0;
     max-width: 100%;
     overflow: hidden;
-    height: var(--app-brand-h);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    /* 56px は中身の高さ。セーフエリアは足す（border-box なので padding に食われない） */
+    height: calc(var(--app-brand-h) + var(--app-safe-top));
+    background: rgba(255, 255, 255, 0.98);
     z-index: 101;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding: 0 12px 0 16px;
+    padding: var(--app-safe-top) max(12px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -156,9 +160,9 @@ body.app-mode {
     }
 }
 
-/* ステータスバーをブランドの下に */
+/* ステータスバーをブランドの下に（セーフエリアの分だけ下げる） */
 .app-status {
-    top: var(--app-brand-h) !important;
+    top: calc(var(--app-brand-h) + var(--app-safe-top)) !important;
 }
 
 body.app-mode .site-header,
@@ -273,15 +277,28 @@ body.app-mode [data-footer] {
     left: 0;
     right: 0;
     max-width: 100%;
-    height: var(--app-tab-h);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    /* アイコン列は 64px のまま。ホームインジケータ分は下に足す。
+       以前は height:64px の内側に padding を入れていたため（border-box）、
+       ラベルがバーの外にはみ出し、その下に白い帯が残っていた。 */
+    height: calc(var(--app-tab-h) + var(--app-safe-bottom));
+    padding: 0 env(safe-area-inset-right, 0px) var(--app-safe-bottom) env(safe-area-inset-left, 0px);
+    background: #fff;
     border-top: 1px solid var(--color-border);
     display: flex;
     z-index: 100;
-    padding-bottom: env(safe-area-inset-bottom, 0);
     box-shadow: 0 -2px 20px rgba(58, 46, 42, 0.06);
+}
+
+/* WebKit が fixed の下端を 1px〜数十px 空けて白を見せるときの埋め */
+.app-tabs::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 48px;
+    background: #fff;
+    pointer-events: none;
 }
 
 .app-tab {
@@ -684,7 +701,7 @@ body.app-mode [data-footer] {
 /* レベルアップ・報酬ポップアップ */
 .app-toast {
     position: fixed;
-    bottom: calc(var(--app-tab-h) + 16px);
+    bottom: calc(var(--app-tab-h) + var(--app-safe-bottom) + 16px);
     left: 50%;
     transform: translateX(-50%) translateY(120%);
     background: linear-gradient(135deg, #fff, #fff5e6);
@@ -1483,4 +1500,10 @@ body.app-mode [data-footer] {
     font-size: .7rem;
     color: #9a8f88;
     margin: 14px 0 0;
+    line-height: 1.7;
+}
+
+#line-add-qr:target {
+    outline: 3px solid #06c755;
+    outline-offset: 4px;
 }

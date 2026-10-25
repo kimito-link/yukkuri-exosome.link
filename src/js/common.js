@@ -350,6 +350,28 @@ function injectHeadMeta(depth = 0) {
     });
 }
 
+/**
+ * LINE 友だち追加。
+ * 既定のリンク先はページ内の QR（#line-add-qr）。iPhone / Android スマホだけ
+ * data-line-href（https://lin.ee/...）に差し替える。
+ * iPad やパソコンで lin.ee を開くと、LINE のページが「LINEアプリを開く」（line://）になり、
+ * アプリが無いとそこで止まる。QR ならその端末に LINE が無くても追加できる。
+ */
+function lineAppLikely() {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPod/.test(ua)) return true;
+    if (/Android/.test(ua) && /Mobile/.test(ua)) return true;
+    return false;
+}
+
+function upgradeLineAddLinks() {
+    if (!lineAppLikely()) return;
+    document.querySelectorAll('[data-line-add]').forEach(function (a) {
+        var href = a.getAttribute('data-line-href');
+        if (href) a.setAttribute('href', href);
+    });
+}
+
 // DOM ready
 if (typeof window !== 'undefined') {
     // headは即実行で間に合うように
@@ -365,6 +387,7 @@ if (typeof window !== 'undefined') {
         const depth = parseInt(document.body.dataset.depth || '0', 10);
         injectChrome(depth);
         injectHeadMeta(depth);
+        upgradeLineAddLinks();
         bootYeAppUpdate();
     });
 }
