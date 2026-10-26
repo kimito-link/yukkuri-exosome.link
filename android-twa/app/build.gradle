@@ -65,7 +65,7 @@ android {
     }
     defaultConfig {
         applicationId "com.kimito.link.yukkuriexosome"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 36
         versionCode 6
         versionName "0.2.1"
