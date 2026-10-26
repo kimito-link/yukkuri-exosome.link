@@ -100,13 +100,86 @@
      */
     function loadUiOptions() {
         window.KimitoClerkUiConfig = { serviceName: 'ゆっくりエクソソーム' };
+        if (isIosShell()) hideGoogleInIosShell();
         return loadSiblingScript('clerk-ja-JP.generated.js')
             .then(function () { return loadSiblingScript('clerk-ui-options.js'); })
             .then(function () {
                 try {
-                    return window.KimitoClerkUiOptions ? window.KimitoClerkUiOptions.buildClerkLoadOptions() : {};
+                    var opts = window.KimitoClerkUiOptions ? window.KimitoClerkUiOptions.buildClerkLoadOptions() : {};
+                    return isIosShell() ? withoutGoogleForIosShell(opts) : opts;
                 } catch (e) { return {}; }
             });
+    }
+
+    /**
+     * iOS アプリ（Capacitor の WKWebView）の中で動いているか。
+     * ★Capacitor はリモート読込でも window.Capacitor を注入する。0.2.1 以降のシェルは
+     *   sessionStorage に ye_shell=ios も入れる（scripts/patch-ios-webview.mjs）。どちらかで判定。
+     * ★Android は TWA（Chrome）なので対象外。Chrome では Google ログインが成立する。
+     */
+    function isIosShell() {
+        try {
+            var c = window.Capacitor;
+            if (c && typeof c.getPlatform === 'function' && c.getPlatform() === 'ios') return true;
+        } catch (e) { /* 判定できなければ下へ */ }
+        try {
+            return window.sessionStorage && sessionStorage.getItem('ye_shell') === 'ios';
+        } catch (e2) { return false; }
+    }
+
+    /**
+     * ★iOS アプリ内では「Googleで続ける」を出さない（2026-10-27 実損: 押すと真っ白）。
+     *   Google は埋め込み WebView からの OAuth を disallowed_useragent で拒否するため、
+     *   accounts.google.com を allowNavigation に入れていない（capacitor.config.ts）。
+     *   その結果 iOS は Google の画面を外部 Safari で開き、真っ白のまま戻れなくなる。
+     *   Safari で通ってもログインはアプリへ戻らない（cookie が別）ので、ボタン自体を隠す。
+     *   X と Apple は WKWebView 内で完結するので残す（App Store 4.8 は Apple があれば満たす）。
+     *   ★clerk-ui-options.js は姉妹サイトと無改変コピーの共有部品なので触らず、ここで上書きする。
+     */
+    function withoutGoogleForIosShell(opts) {
+        var out = Object.assign({}, opts);
+        var ap = out.appearance || {};
+        var hidden = { display: 'none' };
+        out.appearance = Object.assign({}, ap, {
+            elements: Object.assign({}, ap.elements, {
+                socialButtonsBlockButton__google: hidden,
+                socialButtonsIconButton__google: hidden
+            })
+        });
+        var loc = out.localization || {};
+        var signIn = loc.signIn || {};
+        var signUp = loc.signUp || {};
+        out.localization = Object.assign({}, loc, {
+            signIn: Object.assign({}, signIn, {
+                start: Object.assign({}, signIn.start, { subtitle: IOS_SHELL_LOGIN_NOTE })
+            }),
+            signUp: Object.assign({}, signUp, {
+                start: Object.assign({}, signUp.start, { subtitle: IOS_SHELL_LOGIN_NOTE })
+            })
+        });
+        return out;
+    }
+
+    var IOS_SHELL_LOGIN_NOTE = 'X（旧 Twitter）か Apple で続けます。アプリ内では Google ログインは使えません。';
+
+    /**
+     * 設定が読めなかった場合の保険。Clerk の要素クラスを CSS で隠し、
+     * それでも押された Google ボタンは画面遷移の前に止める。
+     */
+    function hideGoogleInIosShell() {
+        if (document.getElementById('ye-ios-hide-google')) return;
+        var st = document.createElement('style');
+        st.id = 'ye-ios-hide-google';
+        st.textContent = '.cl-socialButtonsBlockButton__google,.cl-socialButtonsIconButton__google{display:none!important}';
+        (document.head || document.documentElement).appendChild(st);
+        document.addEventListener('click', function (ev) {
+            var t = ev.target;
+            var btn = t && t.closest ? t.closest('.cl-socialButtonsBlockButton__google,.cl-socialButtonsIconButton__google') : null;
+            if (!btn) return;
+            ev.preventDefault();
+            ev.stopPropagation();
+            alert('アプリ内では Google ログインは使えません。X（旧 Twitter）か Apple でログインしてください。');
+        }, true);
     }
 
     /** Clerk SDK を <script> タグで動的に読み込む。呼ばれるまでネットワークに出ない。 */
