@@ -59,6 +59,10 @@ if (keystorePropertiesFile.exists()) {
 android {
     compileSdkVersion 36
     namespace "com.kimito.link.yukkuriexosome"
+    buildFeatures {
+        // AGP 8 以降は BuildConfig が既定で生成されない。LauncherActivity が BuildConfig.VERSION_NAME を使うため有効化する。
+        buildConfig true
+    }
     defaultConfig {
         applicationId "com.kimito.link.yukkuriexosome"
         minSdkVersion 23
