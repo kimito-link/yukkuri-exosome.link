@@ -7,7 +7,7 @@
 //   env PLAY_PACKAGE_NAME (default: com.reversehack.partner)
 //   env PLAY_TRACK         (default: internal — production にしてから本番リリース)
 //   env PLAY_AAB_PATH      (default: android-twa/app/build/outputs/bundle/release/app-release.aab)
-//   ./release-notes/CURRENT-ja.txt (release notes, ja-JP)
+//   ./release-notes/PLAY-ja.txt (release notes, ja-JP; Android 専用。無ければ CURRENT-ja.txt)
 //   ./android-twa/app/build.gradle -> versionCode (for sanity)
 //
 // Modes:
@@ -26,15 +26,24 @@ const PACKAGE = process.env.PLAY_PACKAGE_NAME || 'com.reversehack.partner';
 const TRACK = process.env.PLAY_TRACK || 'internal';
 const AAB_PATH = process.env.PLAY_AAB_PATH || path.join(REPO, 'android-twa', 'app', 'build', 'outputs', 'bundle', 'release', 'app-release.aab');
 
+// ★2026-10-27: CURRENT-ja.txt は iOS の自動リリース（push の paths）も起動してしまう。
+//   Android だけのリリースノートは PLAY-ja.txt に書き、あればそちらを優先する。
+//   PLAY-ja.txt が無ければ従来どおり CURRENT-ja.txt を使う。
+function releaseNotesPath() {
+  const play = path.join(REPO, 'release-notes', 'PLAY-ja.txt');
+  if (fs.existsSync(play)) return play;
+  return path.join(REPO, 'release-notes', 'CURRENT-ja.txt');
+}
+
 function readReleaseNotes() {
-  const p = path.join(REPO, 'release-notes', 'CURRENT-ja.txt');
+  const p = releaseNotesPath();
   if (!fs.existsSync(p)) throw new Error(`Missing release-notes/CURRENT-ja.txt at ${p}`);
   const text = fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n').trim();
   // Google Play は ja-JP のリリースノートを 500 文字以下に制限している。
   // ここで早期に失敗させ、AAB の build / upload を無駄にしない。
   if (text.length > 500) {
     throw new Error(
-      `release-notes/CURRENT-ja.txt is ${text.length} chars; Google Play limit is 500. ` +
+      `${path.relative(REPO, p)} is ${text.length} chars; Google Play limit is 500. ` +
         `Trim the file before pushing to keep android-play-release green.`,
     );
   }

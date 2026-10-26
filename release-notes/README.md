@@ -9,6 +9,11 @@
   - App Store `whatsNew[ja]`
   - 履歴は git log を参照する（このファイルは「最新版だけ」を保つ）
 
+- **`PLAY-ja.txt`** — Google Play だけに出すリリースノート（任意）。
+  - あれば `scripts/play-publish.mjs` は `CURRENT-ja.txt` よりこちらを優先する。
+  - `CURRENT-ja.txt` を変えると main への push で iOS の自動リリースも走るため、Android だけのリリースではこちらを使う。
+  - 500 文字以内。
+
 ## 編集ルール
 
 - リリースのたびに丸ごと書き換える。
