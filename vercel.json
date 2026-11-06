@@ -5,6 +5,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/basics/ueda-philosophy/:path*",
+      "destination": "/basics/what-is-exosome/",
+      "permanent": true
+    },
+    {
       "source": "/(.*)",
       "has": [
         { "type": "host", "value": "yukkuri-exosome.link" }
