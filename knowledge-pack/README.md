@@ -7,5 +7,7 @@
 - canned/ … 定型文
 - docs/ … 解説ドキュメント
 
-原本は linebot の knowledge-packs/yukkuri-exosome から移動しました。
-編集はここだけで行ってください。
+★LINE Bot が実行時に使うのは linebot リポの `knowledge-packs/yukkuri-exosome/` と、
+そこから作る `apps/worker/src/services/yukkuri-exosome-knowledge-content.ts` です。
+ここを直しただけではボットは変わりません。直すときは linebot 側も同じ内容にそろえてください
+（2026-11-06 時点で両者は同一）。
