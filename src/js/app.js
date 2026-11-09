@@ -139,6 +139,28 @@ const App = {
         return YEStorage.get('app_streak', 0);
     },
 
+    /**
+     * 直近 n 日のうち、アプリを開いた日（YYYY-MM-DD の配列・古い順）。
+     *
+     * ★いちばん上に置く数字は連続日数ではなくこちら（HANDOFF-20260824.md §5）。
+     *   連続日数は1日空くとゼロに戻り「もういいや」を招く。こちらは1日空いても
+     *   1つ減るだけで、翌日開けばまた1つ増える。
+     * ★app_active_days が無い時期の分は app_ep_log（毎日のチェックインで必ず1行入る）
+     *   から拾うので、以前から使っている人もゼロから始まらない。
+     */
+    getRecentDays(n = 14) {
+        const seen = new Set(YEStorage.get('app_active_days', []) || []);
+        (YEStorage.get('app_ep_log', []) || []).forEach(e => { if (e && e.date) seen.add(e.date); });
+        const out = [];
+        for (let i = n - 1; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            if (seen.has(key)) out.push(key);
+        }
+        return out;
+    },
+
     /** チェックイン処理（1日1回） */
     checkIn() {
         // ★ゲストは記録しない。ここは injectAppShell から全ページで呼ばれるので、
@@ -162,6 +184,12 @@ const App = {
         }
         YEStorage.set('app_streak', newStreak);
         YEStorage.set('app_last_active', today);
+
+        // 開いた日の一覧（直近90日ぶん）。getRecentDays が読む。
+        const days = (YEStorage.get('app_active_days', []) || []).filter(d => d !== today);
+        days.push(today);
+        if (days.length > 90) days.splice(0, days.length - 90);
+        YEStorage.set('app_active_days', days);
 
         // ログインボーナス
         const result = this.addEP(EP_REWARDS.daily_login, 'daily_login');
@@ -282,14 +310,14 @@ function injectAppShell(activeTab = 'today', depth = 0) {
 
     // チェックイン処理（1日1回）
     const ci = App.checkIn();
-    if (ci.newDay && ci.streak > 1) {
+    if (ci.newDay) {
         setTimeout(() => {
-            App.showToast(`${ci.streak}日連続！ +${EP_REWARDS.daily_login}EP`, '🔥', 2400);
+            App.showToast(`おかえり！ +${EP_REWARDS.daily_login}EP`, '🌱', 2400);
         }, 500);
     }
 
     const lv = App.getLevel();
-    const streak = App.getStreak();
+    const recentDays = App.getRecentDays(14).length;
     const stageIcon = STAGE_ICONS[lv.stage];
 
     // ブランドヘッダー（最上部）
@@ -359,7 +387,7 @@ function injectAppShell(activeTab = 'today', depth = 0) {
         <div class="app-status__ep-bar">
             <div class="app-status__ep-fill" style="width: ${lv.percent}%"></div>
         </div>
-        ${streak > 0 ? `<div class="app-status__streak">🔥 ${streak}</div>` : ''}
+        ${recentDays > 0 ? `<div class="app-status__streak" title="直近14日のうち開いた日数">🗓 ${recentDays}<small>/14日</small></div>` : ''}
     `;
     document.body.insertBefore(statusEl, document.body.firstChild);
 
