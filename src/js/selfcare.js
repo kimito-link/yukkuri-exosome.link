@@ -78,11 +78,11 @@ const SELFCARE_ITEMS = [
 // キャラのフィードバック（達成度別）
 const SELFCARE_FEEDBACK = {
     0: [
-        { char: 'rink', expression: 'half', text: 'まだ何もしてないのだ！今からでもひとつできることないのだ？' },
+        { char: 'rink', expression: 'half', text: 'まだ何もしてないじゃん！今からでもひとつ、できることしよっ' },
         { char: 'konta', expression: 'half', text: 'よし、まずはコップ一杯の水から始めようよ！' }
     ],
     25: [
-        { char: 'rink', expression: 'normal', text: 'ちょっとずつでも進んでるのだ。ボクも頑張るのだ！' },
+        { char: 'rink', expression: 'normal', text: 'ちょっとずつでも進んでるじゃん。りんくも頑張る！' },
         { char: 'tanunee', expression: 'normal', text: 'いいスタートよ。続けることが大切ね。' }
     ],
     50: [
@@ -91,12 +91,12 @@ const SELFCARE_FEEDBACK = {
     ],
     75: [
         { char: 'konta', expression: 'smileOpen', text: 'すごい！もうちょっとでパーフェクトだよ！' },
-        { char: 'rink', expression: 'smile', text: 'みんな頑張ってるのだ！ボクも見習うのだ！' }
+        { char: 'rink', expression: 'smile', text: 'みんな頑張ってるじゃん！りんくも見習わなきゃ！' }
     ],
     100: [
         { char: 'tanunee', expression: 'smileOpen', text: 'パーフェクト！素晴らしい一日ね、よく頑張ったわ。' },
         { char: 'konta', expression: 'smileOpen', text: '100%達成！今日のキミは最高だよ！' },
-        { char: 'rink', expression: 'smileOpen', text: 'すごいのだ〜！パーフェクトなのだ！' }
+        { char: 'rink', expression: 'smileOpen', text: 'すごいじゃん！パーフェクトでしょ！' }
     ]
 };
 

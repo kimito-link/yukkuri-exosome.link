@@ -111,7 +111,7 @@ const CINEMA_ACTS = [
         note: null,
         speaker: 'rink',
         expression: 'smileOpen',
-        line: '手紙みたいなのだ。開けた相手が動きだすのだ。',
+        line: '手紙みたいじゃん。開けた相手が動きだすってこと！',
         svg: () => `
 <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="細胞の中の小胞が外に放出され、隣の細胞に受け取られる様子">
   <!-- 送り手の細胞 -->
@@ -238,7 +238,7 @@ const CINEMA_ACTS = [
         note: 'マップの点灯や「＋◯粒」は分かりやすさのためのイメージで、体内の実測値ではありません。',
         speaker: 'rink',
         expression: 'smile',
-        line: '今日のぶんを、ひとつだけつけて帰るのだ。',
+        line: '今日のぶんを、ひとつだけつけて帰ろっ',
         svg: () => {
             const hexes = [
                 [320, 84, '髪'], [452, 152, '目元'], [452, 258, '循環'],
