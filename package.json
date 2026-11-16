@@ -5,7 +5,7 @@
   "description": "Kimito-Linkのゆっくりエクソソーム — Web + iOS (Capacitor) + Android (Bubblewrap TWA)",
   "homepage": "https://yukkuri-exosome.link/",
   "scripts": {
-    "build:pages": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.cpSync('src','dist',{recursive:true});fs.copyFileSync('_redirects','dist/_redirects');\"",
+    "build:pages": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.cpSync('src','dist',{recursive:true});fs.copyFileSync('_redirects','dist/_redirects');fs.copyFileSync('_headers','dist/_headers');fs.copyFileSync('pages-404.html','dist/404.html');\"",
     "web:dev": "http-server src -p 8765 -c-1",
     "web:serve": "http-server src -p 8765 -c-1",
     "cap:copy": "node scripts/copy-web-to-www.mjs",
