@@ -27,7 +27,9 @@
      * ★ここに設定系（bodyclock_times 等）を足さないこと。端末ごとに違ってよいもの。
      * ★写真（photolog / IndexedDB）も足さないこと。
      */
-    var SYNC_PREFIXES = ['selfcare', 'mindcare', 'sleep', 'fatigue', 'skin', 'boost', 'meal'];
+    var SYNC_PREFIXES = ['selfcare', 'mindcare', 'sleep', 'fatigue', 'skin', 'boost', 'meal', 'daily_quiz'];
+    // daily_quiz（その日のクイズの {answered, correct}）は kimito.link のランキングの
+    // 「クイズ」種目が数える（参加を選んだ人だけ。1日10問まで）。2026-11-12 追加。
 
     var DATE_RE = /^(\d{4}-\d{2}-\d{2})$/;
 
