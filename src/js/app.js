@@ -248,7 +248,7 @@ const App = {
             return {
                 charKey: 'rink',
                 expression: 'half',
-                message: 'おかえり！また会えてうれしい。今日のチェックイン、しよっ'
+                message: 'おかえりなのだ！また会えてうれしいのだ。今日のチェックイン、しよう？'
             };
         }
         if (streak >= 7) {
@@ -268,7 +268,7 @@ const App = {
         return {
             charKey: 'rink',
             expression: 'smile',
-            message: 'やっほー！今日のセルフケア、何からはじめる？'
+            message: 'やっほー！今日のセルフケア、何からはじめるのだ？'
         };
     },
 

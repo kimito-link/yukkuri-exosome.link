@@ -52,10 +52,10 @@ test('あいさつ: 同じ日・同じ時間帯は同じ人が同じことを言
   assert.equal(done.message, T.TODAY_DONE_LINES[done.charKey]);
 });
 
-test('3人組の口調: だれも「なのだ」を使わない／りんくは「ボク」「だよ」を使わない／たぬ姉は「だよ」「じゃん」を使わない', () => {
+test('3人組の口調: りんく=なのだ／こん太・たぬ姉は「なのだ」を使わない／たぬ姉は「だよ」「じゃん」を使わない', () => {
   const all = (k) => [...Object.values(T.TODAY_LINES[k]).flat(), T.TODAY_DONE_LINES[k]];
-  for (const line of [...all('rink'), ...all('konta'), ...all('tanunee')]) assert.doesNotMatch(line, /のだ/, line);
-  for (const line of all('rink')) assert.doesNotMatch(line, /ボク|だよ/, line);
+  for (const line of all('rink')) assert.match(line, /のだ/, line);
+  for (const line of [...all('konta'), ...all('tanunee')]) assert.doesNotMatch(line, /のだ/, line);
   for (const line of all('tanunee')) assert.doesNotMatch(line, /だよ|じゃん/, line);
 });
 
