@@ -9,8 +9,8 @@ const CHARACTERS = {
         nameRomaji: 'rink',
         color: '#ff8fa3',
         role: 'ムードメーカー（食事・生活担当）',
-        firstPerson: 'ボク',
-        ending: 'なのだ',
+        firstPerson: 'りんく',
+        ending: 'でしょ',
         images: {
             normal: 'images/characters/link/link-yukkuri-normal-mouth-closed.png',
             smile: 'images/characters/link/link-yukkuri-smile-mouth-closed.png',
