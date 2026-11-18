@@ -92,7 +92,7 @@ function openPage(html, query, { native = false } = {}) {
       addEventListener: (_, fn) => listeners.push(fn),
       querySelector: () => null,
       getElementById: () => null,
-      querySelectorAll: (selector) => selector === '[data-ref-link]' ? anchors : hidden,
+      querySelectorAll: (selector) => selector === '[data-ref-link]' ? anchors : selector === '[data-lp-web-only]' ? hidden : [],
     },
   };
   runInNewContext(ref, context);

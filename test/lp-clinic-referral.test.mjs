@@ -23,7 +23,7 @@ function openLP(query, { savedCode = '', native = false, brokenBridge = false } 
     document: {
       readyState: 'loading', addEventListener: (_, fn) => listeners.push(fn),
       querySelector: () => null, getElementById: () => null,
-      querySelectorAll: selector => selector === '[data-ref-link]' ? anchors : [terms],
+      querySelectorAll: selector => selector === '[data-ref-link]' ? anchors : selector === '[data-lp-web-only]' ? [terms] : [],
     },
   };
   runInNewContext(ref, context);
