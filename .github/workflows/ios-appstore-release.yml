@@ -24,20 +24,9 @@ on:
         type: boolean
         default: true
         required: false
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/ios-appstore-release.yml"
-      - "capacitor.config.ts"
-      - "src/**"
-      - "package.json"
-      - "scripts/appstore-submit.mjs"
-      - "scripts/lib/asc-api.mjs"
-      - "scripts/lib/asc-screenshot-upload.mjs"
-      - "store-assets/appstore/**"
-      - "release-notes/CURRENT-ja.txt"
-      - "app.config.json"
+  # ★ストアへの提出は手動実行のときだけ（2026-11-18 りんくさん決定）。
+  #   main へのマージで自動提出しない。Web の変更は server.url 経由で
+  #   アプリにもそのまま届くので、ストア提出は本体の変更があるときだけでよい。
 
 concurrency:
   group: ios-appstore-release-${{ github.ref }}

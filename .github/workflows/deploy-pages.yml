@@ -1,0 +1,80 @@
+# 本番サイト（https://exosome.kimito.link）を Cloudflare Pages に自動反映する。
+#
+# - main にマージされたら、テスト → build:pages → Pages 本番へ反映 → 表示確認。
+# - テストが落ちたら反映しない（壊れたものを本番に出さない）。
+# - iOS / Android アプリは server.url で本番 Web を読むので、ここで反映すれば
+#   アプリの画面も新しくなる。ストア提出は別ワークフローを手動で実行したときだけ。
+#
+# 必要なリポジトリの Secrets:
+#   CLOUDFLARE_API_TOKEN   … 権限「Cloudflare Pages: 編集」だけのトークン
+#   CLOUDFLARE_ACCOUNT_ID  … Cloudflare のアカウント ID
+# 未設定のときは失敗にせず、反映をスキップして案内を出す。
+name: deploy-pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "_redirects"
+      - "_headers"
+      - "pages-404.html"
+      - "package.json"
+      - "wrangler.toml"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pages-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PAGES_PROJECT: exosome-demo
+      SITE_URL: https://exosome.kimito.link
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build:pages
+      - name: Check secrets
+        id: secrets
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID が未設定なので本番反映をスキップしました。"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Deploy to Cloudflare Pages (production)
+        if: steps.secrets.outputs.ok == 'true'
+        run: npx --yes wrangler@4 pages deploy dist --project-name "$PAGES_PROJECT" --branch main --commit-hash "$GITHUB_SHA" --commit-message "${GITHUB_SHA::7}" --commit-dirty=true
+      - name: Smoke check
+        if: steps.secrets.outputs.ok == 'true'
+        run: |
+          set -e
+          for i in 1 2 3 4 5 6; do
+            if curl -fsSL "$SITE_URL/" -o /tmp/index.html && cmp -s /tmp/index.html dist/index.html; then
+              echo "本番のトップページが今回のビルドと一致しました"; exit 0
+            fi
+            sleep 10
+          done
+          for p in / /lp/ /manifest.webmanifest /.well-known/assetlinks.json; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL$p")
+            echo "$p -> $code"; [ "$code" = "200" ] || exit 1
+          done
+          echo "::warning::トップページの中身が今回のビルドと一致しません（キャッシュの可能性）。主要ページは 200 です。"

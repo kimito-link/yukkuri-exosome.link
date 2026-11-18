@@ -18,18 +18,9 @@ on:
         description: "Play track (internal / closed / production)"
         required: false
         default: "internal"
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/android-play-release.yml"
-      - "android-twa/app/build.gradle"
-      - "android-twa/twa-manifest.json"
-      - "release-notes/CURRENT-ja.txt"
-      - "scripts/play-publish.mjs"
-      - "scripts/lib/play-api.mjs"
-      - "store-assets/play/**"
-      - "app.config.json"
+  # ★ストアへの提出は手動実行のときだけ（2026-11-18 りんくさん決定）。
+  #   main へのマージで自動提出しない。Web の変更は server.url 経由で
+  #   アプリにもそのまま届くので、ストア提出は本体の変更があるときだけでよい。
 
 concurrency:
   group: android-play-release-${{ github.ref }}
