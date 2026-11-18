@@ -25,7 +25,8 @@ test('タブバーの高さは 64px にセーフエリアを足す（内側の p
 });
 
 test('LINE のボタンは既定でページ内の QR を指し、スマホ用の https は data 属性に置く', () => {
-  for (const file of ['src/line/index.html', 'src/index.html']) {
+  // ホームの LINE 導線は js/today.js が描く（2026-11 の再設計で index.html から移した）。
+  for (const file of ['src/line/index.html', 'src/js/today.js']) {
     const html = read(file);
     const tags = html.match(/<a\b[^>]*data-line-add[^>]*>/g) || [];
     assert.ok(tags.length >= 1, `${file} に data-line-add が無い`);
