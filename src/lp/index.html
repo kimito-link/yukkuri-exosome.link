@@ -59,11 +59,24 @@
                 <p class="clinic-note"><a href="../guide/" data-ref-link>1枚で見る紹介ページ</a>・<a href="../price/" data-ref-link>料金表</a></p>
             </div>
         </section>
-        <nav class="clinic-nav" aria-label="このページの目次"><a href="#lp-use">使い方</a><a href="#lp-features">できること</a><a href="#lp-screens">画面を見る</a><a href="#lp-movie">動画で見る</a><a href="#lp-privacy">記録と料金</a><a href="../guide/" data-ref-link>紹介</a><a href="../price/" data-ref-link>料金表</a><a href="#clinic-partner">クリニック向け</a><a href="#lp-faq">よくある質問</a></nav>
+        <nav class="clinic-nav" aria-label="このページの目次"><a href="#lp-use">使い方</a><a href="#lp-intro">紹介動画</a><a href="#lp-features">できること</a><a href="#lp-screens">画面を見る</a><a href="#lp-movie">動画で見る</a><a href="#lp-privacy">記録と料金</a><a href="../guide/" data-ref-link>紹介</a><a href="../price/" data-ref-link>料金表</a><a href="#clinic-partner">クリニック向け</a><a href="#lp-faq">よくある質問</a></nav>
         <section class="lp-section" id="lp-use" aria-labelledby="lp-use-title">
             <p class="clinic-kicker">毎日の使い方</p><h2 id="lp-use-title" class="lp-section__title">「どうだった？」を、あとで話せる記録に。</h2>
             <ol class="clinic-steps"><li><span class="clinic-step-number">01</span><h3>今日の手ごたえを残す</h3><p>肌・疲れのセルフチェックや、睡眠・ケアの記録。できた項目だけでも大丈夫です。</p></li><li><span class="clinic-step-number">02</span><h3>続けたことを眺める</h3><p>記録に応じたシグナルマップや、3人と育てる画面で、自分の積み重ねを振り返ります。</p></li><li><span class="clinic-step-number">03</span><h3>聞きたいことをメモする</h3><p>次の受診で聞きたいことを、個人用メモへ。画面を見せるかどうかも、自分で選べます。</p></li></ol>
             <p class="clinic-note">数値やマップの光は、入力した記録を表す演出です。身体の測定値や、施術の効果を示すものではありません。</p>
+        </section>
+        <section class="lp-section lp-section--tint" id="lp-intro" aria-labelledby="lp-intro-title">
+            <p class="clinic-kicker">動画で紹介</p><h2 id="lp-intro-title" class="lp-section__title">kimito.link から、<wbr>毎日の記録まで。</h2>
+            <p class="clinic-lead">りんく・こん太・たぬ姉の3人が、kimito.link とのつながり、「きょうの3つ」の記録、スコア、受診前のメモまでを順番に紹介します（約1分・音が出ます・字幕入り）。</p>
+            <figure class="lp-movie">
+                <!-- 既定はストア向け版（LINE・有料の案内なし）。ブラウザで見ているときだけ lp-clinic.js が data-web-src（Web/SNS版）に差し替える。
+                     iOS / Android アプリは同じ本番Webを表示するため、判定できないときはストア向け版のままにする。 -->
+                <video class="lp-movie__video" data-lp-intro-video data-web-src="../videos/exosome-intro-web.mp4" controls playsinline preload="none" width="720" height="1280" poster="../images/movie/exosome-intro-poster.jpg">
+                    <source src="../videos/exosome-intro-app.mp4" type="video/mp4">
+                    この端末では動画を再生できません。
+                </video>
+                <figcaption class="clinic-note">動画の中の画面・数値は説明用のイメージです。スコアは記録から出す目安で、身体の測定値ではありません。診断・治療のためのアプリではありません。</figcaption>
+            </figure>
         </section>
         <section class="lp-section lp-section--tint" id="lp-features" aria-labelledby="lp-features-title">
             <p class="clinic-kicker">アプリでできること</p><h2 id="lp-features-title" class="lp-section__title">自分に合う記録から、ひとつずつ。</h2>
