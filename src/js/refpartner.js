@@ -1,8 +1,8 @@
 /**
- * 紹介パートナーコード（?ref_partner=otani 等）の受け取りと保持。
+ * 紹介パートナーコード（?ref_partner=<code> 等）の受け取りと保持。
  *
  * 提携クリニックのような外部のパートナーが患者に配る QR/URL:
- *   https://<このアプリ>/?ref_partner=otani
+ *   https://<このアプリ>/?ref_partner=<code>
  * を踏んで来た人を、Exosome では「保存するだけ」にとどめ、kimito.link への
  * すべてのリンクに ?ref_partner を付け直して送り出す。
  *
@@ -46,25 +46,37 @@
 
     /**
      * URL の ?ref_partner を読み、正しければ localStorage に保存する。
-     * 一度保存したら、後から ?ref_partner 無しで開いても保持され続ける（別の有効コードで来たら上書き）。
+     * 一度、有効なコードを保存したら、後から別の有効コードが来ても上書きしない（先着）。
+     * 形式が不正な残りだけがあるときは、新しい有効コードで置き換えてよい。
      */
     function captureFromUrl() {
         try {
             var code = new URLSearchParams(window.location.search).get('ref_partner');
-            if (code && isPartnerCode(code)) writeRefPartner(code);
+            if (!code || !isPartnerCode(code)) return;
+            var existing = readRefPartner();
+            if (existing && isPartnerCode(existing)) return;
+            writeRefPartner(code);
         } catch (e) { /* 解析失敗は黙殺 */ }
     }
 
     /**
      * kimito.link 系 URL に、保持中のパートナーコードを ?ref_partner= として付ける。
-     * 既存クエリがあれば & で連結。ref_partner が無ければ base をそのまま返す。
-     * 例) getKimitoUrlWithRef('https://kimito.link/') → 'https://kimito.link/?ref_partner=otani'
+     * 既存クエリがあれば残す。コードが無ければ base をそのまま返す。
+     * すでに pt= または ref_partner= がある URL には付けない（2つの台帳を混ぜない・二重にしない）。
+     * 例) getKimitoUrlWithRef('https://kimito.link/') → 'https://kimito.link/?ref_partner=<code>'
      */
     function getKimitoUrlWithRef(base) {
         var code = readRefPartner();
-        if (!code || !isPartnerCode(code)) return base;
-        var sep = base.indexOf('?') >= 0 ? '&' : '?';
-        return base + sep + 'ref_partner=' + encodeURIComponent(code);
+        if (!code || !isPartnerCode(code) || !base) return base;
+        try {
+            var origin = (window.location && window.location.href) ? window.location.href : 'https://exosome.kimito.link/';
+            var url = new URL(base, origin);
+            if (url.searchParams.has('pt') || url.searchParams.has('ref_partner')) return base;
+            url.searchParams.set('ref_partner', code);
+            return url.href;
+        } catch (e) {
+            return base;
+        }
     }
 
     /** パートナーコードを持っているか（歓迎バーや監修表記の出し分けに使う）。 */
